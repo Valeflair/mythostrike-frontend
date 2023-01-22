@@ -22,11 +22,28 @@
         </div>
       </v-col>
     </div>
+    
+      
+    <v-responsive class="mx-auto pt-5" max-width="450">
+      <v-text-field
+        class="text-field"
+        label="username"
+        variant="outlined"
+        clearable
+      ></v-text-field>
+      <v-text-field
+        class="text-field"
+        label="password"
+        variant="outlined"
+        type="password"
+        clearable
+      ></v-text-field>
+    </v-responsive>
   </div>
 </template>
 <style scoped>
 .bg-image {
-  background: url("@/assets/backgrounds/start_background.png");
+  background: url("@/assets/backgrounds/lobby_background.png");
   height: 100vh;
 }
 
@@ -44,11 +61,11 @@
   text-underline-offset: 10px;
 }
 
-
 .text-field{
   color: white;
 }
 </style>
+
 <script>
 export default {
   name: "Start",
