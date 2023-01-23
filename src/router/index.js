@@ -27,6 +27,26 @@ const router = createRouter({
       path: "/game",
       name: "Game",
       component: () => import("../views/game.vue")
+    },
+    {
+      path: "/Queue",
+      name: "Queue",
+      component: () => import("../views/Queue.vue")
+    },
+    {
+      path: "/Library",
+      name: "Library",
+      component: () => import("../views/Library.vue")
+    },
+    {
+      path: "/RankList",
+      name: "RankList",
+      component: () => import("../views/RankList.vue")
+    },
+    {
+      path: "/Settings",
+      name: "Settings",
+      component: () => import("../views/Settings.vue")
     }
   ],
 });
