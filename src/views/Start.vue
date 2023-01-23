@@ -40,9 +40,17 @@
       ></v-text-field>
     </v-responsive>
     <div class="text-center">
-      <v-btn class="startButton">Register</v-btn>
-      <v-btn class="startButton">Login</v-btn>
+      <v-btn class="startButton" @click="register">Register</v-btn>
+      <v-btn class="startButton" @click="login">Login</v-btn>
     </div>
+    <v-responsive class="mx-auto pt-5" max-width="450">
+      <v-alert
+      v-show="alertStatus"
+      type="error"
+    >
+      {{this.alertMessage}}
+    </v-alert>
+    </v-responsive>
   </div>
 </template>
 <style scoped>
@@ -77,10 +85,6 @@
 .text-field {
   color: white;
 }
-
-.startButton {
-  margin: 15px;
-}
 </style>
 
 <script>
@@ -90,10 +94,13 @@ export default {
   data: () => ({
     username: "",
     password: "",
+    alertStatus: false,
+    alertMessage: ""
   }),
   methods: {
     async login() {
-      await axios
+      if(this.checkInput()){
+        await axios
         .post("http://localhost:8080/users/login", {
           username: this.username,
           password: this.password,
@@ -104,11 +111,14 @@ export default {
           },
           (error) => {
             console.log(error);
+            this.showAlert(error.message);
           }
         );
+      }
     },
     async register() {
-      let response = await axios
+      if(this.checkInput()){
+        await axios
         .post("http://localhost:8080/users/register", {
           username: this.username,
           password: this.password,
@@ -118,10 +128,25 @@ export default {
             console.log(response);
           },
           (error) => {
-            console.log(error);
+            this.showAlert(error.message);
           }
         );
+      }
     },
-  },
+    checkInput(){
+      if(this.username != "" && this.password != ""){
+        return true;
+      }
+      this.showAlert("Username or password is empty");
+      return false;
+    },
+    showAlert(message){
+      this.alertMessage = message;
+      this.alertStatus = true;
+      setTimeout(()=>{
+      this.alertStatus=false
+    },7000)
+    }
+  }
 };
 </script>
