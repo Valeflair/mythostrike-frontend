@@ -108,6 +108,7 @@ export default {
         .then(
           (response) => {
             console.log(response);
+            this.$router.push("/home");
           },
           (error) => {
             console.log(error);
@@ -126,6 +127,7 @@ export default {
         .then(
           (response) => {
             console.log(response);
+            this.$router.push("/home");
           },
           (error) => {
             this.showAlert(error.message);
