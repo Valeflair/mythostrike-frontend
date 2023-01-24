@@ -6,7 +6,7 @@ import CommandField from "./CommandField.vue";
 <template>
  
   
-  <v-container class="red">
+  <v-container class="SeatCommandContainer">
    <v-row class="d-flex justify-center">
     <div  v-for="(slot,i) in slots.filter((slot,i)=>i<slots.length/2)" :key="i">
       <!-- <slot-button :seat="this.slots[slot.id]" :currentplayer="this.currentPlayer" @update:Seat="updateSeats"/> --->
@@ -15,8 +15,8 @@ import CommandField from "./CommandField.vue";
           class="seatButton"
           @click="changeSeat(slot.id)"
         >
-          Seat: {{ slot.id }} Name: {{ getplayer(slot.playerId).name }} Player:
-          {{ getplayer(slot.playerId).occupation }}
+          <p>Seat: {{ slot.id }}</p> <p> Name: {{ getplayer(slot.playerId).name }}</p><p> Player:
+          {{ getplayer(slot.playerId).occupation }}</p>
         </button>
       </v-col>
     </div>
@@ -48,8 +48,8 @@ import CommandField from "./CommandField.vue";
           class="seatButton"
           @click="changeSeat(slot.id)"
         >
-          Seat: {{ slot.id }} Name: {{ getplayer(slot.playerId).name }} Player:
-          {{ getplayer(slot.playerId).occupation }}
+          <p>Seat: {{ slot.id }}</p> <p> Name: {{ getplayer(slot.playerId).name }}</p><p> Player:
+          {{ getplayer(slot.playerId).occupation }}</p>
         </button>
       </v-col>
     </div>
@@ -193,9 +193,9 @@ export default {
 </script>
 
 <style scoped>
-.red {
+.SeatCommandContainer {
  position: relative;
-  top:100px;
+
 }
 
 .field {
@@ -208,13 +208,12 @@ export default {
   background-color: #4caf50; /* Green */
   border: none;
   color: white;
-  padding: 14px 40px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 24px;
-  width: 200px;
-  height: 200px;
+  font-size: 10px;
+  width: 100px;
+  height: 100px;
   border-radius: 12px;
   margin-left: 15px;
   margin-right: 15px;

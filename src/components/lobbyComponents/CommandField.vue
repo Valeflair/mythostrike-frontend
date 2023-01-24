@@ -98,8 +98,8 @@ button {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 24px;
-  width: 300px;
+  font-size: 16px;
+  width: 200px;
   border-radius: 12px;
   margin: 5px;
 }

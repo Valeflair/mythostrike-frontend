@@ -150,6 +150,7 @@ export default {
   background-repeat: no-repeat;
   position: relative;
   top:5%;
+  color:blanchedalmond;
 }
 
 
