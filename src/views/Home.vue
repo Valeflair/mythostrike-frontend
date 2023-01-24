@@ -22,29 +22,6 @@
       </v-chip>
     </div>
 
-    <!-- <div style="margin-top:100px" >
-    <v-row
-      class="d-flex align-center justify-space-around flex-column flex-sm-row"
-    >
-      <v-card class="justify-start" max-width="577">
-        <v-img height="300" src="../../public/Kratos.png" alt="Champion Profil">
-        </v-img>
-
-        <v-card-title>{{ championName }}</v-card-title>
-
-        <v-divider class="mx-4"></v-divider>
-
-        <v-card-title>Win={{ win }} Lose={{ lose }} WR={{ rate }}</v-card-title>
-
-        <v-card-text> </v-card-text>
-      </v-card>
-      <div>
-        <v-btn rounded="pill" color="blue"> Queue </v-btn>
-
-        <v-btn rounded="pill" color="orange"> Lobby </v-btn>
-      </div>
-    </v-row>
-  </div> -->
     <div style="margin-top: 100px">
       <v-container>
         <v-row justify="space-between">
@@ -62,26 +39,8 @@
 
             <v-card-title
               >Win={{ win }} Lose={{ lose }} WR={{ rate }}</v-card-title
-            >
-
-            <!-- <v-card-text> Win={{ win }} Lose={{ lose }} WR={{ rate }}</v-card-text> -->
+            >  
           </v-card>
-          <!-- <v-col >
-            <v-card>
-              <v-img
-                src="../../public/Kratos.png"
-                height="300"
-                cover
-              ></v-img>
-              <v-card-title class="text-h6">
-                {{ championName }}
-              </v-card-title>
-              <v-divider class="mx-4"></v-divider>
-              <v-card-title
-                >Win={{ win }} Lose={{ lose }} WR={{ rate }}</v-card-title
-              >
-            </v-card>
-          </v-col> -->
 
           <v-btn rounded="lg" class="Queue" @click="toQueue">
             Queue
@@ -183,21 +142,21 @@ export default {
 }
 
 .Queue {
-  width: 480px;
-  min-height: 270px;
+  width: 227px;
+  min-height: 61px;
   margin: 15px;
   color: white;
   font-size: 20px;
-  background: url("../../public/giphy.gif");
+  background: url("../../public/start_button.png");
 }
 
 .Lobby {
-  width: 454px;
-  min-height: 257px;
+  width: 227px;
+  min-height: 61px;
   margin: 15px;
   color: white;
   font-size: 20px;
-  background: url("../../public/catKiss.gif");
+  background: url("../../public/start_button.png");
 }
 
 .RankList {
