@@ -7,7 +7,7 @@ import CommandField from "./CommandField.vue";
 <template>
  
   
-  <v-container class="red">
+  <v-container class="SeatCommandContainer">
    <v-row class="d-flex justify-center">
     <div  v-for="(slot,i) in slots.filter((slot,i)=>i<slots.length/2)" :key="i">
       <!-- <slot-button :seat="this.slots[slot.id]" :currentplayer="this.currentPlayer" @update:Seat="updateSeats"/> --->
@@ -199,7 +199,7 @@ export default {
 </script>
 
 <style scoped>
-.red {
+.SeatCommandContainer {
  position: relative;
   top:10vh;
 }
