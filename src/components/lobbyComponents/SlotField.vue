@@ -1,4 +1,5 @@
 <script setup>
+import axios from 'axios';
 //import slotButton from './SlotButton.vue'
 import CommandField from "./CommandField.vue";
 </script>
@@ -15,8 +16,8 @@ import CommandField from "./CommandField.vue";
           class="seatButton"
           @click="changeSeat(slot.id)"
         >
-          Seat: {{ slot.id }} Name: {{ getplayer(slot.playerId).name }} Player:
-          {{ getplayer(slot.playerId).occupation }}
+          Seat: {{ slot.id }} Name: {{ searchPlayer(slot.playerId).name }} Player:
+          {{ searchPlayer(slot.playerId).occupation }}
         </button>
       </v-col>
     </div>
@@ -26,15 +27,17 @@ import CommandField from "./CommandField.vue";
   <v-row >
     <v-col  cols="12">
         <div class="field">
-      <command-field
-    :players="this.players"
-    :lobbyId="this.loobyID"
-    :currentPlayer="this.currentPlayer"
-    :Lobbyleader="this.lobbyLeader"
+      <command-field 
+    :players="getPlayers"
+    :lobbyId="this.lobbyID"
+    :currentPlayer="getCurrentPlayer"
+    :Lobbyleader="getLobbyLeader"
     :slots="this.slots"
+    :modeProp="getCurrentMode"
     @update:Bot="addBot"
     @open:Mode="toggleModeSelection"
     @update:leave="leave"
+    @open:game="start"
     />
         </div>
     </v-col>
@@ -48,8 +51,8 @@ import CommandField from "./CommandField.vue";
           class="seatButton"
           @click="changeSeat(slot.id)"
         >
-          Seat: {{ slot.id }} Name: {{ getplayer(slot.playerId).name }} Player:
-          {{ getplayer(slot.playerId).occupation }}
+          Seat: {{ slot.id }} Name: {{ searchPlayer(slot.playerId).name }} Player:
+          {{ searchPlayer(slot.playerId).occupation }}
         </button>
       </v-col>
     </div>
@@ -67,21 +70,12 @@ export default {
   },
   data() {
     return {
-      slots: [
-        { id: 0, playerId: -1 },
-        { id: 1, playerId: -1 },
-        { id: 2, playerId: -1 },
-        { id: 3, playerId: -1 },
-        { id: 4, playerId: -1 },
-        { id: 5, playerId: -1 },
-        { id: 6, playerId: -1 },
-        { id: 7, playerId: -1 },
-      ],
-      loobyID: this.lobbyId,
-      players: this.playersProp,
-      currentPlayer: this.currentPlayerProp,
+      slots: this.slotsProp,
+      lobbyID: this.lobbyId,
+      //players: this.playersProp,
+      //currentPlayer: this.currentPlayerProp,
       isModeShown: false,
-      lobbyLeader:this.lobbyLeaderProp,
+      //lobbyLeader:this.lobbyLeaderProp,
       currentMode: this.currentModeProp,
       defaultPlayer: {
         id: -1,
@@ -97,44 +91,57 @@ export default {
     currentModeProp: Number,
     playersProp:Array,
     lobbyLeaderProp:Object,
+    slotsProp:Array,
   },
   methods: {
+    start(){
+      this.$emit("open:game");
+    },
     confirmMode(newMode) {
       this.currentMode = newMode;
       this.$emit("confirm:Mode", newMode);
     },
-    getplayer(playerID) {
-      for (let i = 0; i < this.players.length; i++) {
-        if (this.players[i].id === playerID) return this.players[i];
+    searchPlayer(playerID) {
+      const players = this.getPlayers;
+      for (let i = 0; i < players.length; i++) {
+        if (players[i].id === playerID) return players[i];
       }
       return this.defaultPlayer;
     },
     checkPlayer(playerId) {
-      for (let i = 0; i < this.players.length; i++) {
-        if (this.players[i].id === playerId) return this.players[i];
+      const players = this.getPlayers;
+      for (let i = 0; i < players.length; i++) {
+        if (players[i].id === playerId) return players[i];
       }
       return this.defaultPlayer;
     },
     updateSeats(newSeatId) {
       for (let i = 0; i < this.slots.length; i++) {
-        if (this.slots[i].playerId === this.currentPlayer) {
+        if (this.slots[i].playerId === this.getCurrentPlayer) {
           this.slots[i].playerId = -1;
         }
       }
-      this.slots[newSeatId].playerId = this.currentPlayer;
-      for (let i = 0; i < this.players.length; i++) {
-        if (this.players[i].id === this.currentPlayer) {
-          this.players[i].seat = newSeatId;
+      this.slots[newSeatId].playerId = this.getCurrentPlayer;
+      const players = this.getPlayers;
+      for (let i = 0; i < players.length; i++) {
+        if (players[i].id === this.getCurrentPlayer) {
+          players[i].seat = newSeatId;
         }
-      }
+      }      
+      this.$emit('update:players',players);
+
+      
     },
-    changeSeat(seatID) {
+    async changeSeat(seatID) {
+      
+      
       if (this.slots[seatID].playerId === -1) {
         for (let i = 0; i < this.slots.length; i++) {
-          if (this.slots[i].playerId === this.currentPlayer)
+          if (this.slots[i].playerId === this.getCurrentPlayer)
             this.slots[i].playerId = -1;
         }
-        this.slots[seatID].playerId = this.currentPlayer;
+        this.slots[seatID].playerId = this.getCurrentPlayer;
+        this.$emit('update:slots');
       }
     },
     addBot(botId) {
@@ -154,7 +161,11 @@ export default {
         }
         i++;
       }
-      this.players.push(bot);
+      const players = this.getPlayers;
+      players.push(bot);
+      this.$emit('update:players',players);
+      this.$emit('update:bot');
+
     },
     toggleModeSelection() {
       this.isModeShown = !this.isModeShown;
@@ -165,28 +176,23 @@ export default {
     }
   },
   mounted() {
-    for (let i = 0; i < this.players.length; i++) {
-      this.slots[this.players[i].seat].playerId = this.players[i].id;
+    const players = this.getPlayers;
+    for (let i = 0; i < players.length; i++) {
+      this.slots[players[i].seat].playerId = players[i].id;
     }
   },
   computed:{
-    players:{
-        get(){
-            return this.players;
-        },
-        set(value){
-            this.players = value;
-            console.log("players changed" );
-        }
+    getPlayers(){
+      return this.playersProp;
     },
-    lobbyLeader:{
-        get(){
-            return this.lobbyLeader;
-        },
-        set(value){
-            this.lobbyLeader=value;
-        }
-        
+    getCurrentPlayer(){
+        return this.currentPlayerProp;
+    },
+    getLobbyLeader(){
+      return this.lobbyLeaderProp;
+    },
+    getCurrentMode(){
+      return this.currentModeProp;
     }
   }
 };
@@ -195,29 +201,30 @@ export default {
 <style scoped>
 .red {
  position: relative;
-  top:100px;
+  top:10vh;
 }
 
 .field {
-     position: relative;
-    left:23%;
-    width: 70%;
+    background-color: darkblue;
+    position: relative;
+    left:20vw;
+    width: 50vw;
 }
 
 .seatButton {
   background-color: #4caf50; /* Green */
   border: none;
   color: white;
-  padding: 14px 40px;
+  padding: 15px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 24px;
-  width: 200px;
-  height: 200px;
+  font-size: 150%;
+  width: 15vw;
+  height: 19vh;
   border-radius: 12px;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-left: 5vh;
+  margin-right: 5vh;
   
   transition-duration: 0.4s;
 }

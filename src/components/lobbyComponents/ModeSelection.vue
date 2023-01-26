@@ -91,7 +91,7 @@ export default {
 }
 
 .close{
-  background-image: url(@/assets/ModeSelectionAssets/return.png);
+  background-image: url("@/assets/ModeSelectionAssets/return.png");
   width: 94px;
   height: 64px;
   background-size: cover; 
@@ -150,6 +150,7 @@ export default {
   background-repeat: no-repeat;
   position: relative;
   top:5%;
+  color:blanchedalmond;
 }
 
 

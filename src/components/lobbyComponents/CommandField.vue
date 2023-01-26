@@ -1,16 +1,20 @@
+<script setup>
+  import modes from '@/data/modes.json'
+</script>
+
 <template>
   <v-container >
     <v-row >
-      <v-col cols="3">
-        <button :disabled="true">{{ labelLobbyID }}: {{ this.lobbyId }}</button>
-        <button :disabled="true">
+      <v-col cols="3" class="labelMove">
+        <div class="labelclass">{{ labelLobbyID }}: {{ this.lobbyId }}</div>
+        <div class="labelclass">
           {{ labelHost }}: {{ lobbyLeader.name }}
-        </button>
-        <button :disabled="true">
+        </div>
+        <div class="labelclass">
           {{ labelPlayers }}: {{ playerData.length }}/{{ maxSlots }}
-        </button>
+        </div>
       </v-col>
-      <v-col cols="3">
+      <v-col cols="3" class="buttonMove">
         <button class="seatButton" @click="selectMode">{{ labelModes }}</button>
         <button class="seatButton">{{ labelInvite }}</button>
         <button
@@ -21,15 +25,15 @@
           {{ labelStart }}
         </button>
       </v-col>
-      <v-col cols="3">
-        <button class="seatButton">{{ labelOptions }}</button>
+      <v-col cols="3" class="buttonMove">
+        <button class="seatButton" @click="openOptions">{{ labelOptions }}</button>
         <div class="dropdown">
           <button class="seatButton" @click="addBot">{{ labelAddBot }}</button>
-          <div class="dropdown-content">
+        <!--  <div class="dropdown-content">
             <a href="#">Link 1</a>
             <a href="#">Link 2</a>
             <a href="#">Link 3</a>
-          </div>
+          </div>-->
         </div>
         <button class="seatButton" @click="leave">{{ labelLeave }}</button>
       </v-col>
@@ -55,6 +59,8 @@ export default {
       lobbyLeader: this.Lobbyleader,
       maxSlots: 8,
       seats: this.slots,
+      currentMode: this.modeProp,
+      gameModes: modes,
     };
   },
   props: {
@@ -67,6 +73,12 @@ export default {
     slots: Array,
     modeProp: Object,
   },
+  computed:{
+    getMode(){
+      return this.modeProp;
+    }
+
+  },
   methods: {
     addBot() {
       if (this.currentPlayer !== this.Lobbyleader.id) return;
@@ -75,23 +87,67 @@ export default {
       }
     },
     start() {
-      console.log("startet");
+      console.log("anzahl players: "+this.playerData.length);
+      console.log("current Mode : "+this.gameModes[this.getMode].name);
+      if(this.gameModes[this.getMode].showTeam===false){
+        console.log("start game");
+      }else{
+        let count = this.gameModes[this.getMode].minPlayer/2;//wir haben hier das problem das wir checken müssen ob beide teams gleich groß sind dafür nehmen wir min oder max player aber was wenn wir ein spielmodus haben wo wir die identitäten zeigen es aber 3 vs 4 sein soll??
+        let teamBlue = 0;
+        let teamRed = 0;
+        for(let i=0;i<this.seats.length;i++){
+          if(i<this.seats.length/2){
+            if(this.seats[i].id !== -1){
+              teamBlue++;
+            }
+          }else{
+            if(this.seats[i].id !== -1){
+              teamRed++;
+            }
+          }
+        }
+        console.log("count: "+count);
+        console.log("teamRed: "+teamRed);
+        console.log("teamBlue: "+teamBlue);
+        if(teamRed !== teamBlue)
+          console.log("fehler nicht ausgeglichene Teams");
+        if(count !== teamRed)
+          console.log("fehler nicht ausgeglichene Teams");
+        else{  
+          console.log("erfolreich gestartet");
+          this.$emit("open:game");
+        }
+}
+
+
     },
     selectMode() {
       this.$emit("open:Mode");
     },
     leave(){
-        this.$emit("update:leave");
+      this.$emit("update:leave");
     }
   },
 };
 </script>
 
 <style scoped>
+.labelclass{
+  text-align: center;
+  font-size: 150%;
+  color:yellow;
+  margin-top: 2vh;
+  margin-bottom: 4vh;
+} 
 
 
-button {
-  background-color: #4caf50; /* Green */
+.buttonMove{
+  margin-left: 3vh;
+  margin-right: 8vh;
+
+}
+
+.seatButton {
   border: none;
   color: white;
   padding: 14px 40px;
@@ -99,16 +155,16 @@ button {
   text-decoration: none;
   display: inline-block;
   font-size: 24px;
-  width: 300px;
+  width: 12vw;
   border-radius: 12px;
   margin: 5px;
-}
-.seatButton {
   transition-duration: 0.4s;
+  background-image: url("@/assets/ModeSelectionAssets/commandButton.png");
+  
 }
 
 .seatButton:hover {
-  background-color: white;
+  background-color: red;
   color: #4caf50;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
@@ -144,6 +200,5 @@ button {
 }
 
 .dropdown:hover .seatButton {
-  background-color: #3e8e41;
 }
 </style>

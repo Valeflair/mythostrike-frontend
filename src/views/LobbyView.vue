@@ -29,10 +29,14 @@ import axios from "axios";
       :playersProp="this.players"
       :currentPlayerProp="this.currentPlayer"
       :lobbyLeaderProp="checkPlayer(this.currentLeader)"
+      :slotsProp="this.slots"
       @confirm:Mode="confirmMode"
       @update:Mode="toggleModeSelection"
       @update:leave="leave"
       @update:players="updatePlayers"
+      @open:game="start"
+      @update:bot="addBot"
+      @update:slots="changeSeat"
     />
     </div>
   </div>
@@ -42,6 +46,16 @@ import axios from "axios";
 export default {
   data() {
     return {
+      slots: [
+        { id: 0, playerId: -1 },
+        { id: 1, playerId: -1 },
+        { id: 2, playerId: -1 },
+        { id: 3, playerId: -1 },
+        { id: 4, playerId: -1 },
+        { id: 5, playerId: -1 },
+        { id: 6, playerId: -1 },
+        { id: 7, playerId: -1 },
+      ],
       currentLeader:0,
       currentPlayer: 0,
       currentMode: 0,
@@ -64,8 +78,79 @@ export default {
     ModeSelection,
   },
   methods: {
-    confirmMode(newMode) {
+    async changeSeat(newSlots){
+      this.slots = newSlots;
+      await axios
+          .put("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/lobbies/seats",{
+            newSeatId: seatID,
+            lobbyId : this.lobbyID
+          })
+          .then(
+            (response) => {
+              console.log(response.status);
+              console.log("erfolreich platz gewechselt");
+            },
+            (error) => {
+              console.log("fehler, seat wechseln");
+              console.log(error);
+            }
+          );
+    },
+
+    async addBot() {
+      await axios
+          .put("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/lobbies/bot",{
+            id : this.lobbyID
+          })
+          .then(
+            (response) => {
+              console.log(response.status);
+              console.log("erfolreich bot geadded");
+            },
+            (error) => {
+              console.log("fehler, bot adden");
+              console.log(error);
+            }
+          );
+
+
+    },
+    
+    async start(){
+      await axios
+          .post("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/lobbies/start",{
+            id:this.lobbyID
+          })
+          .then(
+            (response) => {
+              console.log(response.status);
+              console.log("erfolgreich game gestartet");
+            },
+            (error) => {
+              console.log("fehler, game starten");
+              console.log(error);
+            }
+          );
+    },
+    async confirmMode(newMode) {
       this.currentMode = newMode;
+      await axios
+          .put("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/lobbies/mode",{
+            newModeId: this.currentMode,
+            lobbyId : this.lobbyID
+          })
+          .then(
+            (response) => {
+              console.log(response.status);
+              console.log("erfolreich mode gewechselt");
+            },
+            (error) => {
+              console.log("fehler, mode wechseln");
+              console.log(error);
+            }
+          );
+
+
     },
     toggleModeSelection(){
       this.isModeShown=!this.isModeShown;
@@ -81,14 +166,17 @@ export default {
     },
     async leave(){
       await axios
-          .get("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/lobbies")
+          .post("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/lobbies/leave",{
+            id:this.lobbyID,
+          })
           .then(
             (response) => {
-              console.log(response.data);
-              console.log("nice");
+              console.log(response.status);
+              console.log("erfolgreich lobby verlassen");
               this.$router.push({ path: "./lobbyoverview" });
             },
             (error) => {
+              console.log("fehler, lobby verlassen");
               console.log(error);
             }
           );

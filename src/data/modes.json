@@ -4,28 +4,40 @@
         "name": "1 vs 1",
         "description":"1vs1",
         "maxPlayer":2,
-        "minPlayer":2
+        "minPlayer":2,
+        "showTeam":true
     },
     {
         "id":1,
         "name": "2 vs 2",
         "description":"2vs2 Decscription",
         "maxPlayer":4,
-        "minPlayer":4
+        "minPlayer":4,
+        "showTeam":true
     },
     {
         "id":2,
         "name": "FREE FOR ALL",
         "description":"Free For all Decscription",
         "maxPlayer":8,
-        "minPlayer":2
+        "minPlayer":2,
+        "showTeam":false
     },
     {
         "id":3,
         "name": "Identity",
         "description":"Identity Decscription. In diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jedenIn diesem Modus spielt jeder gegen jeden",
         "maxPlayer":8,
-        "minPlayer":5
+        "minPlayer":5,
+        "showTeam":false    
+    },
+    {
+        "id":4,
+        "name": "4vs4",
+        "description":"4vs4 Description",
+        "maxPlayer":8,
+        "minPlayer":8,
+        "showTeam":true    
     }
     
 ]
