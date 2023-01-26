@@ -1,7 +1,7 @@
 <template>
   <div class="bg-image">
     <div class="d-flex justify-center">
-      <v-col cols="2" class="text-right">
+      <v-col cols="2">
         <img
           alt="Vue logo"
           class="logo"
@@ -43,13 +43,10 @@
       <v-btn class="startButton" @click="register">Register</v-btn>
       <v-btn class="startButton" @click="login">Login</v-btn>
     </div>
-    <v-responsive class="mx-auto pt-5" max-width="450">
-      <v-alert
-      v-show="alertStatus"
-      type="error"
-    >
-      {{this.alertMessage}}
-    </v-alert>
+    <v-responsive class="mx-auto" max-width="450">
+      <v-alert v-show="alertStatus" type="error">
+        {{ this.alertMessage }}
+      </v-alert>
     </v-responsive>
   </div>
 </template>
@@ -60,11 +57,12 @@
 }
 
 .startButton {
-  width: 227px;
+  width: 197px;
   min-height: 61px;
   margin: 15px;
   color: white;
   font-size: 20px;
+  border-radius:15px;
   background: url("@/assets/elements/start_button.png");
 }
 
@@ -95,60 +93,63 @@ export default {
     username: "",
     password: "",
     alertStatus: false,
-    alertMessage: ""
+    alertMessage: "",
+    url: "",
   }),
   methods: {
     async login() {
-      if(this.checkInput()){
+      if (this.checkInput()) {
         await axios
-        .post("http://localhost:8080/users/login", {
-          username: this.username,
-          password: this.password,
-        })
-        .then(
-          (response) => {
-            console.log(response);
-            this.$router.push("/home");
-          },
-          (error) => {
-            console.log(error);
-            this.showAlert(error.message);
-          }
-        );
+          .post("http://localhost:8080/users/login", {
+            username: this.username,
+            password: this.password
+          })
+          .then(
+            (response) => {
+              let token = response.data;
+              localStorage.setItem("token", token);
+              this.$router.push("/home");
+            },
+            (error) => {
+              console.log(error);
+              this.showAlert(error.message);
+            }
+          );
       }
     },
     async register() {
-      if(this.checkInput()){
+      if (this.checkInput()) {
         await axios
-        .post("http://localhost:8080/users/register", {
-          username: this.username,
-          password: this.password,
-        })
-        .then(
-          (response) => {
-            console.log(response);
-            this.$router.push("/home");
-          },
-          (error) => {
-            this.showAlert(error.message);
-          }
-        );
+          .post("http://localhost:8080/users/register", {
+            username: this.username,
+            password: this.password,
+          })
+          .then(
+            (response) => {
+              let token = response.data;
+              localStorage.setItem("token", token);
+              this.$router.push("/home");
+            },
+            (error) => {
+              this.showAlert(error.message);
+            }
+          );
       }
     },
-    checkInput(){
-      if(this.username != "" && this.password != ""){
+    checkInput() {
+      if (this.username != "" && this.password != "") {
         return true;
       }
       this.showAlert("Username or password is empty");
       return false;
     },
-    showAlert(message){
+    showAlert(message) {
       this.alertMessage = message;
       this.alertStatus = true;
-      setTimeout(()=>{
-      this.alertStatus=false
-    },7000)
-    }
-  }
+      setTimeout(() => {
+        this.alertStatus = false;
+      }, 7000);
+    },
+  },
 };
 </script>
