@@ -14,9 +14,14 @@ const router = createRouter({
       component: () => import("../views/Home.vue"),
     },
     {
-      path: "/",
+      path: "/lobby",
       name: "Lobby",
       component: () => import("../views/LobbyView.vue"),
+    },
+    {
+      path: "/",
+      name: "ChampionSelection",
+      component: () => import("../views/ChampionSelectionView.vue"),
     },
     {
       path: "/lobbyoverview",

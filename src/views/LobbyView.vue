@@ -1,14 +1,15 @@
 <script setup>
 import slotView from "../components/lobbyComponents/SlotField.vue";
-import modes from "../data/gameMode.json";
+import modes from "../data/modes.json";
 import ModeSelection from "../components/lobbyComponents/ModeSelection.vue"
 import playerDatas from "@/data/players.json";
-
+import axios from "axios";
 </script>
 
 <template>
   <div class="bg-image">
-     <mode-selection
+    
+     <mode-selection 
     v-if="isModeShown"
     @close:Mode="toggleModeSelection"
     @confirm:Mode="confirmMode"
@@ -18,9 +19,10 @@ import playerDatas from "@/data/players.json";
   />
 
 
-<header><h1>{{this.gameModes[this.currentMode].name}}</h1></header>
 
 <div class="slotStyle">
+  <header><h1>{{this.gameModes[this.currentMode].name}}</h1></header>
+
     <slotView
       :lobbyId="this.lobbyID"
       :currentModeProp="this.currentMode"
@@ -30,6 +32,7 @@ import playerDatas from "@/data/players.json";
       @confirm:Mode="confirmMode"
       @update:Mode="toggleModeSelection"
       @update:leave="leave"
+      @update:players="updatePlayers"
     />
     </div>
   </div>
@@ -46,6 +49,7 @@ export default {
       lobbyID: 5045,
       isModeShown:false,
       players: playerDatas,
+      playerAxios: Array,
      // lobbyLeader:Object,
       defaultPlayer: {
         id: -1,
@@ -72,9 +76,24 @@ export default {
       }
       return this.defaultPlayer;
     },
-    leave(){
-      if(this.currentPlayer===this.currentLeader){
-        console.log("same leader and curr player");
+    updatePlayers(newPlayers){
+      this.players = newPlayers;
+    },
+    async leave(){
+      await axios
+          .get("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/lobbies")
+          .then(
+            (response) => {
+              console.log(response.data);
+              console.log("nice");
+              this.$router.push({ path: "./lobbyoverview" });
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+
+    /*  if(this.currentPlayer===this.currentLeader){
         let i=0;
         while(i<this.players.length && this.currentLeader===this.currentPlayer ){
             if(this.players[i].id!==this.currentPlayer){
@@ -86,22 +105,33 @@ export default {
         }
       }
       this.players = this.players.filter(player => player.id !== this.currentPlayer);
-      
+      */
+     
+
     }
     
   },
+  mounted(){
+  
+  let link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = '@/assets/backgrounds/modeselect_background.png';
+  document.head.appendChild(link);
+  // you can repeat the above code for multiple images
+}
 };
 </script>
 
 <style scoped>
 .bg-image {
   background: url("@/assets/backgrounds/start_background.png");
-  height: 100vh;
+  height:100%;
+  width: 100%;
 }
 .slotStyle{
   position: relative;   
-  height:94.8%;
-  
+  height:100%;
+  width: 100%;
 }
 
 header h1{
