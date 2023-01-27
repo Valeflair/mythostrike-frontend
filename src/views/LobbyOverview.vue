@@ -23,7 +23,47 @@
         <v-btn class="lobbyButton">Create</v-btn>
       </div>
     </v-col>
-    <v-col cols="9" id="right-bar"> Test </v-col>
+    <v-col cols="9" id="right-bar">
+      <div  class="table">
+        
+        <v-table theme="dark" height="98vh">
+    <thead>
+      <tr>
+        <th class="text-left">
+          Status
+        </th>
+        <th class="text-left">
+          LobbyID
+        </th>
+        <th class="text-left">
+          Owner
+        </th>
+        <th class="text-left">
+          Mode
+        </th>
+        <th class="text-left">
+          Players
+        </th>
+        <th class="text-left">
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="lobby in lobbies"
+        :key="lobby.iD"
+      >
+        <td>{{ lobby.status }}</td>
+        <td>{{ lobby.id }}</td>
+        <td>{{ lobby.lobbyLeader }}</td>
+        <td>{{ lobby.mode }}</td>
+        <td>{{ lobby.players }}</td>
+        <td><v-btn variant="outlined">Join</v-btn></td>
+      </tr>
+    </tbody>
+  </v-table>
+      </div>
+    </v-col>
   </div>
 </template>
 
@@ -31,6 +71,10 @@
 #left-bar {
   background-color: #9c3b33;
   height: 100vh;
+}
+
+tr:hover{
+  background-color:black;
 }
 
 #right-bar {
@@ -58,4 +102,32 @@
   background: url("@/assets/elements/start_button.png");
 }
 
+
+
 </style>
+
+<script>
+import axios from 'axios';
+  export default {
+    data: () => ({
+      lobbies: []
+    }),
+    methods:{
+      async getLobbies() {
+        await axios
+          .get("http://localhost:8080/lobbies")
+          .then(
+            (response) => {
+              this.lobbies = response.data;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+      }
+    },
+    async created(){
+      this.getLobbies();
+    }
+  }
+</script>
