@@ -30,6 +30,7 @@ import axios from "axios";
       :currentPlayerProp="this.currentPlayer"
       :lobbyLeaderProp="checkPlayer(this.currentLeader)"
       :slotsProp="this.slots"
+      :gameModesProp="this.gameModes"
       @confirm:Mode="confirmMode"
       @update:Mode="toggleModeSelection"
       @update:leave="leave"
@@ -59,10 +60,11 @@ export default {
       currentLeader:0,
       currentPlayer: 0,
       currentMode: 0,
-      gameModes: modes,
+      gameModes: Array,
       lobbyID: 5045,
       isModeShown:false,
       players: playerDatas,
+      gameModeName:'',
       playerAxios: Array,
      // lobbyLeader:Object,
       defaultPlayer: {
@@ -125,10 +127,12 @@ export default {
             (response) => {
               console.log(response.status);
               console.log("erfolgreich game gestartet");
+              this.$router.push({ path: "./championselect" });
             },
             (error) => {
               console.log("fehler, game starten");
               console.log(error);
+              this.$router.push({ path: "./championselect" });
             }
           );
     },
@@ -194,19 +198,29 @@ export default {
       }
       this.players = this.players.filter(player => player.id !== this.currentPlayer);
       */
-     
-
+    },
+    async initModes(){
+      await axios
+        .get("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/resources/modes")
+        .then(
+          (response) => {
+            console.log("erfolgreich, mode data initialisiert");
+            this.gameModes = response.data;
+            console.log(response.data); 
+            this.$nextTick(() => {
+                    // Your DOM update code here
+                });
+          },
+          (error) => {
+            console.log("fehler, mode data initialisieren");
+            console.log(error);
+          }
+          )
     }
-    
   },
-  mounted(){
-  
-  let link = document.createElement('link');
-  link.rel = 'prefetch';
-  link.href = '@/assets/backgrounds/modeselect_background.png';
-  document.head.appendChild(link);
-  // you can repeat the above code for multiple images
-}
+  created(){
+    this.initModes();
+  }
 };
 </script>
 

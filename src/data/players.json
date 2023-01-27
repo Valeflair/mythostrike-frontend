@@ -27,7 +27,25 @@
         "id":4,
         "name":"Random2",
         "occupation":"Human",
+        "seat":6
+    },
+    {
+        "id":5,
+        "name":"Random3",
+        "occupation":"Human",
         "seat":7
+    },
+    {
+        "id":6,
+        "name":"Random4",
+        "occupation":"Human",
+        "seat":1
+    },
+    {
+        "id":7,
+        "name":"Random5",
+        "occupation":"Human",
+        "seat":4
     }
     
 

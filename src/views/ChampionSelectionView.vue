@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
     import championData from '../data/champions.json'
-
+    import championComponent from '../data/CardComponent.vue'
 </script>
 
 <template>
@@ -15,8 +15,7 @@ import axios from 'axios';
             <div v-for="champion in champions" :key="champion.id">
              <v-col  :key="champion.id">   
                 <button class="championButton" @click="changeChampion(champion.id)">
-                    <p>Name:{{champion.name}} </p>
-                    <p>Description:{{champion.description}}</p>
+                   {{champion.name}}
                 </button>
             </v-col>
         </div>         
@@ -71,7 +70,14 @@ export default {
             currentChampion: 0,
             championSelection:'Select your Champion',
             lobbyID: this.lobbyIDprop,
+            containerX:11,
+            containerY:30,
+            containerSrc:'@/assets/cards/goldFrame.png',
+            imageSrc: '@/assets/champions/nyx.png',
         }
+    },
+    components:{
+        championComponent,
     },
     props:{
         lobbyIDprop:Number,
@@ -229,8 +235,8 @@ export default {
 
 .championButton{
     background-color: blanchedalmond;
-    width: 11vw;
-    height: 30vh;
+    width: 12vw;
+    height: 15vw;
     padding: 1vh;
     margin-left: 3vh;
     margin-right: 3vh;

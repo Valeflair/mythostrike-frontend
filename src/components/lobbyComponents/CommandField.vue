@@ -60,7 +60,7 @@ export default {
       maxSlots: 8,
       seats: this.slots,
       currentMode: this.modeProp,
-      gameModes: modes,
+      gameModes: this.gameModesProp,
     };
   },
   props: {
@@ -72,6 +72,7 @@ export default {
     currentPlayer: Number,
     slots: Array,
     modeProp: Object,
+    gameModesProp: Array,
   },
   computed:{
     getMode(){
@@ -137,13 +138,13 @@ export default {
   font-size: 150%;
   color:yellow;
   margin-top: 2vh;
-  margin-bottom: 4vh;
+  margin-bottom: 2vh;
 } 
 
 
 .buttonMove{
   margin-left: 3vh;
-  margin-right: 8vh;
+  margin-right: 5vh;
 
 }
 
@@ -154,10 +155,10 @@ export default {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 24px;
   width: 12vw;
   border-radius: 12px;
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   transition-duration: 0.4s;
   background-image: url("@/assets/ModeSelectionAssets/commandButton.png");
   

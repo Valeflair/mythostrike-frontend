@@ -1,5 +1,6 @@
 <script setup>
 import modeDatas from "@/data/modes.json";
+import axios from'axios';
 </script>
 
 <template>
@@ -34,7 +35,7 @@ import modeDatas from "@/data/modes.json";
 export default {
   data() {
     return {
-      modes: modeDatas,
+      modes: Array,
       pointer: this.currentModeProp,
       currentMode: this.currentModeProp,
       cPlayer: this.currentplayer,
@@ -64,7 +65,29 @@ export default {
         this.$emit("close:Mode");
       
     },
+    async initModes(){
+      await axios
+        .get("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/resources/modes")
+        .then(
+          (response) => {
+            console.log("erfolgreich, mode data initialisiert");
+            this.modes = response.data;
+            console.log(response.data);
+            this.$nextTick(() => {
+                    // Your DOM update code here
+                });
+          },
+          (error) => {
+            console.log("fehler, mode data initialisieren");
+            console.log(error);
+          }
+          )
+    }
   },
+  created(){
+    this.initModes();
+  // you can repeat the above code for multiple images
+}
 };
 </script>
 

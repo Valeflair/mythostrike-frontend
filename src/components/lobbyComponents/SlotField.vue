@@ -16,8 +16,8 @@ import CommandField from "./CommandField.vue";
           class="seatButton"
           @click="changeSeat(slot.id)"
         >
-          Seat: {{ slot.id }} Name: {{ searchPlayer(slot.playerId).name }} Player:
-          {{ searchPlayer(slot.playerId).occupation }}
+          <p>Name: {{ searchPlayer(slot.playerId).name }}</p> 
+          <p> Player: {{ searchPlayer(slot.playerId).occupation }} </p>
         </button>
       </v-col>
     </div>
@@ -34,6 +34,7 @@ import CommandField from "./CommandField.vue";
     :Lobbyleader="getLobbyLeader"
     :slots="this.slots"
     :modeProp="getCurrentMode"
+    :gameModesProp="this.gameModes"
     @update:Bot="addBot"
     @open:Mode="toggleModeSelection"
     @update:leave="leave"
@@ -51,8 +52,8 @@ import CommandField from "./CommandField.vue";
           class="seatButton"
           @click="changeSeat(slot.id)"
         >
-          Seat: {{ slot.id }} Name: {{ searchPlayer(slot.playerId).name }} Player:
-          {{ searchPlayer(slot.playerId).occupation }}
+          <p>Name: {{ searchPlayer(slot.playerId).name }}</p> 
+          <p> Player: {{ searchPlayer(slot.playerId).occupation }} </p>
         </button>
       </v-col>
     </div>
@@ -77,6 +78,7 @@ export default {
       isModeShown: false,
       //lobbyLeader:this.lobbyLeaderProp,
       currentMode: this.currentModeProp,
+      gameModes:this.gameModesProp,
       defaultPlayer: {
         id: -1,
         name: "Empty",
@@ -92,6 +94,7 @@ export default {
     playersProp:Array,
     lobbyLeaderProp:Object,
     slotsProp:Array,
+    gameModesProp:Array,
   },
   methods: {
     start(){
@@ -215,7 +218,6 @@ export default {
   background-color: #4caf50; /* Green */
   border: none;
   color: white;
-  padding: 15px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -223,8 +225,8 @@ export default {
   width: 15vw;
   height: 19vh;
   border-radius: 12px;
-  margin-left: 5vh;
-  margin-right: 5vh;
+  margin-left: 1vh;
+  margin-right: 1vh;
   
   transition-duration: 0.4s;
 }
