@@ -1,6 +1,6 @@
 <template>
   <div class="bg-image">
-    <div><h1>Main Page</h1></div>
+    <div><h1>Home Page</h1></div>
 
     <div style="margin-top:1000px margin-bottom:1000px">
       <v-chip
