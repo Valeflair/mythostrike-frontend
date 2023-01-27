@@ -1,3 +1,3 @@
 <template>
-    Library
+  Library
 </template>

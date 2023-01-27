@@ -42,11 +42,6 @@ const router = createRouter({
       path: "/RankList",
       name: "RankList",
       component: () => import("../views/RankList.vue")
-    },
-    {
-      path: "/Settings",
-      name: "Settings",
-      component: () => import("../views/Settings.vue")
     }
   ],
 });

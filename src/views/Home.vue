@@ -42,14 +42,14 @@
             >  
           </v-card>
 
-          <v-btn rounded="lg" class="Queue" @click="toQueue">
+          <v-btn rounded="lg" class=" Button Queue" @click="toQueue">
             Queue
           </v-btn>
 
           <v-btn
             rounded="lg"
             
-            class="Lobby"
+            class=" Button Lobby"
             @click="toLobbyOverview"
           >
             LobbyOverView
@@ -64,8 +64,8 @@
           <div style="margin-right: 100px">
             <v-btn
               value="left"
-              rounded="pill"
-              class="RankList"
+              
+              class="Button RankList"
               @click="toRankList"
               >Rank List</v-btn
             >
@@ -74,8 +74,8 @@
           <div style="margin-right: 100px">
             <v-btn
               value="left"
-              rounded="pill"
-              class="Library"
+              
+              class=" Button Library"
               @click="toLibrary"
             >
               Library
@@ -83,7 +83,7 @@
           </div>
 
           <div>
-            <v-btn rounded="pill" class="Settings" @click="toSettings">
+            <v-btn  class=" Button Settings" @click="toSettings">
               Settings
             </v-btn>
           </div>
@@ -118,11 +118,7 @@ export default {
 
     toLibrary() {
       this.$router.push({ path: "./Library" });
-    },
-
-    toSettings() {
-      this.$router.push({ path: "./Settings" });
-    },
+    }
   },
 };
 </script>
@@ -147,7 +143,7 @@ export default {
   margin: 15px;
   color: white;
   font-size: 20px;
-  background: url("../../public/start_button.png");
+  background: url("../assets/elements/start_button.png");
 }
 
 .Lobby {
@@ -156,7 +152,7 @@ export default {
   margin: 15px;
   color: white;
   font-size: 20px;
-  background: url("../../public/start_button.png");
+  background: url("../assets/elements/start_button.png");
 }
 
 .RankList {
@@ -165,7 +161,7 @@ export default {
   margin: 15px;
   color: white;
   font-size: 20px;
-  background: url("../../public/start_button.png");
+  background: url("../assets/elements/start_button.png");
 }
 
 .Library {
@@ -174,7 +170,7 @@ export default {
   margin: 15px;
   color: white;
   font-size: 20px;
-  background: url("../../public/start_button.png");
+  background: url("../assets/elements/start_button.png");
 }
 
 .Settings {
@@ -183,6 +179,10 @@ export default {
   margin: 15px;
   color: white;
   font-size: 20px;
-  background: url("../../public/start_button.png");
+  background: url("../assets/elements/start_button.png");
+}
+
+.Button {
+  background-size: cover;
 }
 </style>
