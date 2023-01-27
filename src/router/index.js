@@ -32,7 +32,7 @@ const router = createRouter({
       path: "/Library",
       name: "Library",
       component: () => import("../views/Library.vue"),
-    },
+    }
   ],
 });
 
