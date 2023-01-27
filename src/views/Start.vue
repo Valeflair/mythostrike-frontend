@@ -1,3 +1,1 @@
-<template>
-    start
-</template>
+<template>start</template>
