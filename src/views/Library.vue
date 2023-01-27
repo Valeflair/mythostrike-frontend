@@ -1,3 +1,1 @@
-<template>
-  Library
-</template>
+<template>Library</template>
