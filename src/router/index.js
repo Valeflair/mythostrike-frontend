@@ -28,6 +28,11 @@ const router = createRouter({
       name: "Game",
       component: () => import("../views/game.vue"),
     },
+    {
+      path: "/Library",
+      name: "Library",
+      component: () => import("../views/Library.vue"),
+    }
   ],
 });
 

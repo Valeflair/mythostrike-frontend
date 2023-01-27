@@ -1,1 +1,1 @@
-<template>lobby</template>
+<template>lobbyOverview</template>
