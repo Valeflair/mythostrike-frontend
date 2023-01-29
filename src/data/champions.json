@@ -1,0 +1,208 @@
+[
+    {
+        "id":0,
+        "name":"Urania",
+        "description":"Description of Urania",
+        "passiveSkills":[
+            {
+                "name":"Voidness",
+                "description":"Description of Voidness "
+            },
+            {
+                "name":"Lullaby",
+                "description":"Description of Lullaby"
+            },
+            {
+                "name":"Lullaby",
+                "description":"Description of Lullaby"
+            }
+        ],
+        "activeSkills":[
+            {
+                "name":"Prophet",
+                "description":"Description of Prophet"
+            }
+        ]
+    },
+      {
+        "id":1,
+        "name":"Terpsichore",
+        "description":"Description of Terpsichore",
+        "passiveSkills":[
+            {
+                "name":"Voidness",
+                "description":"Description of Voidness"
+            },
+            {
+                "name":"Lullaby",
+                "description":"Description of Lullaby"
+            }
+        ],
+        "activeSkills":[]
+    },
+      {
+        "id":2,
+        "name":"Nyx",
+        "description":"Description of Nyx",
+        "passiveSkills":[],
+        "activeSkills":[
+             {
+                "name":"Shadow Fate",
+                "description":"Description of Shadow Fate"
+            },
+            {
+                "name":"Dark Protection",
+                "description":"Description of Dark Protection"
+            }
+        ]
+    },
+    {
+        "id":3,
+        "name":"Bot 1",
+        "description":"Description of Bot 1",
+        "passiveSkills":[
+            {
+                "name":"passive Bot 1 skill 1 ",
+                "description":"Description of passive Bot 1 skill 1"
+            }
+        ],
+        "activeSkills":[
+             {
+                "name":"aktive Bot 1 skill 1",
+                "description":"Description of passive Bot 1 skill 1"
+            },
+            {
+                "name":"aktive Bot 1 skill 2",
+                "description":"Description of aktive Bot 1 skill 2"
+            }
+        ]
+    },
+    {
+        "id":4,
+        "name":"Bot 2",
+        "description":"Description of Bot 2",
+        "passiveSkills":[
+            {
+                "name":"passive Bot 2 skill 1 ",
+                "description":"Description of passive Bot 2 skill 1"
+            }
+        ],
+        "activeSkills":[
+             {
+                "name":"aktive Bot 2 skill 1",
+                "description":"Description of passive Bot 2 skill 1"
+            },
+            {
+                "name":"aktive Bot 2 skill 2",
+                "description":"Description of aktive Bot 2 skill 2"
+            }
+        ]
+    },
+    {
+        "id":5,
+        "name":"Bot 3",
+        "description":"Description of Bot 3",
+        "passiveSkills":[
+            {
+                "name":"passive Bot 3 skill 1 ",
+                "description":"Description of passive Bot 3 skill 1"
+            }
+        ],
+        "activeSkills":[
+             {
+                "name":"aktive Bot 3 skill 1",
+                "description":"Description of passive Bot 3 skill 1"
+            },
+            {
+                "name":"aktive Bot 3 skill 2",
+                "description":"Description of aktive Bot 3 skill 2"
+            }
+        ]
+    },
+    {
+        "id":6,
+        "name":"Bot 4",
+        "description":"Description of Bot 4",
+        "passiveSkills":[
+            {
+                "name":"passive Bot 4 skill 1 ",
+                "description":"Description of passive Bot 4 skill 1"
+            }
+        ],
+        "activeSkills":[
+             {
+                "name":"aktive Bot 4 skill 1",
+                "description":"Description of passive Bot 4 skill 1"
+            },
+            {
+                "name":"aktive Bot 4 skill 2",
+                "description":"Description of aktive Bot 4 skill 2"
+            }
+        ]
+    },
+    {
+        "id":6,
+        "name":"Bot 4",
+        "description":"Description of Bot 4",
+        "passiveSkills":[
+            {
+                "name":"passive Bot 4 skill 1 ",
+                "description":"Description of passive Bot 4 skill 1"
+            }
+        ],
+        "activeSkills":[
+             {
+                "name":"aktive Bot 4 skill 1",
+                "description":"Description of passive Bot 4 skill 1"
+            },
+            {
+                "name":"aktive Bot 4 skill 2",
+                "description":"Description of aktive Bot 4 skill 2"
+            }
+        ]
+    },
+    {
+        "id":6,
+        "name":"Bot 4",
+        "description":"Description of Bot 4",
+        "passiveSkills":[
+            {
+                "name":"passive Bot 4 skill 1 ",
+                "description":"Description of passive Bot 4 skill 1"
+            }
+        ],
+        "activeSkills":[
+             {
+                "name":"aktive Bot 4 skill 1",
+                "description":"Description of passive Bot 4 skill 1"
+            },
+            {
+                "name":"aktive Bot 4 skill 2",
+                "description":"Description of aktive Bot 4 skill 2"
+            }
+        ]
+    },
+    {
+        "id":6,
+        "name":"Bot 4",
+        "description":"Description of Bot 4",
+        "passiveSkills":[
+            {
+                "name":"passive Bot 4 skill 1 ",
+                "description":"Description of passive Bot 4 skill 1"
+            }
+        ],
+        "activeSkills":[
+             {
+                "name":"aktive Bot 4 skill 1",
+                "description":"Description of passive Bot 4 skill 1"
+            },
+            {
+                "name":"aktive Bot 4 skill 2",
+                "description":"Description of aktive Bot 4 skill 2"
+            }
+        ]
+    }
+    
+
+]

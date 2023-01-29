@@ -1,0 +1,34 @@
+[
+    {
+        "id":0,
+        "name":"Minh",
+        "occupation":"Human",
+        "seat":2
+    },
+    {
+        "id":1,
+        "name":"Jack",
+        "occupation":"Human",
+        "seat":3
+    },
+    {
+        "id":2,
+        "name":"Till",
+        "occupation":"Bot",
+        "seat":0
+    },
+    {
+        "id":3,
+        "name":"Random1",
+        "occupation":"Human",
+        "seat":5
+    },
+    {
+        "id":4,
+        "name":"Random2",
+        "occupation":"Human",
+        "seat":7
+    }
+    
+
+]
