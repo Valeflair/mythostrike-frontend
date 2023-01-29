@@ -86,7 +86,7 @@
 </style>
 
 <script>
-import axios from "axios";
+import authService from "@/services/authService";
 export default {
   name: "Start",
   data: () => ({
@@ -99,11 +99,7 @@ export default {
   methods: {
     async login() {
       if (this.checkInput()) {
-        await axios
-          .post("http://localhost:8080/users/login", {
-            username: this.username,
-            password: this.password
-          })
+        await authService.login(this.username,this.password)
           .then(
             (response) => {
               let token = response.data;
@@ -119,11 +115,7 @@ export default {
     },
     async register() {
       if (this.checkInput()) {
-        await axios
-          .post("http://localhost:8080/users/register", {
-            username: this.username,
-            password: this.password,
-          })
+        await authService.register(this.username,this.password)
           .then(
             (response) => {
               let token = response.data;
