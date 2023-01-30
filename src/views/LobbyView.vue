@@ -201,7 +201,7 @@ export default {
     },
     async initModes(){
       await axios
-        .get("https://92f6dac7-672e-4bc6-b445-d8221dd9156b.mock.pstmn.io/resources/modes")
+        .get("https://d9dcb8ef-9e92-41b7-952b-8af025909aa0.mock.pstmn.io/resources/modes")
         .then(
           (response) => {
             console.log("erfolgreich, mode data initialisiert");

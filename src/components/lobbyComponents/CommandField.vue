@@ -92,6 +92,7 @@ export default {
       console.log("current Mode : "+this.gameModes[this.getMode].name);
       if(this.gameModes[this.getMode].showTeam===false){
         console.log("start game");
+          this.$emit("open:game");
       }else{
         let count = this.gameModes[this.getMode].minPlayer/2;//wir haben hier das problem das wir checken müssen ob beide teams gleich groß sind dafür nehmen wir min oder max player aber was wenn wir ein spielmodus haben wo wir die identitäten zeigen es aber 3 vs 4 sein soll??
         let teamBlue = 0;
