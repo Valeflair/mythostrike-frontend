@@ -1,6 +1,4 @@
 <script setup>
-import axios from 'axios';
-//import slotButton from './SlotButton.vue'
 import CommandField from "./CommandField.vue";
 </script>
 
@@ -10,7 +8,6 @@ import CommandField from "./CommandField.vue";
   <v-container class="SeatCommandContainer">
    <v-row class="d-flex justify-center">
     <div  v-for="(slot,i) in slots.filter((slot,i)=>i<slots.length/2)" :key="i">
-      <!-- <slot-button :seat="this.slots[slot.id]" :currentplayer="this.currentPlayer" @update:Seat="updateSeats"/> --->
       <v-col col="3">
         <button
           class="seatButton"
@@ -46,21 +43,18 @@ import CommandField from "./CommandField.vue";
 
   <v-row class="d-flex justify-center">
     <div v-for="(slot,i) in slots.filter((slot,i)=>i>=slots.length/2)" :key="i">
-      <!-- <slot-button :seat="this.slots[slot.id]" :currentplayer="this.currentPlayer" @update:Seat="updateSeats"/> --->
       <v-col col="3">
         <button
           class="seatButton"
           @click="changeSeat(slot.id)"
         >
           <p>Name: {{ searchPlayer(slot.playerId).name }}</p> 
-          <p> Player: {{ searchPlayer(slot.playerId).occupation }} </p>
+          <p>Player: {{ searchPlayer(slot.playerId).occupation }} </p>
         </button>
       </v-col>
     </div>
   </v-row>
 </v-container>
-
-
 </template>
 
 <script>
@@ -100,10 +94,6 @@ export default {
     start(){
       this.$emit("open:game");
     },
-    confirmMode(newMode) {
-      this.currentMode = newMode;
-      this.$emit("confirm:Mode", newMode);
-    },
     searchPlayer(playerID) {
       const players = this.getPlayers;
       for (let i = 0; i < players.length; i++) {
@@ -111,62 +101,10 @@ export default {
       }
       return this.defaultPlayer;
     },
-    checkPlayer(playerId) {
-      const players = this.getPlayers;
-      for (let i = 0; i < players.length; i++) {
-        if (players[i].id === playerId) return players[i];
-      }
-      return this.defaultPlayer;
-    },
-    updateSeats(newSeatId) {
-      for (let i = 0; i < this.slots.length; i++) {
-        if (this.slots[i].playerId === this.getCurrentPlayer) {
-          this.slots[i].playerId = -1;
-        }
-      }
-      this.slots[newSeatId].playerId = this.getCurrentPlayer;
-      const players = this.getPlayers;
-      for (let i = 0; i < players.length; i++) {
-        if (players[i].id === this.getCurrentPlayer) {
-          players[i].seat = newSeatId;
-        }
-      }      
-      this.$emit('update:players',players);
-
-      
-    },
-    async changeSeat(seatID) {
-      
-      
-      if (this.slots[seatID].playerId === -1) {
-        for (let i = 0; i < this.slots.length; i++) {
-          if (this.slots[i].playerId === this.getCurrentPlayer)
-            this.slots[i].playerId = -1;
-        }
-        this.slots[seatID].playerId = this.getCurrentPlayer;
-        this.$emit('update:slots');
-      }
+    changeSeat(seatID) {
+        this.$emit('update:slots');   
     },
     addBot(botId) {
-      const bot = {
-        id: botId,
-        name: "Bot" + botId,
-        seat: -1,
-        occupation: "Bot",
-      };
-
-      console.log(bot.seat);
-      let i = 0;
-      while (i < this.slots.length && bot.seat === -1) {
-        if (this.slots[i].playerId === -1) {
-          this.slots[i].playerId = bot.id;
-          bot.seat = this.slots[i].id;
-        }
-        i++;
-      }
-      const players = this.getPlayers;
-      players.push(bot);
-      this.$emit('update:players',players);
       this.$emit('update:bot');
 
     },
@@ -176,12 +114,6 @@ export default {
     },
     leave(){
         this.$emit('update:leave');
-    }
-  },
-  mounted() {
-    const players = this.getPlayers;
-    for (let i = 0; i < players.length; i++) {
-      this.slots[players[i].seat].playerId = players[i].id;
     }
   },
   computed:{

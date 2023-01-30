@@ -1,19 +1,16 @@
 <script setup>
 import slotView from "../components/lobbyComponents/SlotField.vue";
-import modes from "../data/modes.json";
 import ModeSelection from "../components/lobbyComponents/ModeSelection.vue"
-import playerDatas from "@/data/players.json";
 import axios from "axios";
 </script>
 
 <template>
   <div class="bg-image">
-    
      <mode-selection 
     v-if="isModeShown"
     @close:Mode="toggleModeSelection"
     @confirm:Mode="confirmMode"
-    :lobbyleader="checkPlayer(this.currentLeader)"
+    :lobbyleader="this.currentLeader"
     :currentplayer="currentPlayer"
     :currentModeProp="currentMode"
   />
@@ -28,13 +25,11 @@ import axios from "axios";
       :currentModeProp="this.currentMode"
       :playersProp="this.players"
       :currentPlayerProp="this.currentPlayer"
-      :lobbyLeaderProp="checkPlayer(this.currentLeader)"
+      :lobbyLeaderProp="this.currentLeader"
       :slotsProp="this.slots"
       :gameModesProp="this.gameModes"
-      @confirm:Mode="confirmMode"
       @update:Mode="toggleModeSelection"
       @update:leave="leave"
-      @update:players="updatePlayers"
       @open:game="start"
       @update:bot="addBot"
       @update:slots="changeSeat"
@@ -57,16 +52,12 @@ export default {
         { id: 6, playerId: -1 },
         { id: 7, playerId: -1 },
       ],
-      currentLeader:0,
-      currentPlayer: 0,
-      currentMode: 0,
-      gameModes: Array,
-      lobbyID: 5045,
+      currentLeader:'Number',
+      currentMode: 'Number',
+      gameModes: 'Array',
+      lobbyID: 'Lobbyid',
       isModeShown:false,
-      players: playerDatas,
-      gameModeName:'',
-      playerAxios: Array,
-     // lobbyLeader:Object,
+      players: 'Array',
       defaultPlayer: {
         id: -1,
         name: "Empty",
@@ -158,15 +149,6 @@ export default {
     },
     toggleModeSelection(){
       this.isModeShown=!this.isModeShown;
-    },
-    checkPlayer(playerId) {
-      for (let i = 0; i < this.players.length; i++) {
-        if (this.players[i].id === playerId) return this.players[i];
-      }
-      return this.defaultPlayer;
-    },
-    updatePlayers(newPlayers){
-      this.players = newPlayers;
     },
     async leave(){
       await axios

@@ -1,5 +1,5 @@
 <script setup>
-  import modes from '@/data/modes.json'
+
 </script>
 
 <template>
@@ -11,14 +11,14 @@
           {{ labelHost }}: {{ lobbyLeader.name }}
         </div>
         <div class="labelclass">
-          {{ labelPlayers }}: {{ playerData.length }}/{{ maxSlots }}
+          {{ labelPlayers }}: {{ playerData.length }}/{{ this.seats.length }}
         </div>
       </v-col>
       <v-col cols="3" class="buttonMove">
         <button class="seatButton" @click="selectMode">{{ labelModes }}</button>
         <button class="seatButton">{{ labelInvite }}</button>
+        <!-- :disabled="this.cPlayer !== this.lobbyLeader.id" überprüfung ob der spieler lobby leader ist -->
         <button
-          :disabled="this.cPlayer !== this.lobbyLeader.id"
           class="seatButton"
           @click="start"
         >
@@ -54,10 +54,8 @@ export default {
       labelOptions: "Options",
       labelAddBot: "Add Bot",
       labelLeave: "Leave",
-      cPlayer: this.currentPlayer,
       playerData: this.players,
       lobbyLeader: this.Lobbyleader,
-      maxSlots: 8,
       seats: this.slots,
       currentMode: this.modeProp,
       gameModes: this.gameModesProp,
@@ -74,54 +72,9 @@ export default {
     modeProp: Object,
     gameModesProp: Array,
   },
-  computed:{
-    getMode(){
-      return this.modeProp;
-    }
-
-  },
   methods: {
-    addBot() {
-      if (this.currentPlayer !== this.Lobbyleader.id) return;
-      if (this.playerData.length < this.maxSlots) {
-        this.$emit("update:Bot", this.playerData.length + 1);
-      }
-    },
     start() {
-      console.log("anzahl players: "+this.playerData.length);
-      console.log("current Mode : "+this.gameModes[this.getMode].name);
-      if(this.gameModes[this.getMode].showTeam===false){
-        console.log("start game");
-          this.$emit("open:game");
-      }else{
-        let count = this.gameModes[this.getMode].minPlayer/2;//wir haben hier das problem das wir checken müssen ob beide teams gleich groß sind dafür nehmen wir min oder max player aber was wenn wir ein spielmodus haben wo wir die identitäten zeigen es aber 3 vs 4 sein soll??
-        let teamBlue = 0;
-        let teamRed = 0;
-        for(let i=0;i<this.seats.length;i++){
-          if(i<this.seats.length/2){
-            if(this.seats[i].id !== -1){
-              teamBlue++;
-            }
-          }else{
-            if(this.seats[i].id !== -1){
-              teamRed++;
-            }
-          }
-        }
-        console.log("count: "+count);
-        console.log("teamRed: "+teamRed);
-        console.log("teamBlue: "+teamBlue);
-        if(teamRed !== teamBlue)
-          console.log("fehler nicht ausgeglichene Teams");
-        if(count !== teamRed)
-          console.log("fehler nicht ausgeglichene Teams");
-        else{  
-          console.log("erfolreich gestartet");
-          this.$emit("open:game");
-        }
-}
-
-
+      this.$emit('open:game');  
     },
     selectMode() {
       this.$emit("open:Mode");
