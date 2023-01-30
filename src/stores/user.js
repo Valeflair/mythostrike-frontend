@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 export const useUserStore = defineStore("user", {
   state: () => ({
     user: [],
+    status: false,
   }),
   getters: {
     getUserData() {
@@ -12,6 +13,10 @@ export const useUserStore = defineStore("user", {
   actions: {
     setUserData(user) {
       this.user = user;
-    }
+      this.status = true;
+    },
+    getStatus() {
+      return this.status;
+    },
   },
 });

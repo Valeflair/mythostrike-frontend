@@ -62,8 +62,8 @@
   margin: 15px;
   color: white;
   font-size: 20px;
-  border-radius:15px;
-  background: url("@/assets/elements/start_button.png");
+  border-radius: 15px;
+  background: url("@/assets/elements/button.png");
 }
 
 #text {
@@ -94,36 +94,46 @@ export default {
     password: "",
     alertStatus: false,
     alertMessage: "",
-    url: "",
   }),
   methods: {
     async login() {
       if (this.checkInput()) {
-        await authService.login(this.username,this.password)
+        await authService
+          .login({
+            username: this.username,
+            password: this.password,
+          })
           .then(
             (response) => {
-              let token = response.data;
+              console.log(response);
+              let token = response.data.jwtToken;
               localStorage.setItem("token", token);
               this.$router.push("/home");
             },
             (error) => {
               console.log(error);
-              this.showAlert(error.message);
+              this.showAlert(error.response.data);
             }
           );
       }
     },
     async register() {
       if (this.checkInput()) {
-        await authService.register(this.username,this.password)
+        await authService
+          .register({
+            username: this.username,
+            password: this.password,
+          })
           .then(
             (response) => {
-              let token = response.data;
+              console.log(response);
+              let token = response.data.jwtToken;
               localStorage.setItem("token", token);
               this.$router.push("/home");
             },
             (error) => {
-              this.showAlert(error.message);
+              console.log(error);
+              this.showAlert(error.response.data);
             }
           );
       }
