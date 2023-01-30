@@ -76,16 +76,16 @@ export default {
       this.$router.push({ path: "./LobbyOverview" });
     },
     /*
-      toQueue() {
-        this.$router.push({ path: "./Queue" });
-      },
-      toRankList() {
-        this.$router.push({ path: "./RankList" });
-      },
-  
-      toLibrary() {
-        this.$router.push({ path: "./Library" });
-      },*/
+        toQueue() {
+          this.$router.push({ path: "./Queue" });
+        },
+        toRankList() {
+          this.$router.push({ path: "./RankList" });
+        },
+    
+        toLibrary() {
+          this.$router.push({ path: "./Library" });
+        },*/
   },
 };
 </script>
