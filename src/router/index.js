@@ -6,28 +6,33 @@ const router = createRouter({
     {
       path: "/",
       name: "Start",
-      component: () => import("../views/Start.vue")
+      component: () => import("../views/Start.vue"),
     },
     {
       path: "/home",
       name: "Home",
-      component: () => import("../views/Home.vue")
+      component: () => import("../views/Home.vue"),
     },
     {
       path: "/lobby",
       name: "Lobby",
-      component: () => import("../views/Lobby.vue")
+      component: () => import("../views/Lobby.vue"),
     },
     {
       path: "/lobbyoverview",
       name: "LobbyOverview",
-      component: () => import("../views/LobbyOverview.vue")
+      component: () => import("../views/LobbyOverview.vue"),
     },
     {
       path: "/game",
       name: "Game",
-      component: () => import("../views/game.vue")
-    }
+      component: () => import("../views/game.vue"),
+    },
+    {
+      path: "/Library",
+      name: "Library",
+      component: () => import("../views/Library.vue"),
+    },
   ],
 });
 
