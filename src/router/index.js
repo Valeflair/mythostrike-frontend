@@ -4,7 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: "/start",
       name: "Start",
       component: () => import("../views/Start.vue"),
     },
@@ -24,9 +24,14 @@ const router = createRouter({
       component: () => import("../views/LobbyOverview.vue"),
     },
     {
-      path: "/game",
+      path: "/",
       name: "Game",
-      component: () => import("../views/game.vue"),
+      component: () => import("../views/Game.vue"),
+    },
+    {
+      path: "/championselect",
+      name: "ChampionSelect",
+      component: () => import("../views/ChampionSelectionView.vue"),
     },
     {
       path: "/Library",
