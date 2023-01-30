@@ -1,5 +1,8 @@
 <template>
-    <div class="skill-area">
+    <div class="description">
+        <span>{{ description }}</span>
+    </div>
+    <!-- <div class="skill-area">
         <div class="aktive">
             <div class="a-name">{{ aktiveName }} <br> <span>&lt;aktive&gt;</span></div>
             <div class="a-des"></div>
@@ -8,7 +11,7 @@
             <div class="p-name">{{ passiveName }} <br> <span>&lt;passive&gt;</span></div>
             <div class="p-des"></div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <style>
@@ -16,26 +19,19 @@
     margin: 0;
   padding: 0;
 }
-.skill-area {
-    width:auto;
-    height: auto;
+.description {
     background-image: url(../assets/card/text-background.png);
+    background-repeat: round ;
+    max-height: 300px;
+    max-width: 300px;
+    color: aliceblue;
 }
-.a-name  {
-    width:50px;
-    height: 25px;
-    background-image: url(../assets/card/skill-background.png);
-}
-/* .a-des .p-des {
-    
-} */
 </style>
 
 <script>
 export default {
     data :() => ({
-        aktiveName : "aktive skill",
-        passiveName : "passive skill"
+        description:"Here is something about this card that must be clar."
     })
 }
 </script>

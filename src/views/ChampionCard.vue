@@ -2,9 +2,9 @@
 </script>
 <template>
   <div class="card">
-    <img class="frame" src="../assets/card/silver_card_frame02_p.png" alt="" />
+    <img class="frame" src="../assets/card/gold_card_frame02_r.png" alt="" />
 
-    <img class="avatar" src="../assets/card/shield.png" alt="" />
+    <img class="avatar" src="../assets/card/Aphrodite01.png" alt="" />
 
     <div class="name">
       <span>{{ name }}</span>
@@ -12,17 +12,11 @@
 
     <!-- <img class="suit" src="../assets/card/club.png" alt="" /> -->
 
-    <div class="symbol">
-      <img src="../assets/card/club.png" alt="" />
-
-      <span>{{ number }}</span>
-    </div>
-
     <img class="stone" src="../assets/card/stone-p.png" alt="" />
 
-    <div class="card-type">
+    <!-- <div class="card-type">
       <span>{{ cardType }}</span>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -61,23 +55,12 @@
   z-index: 0;
   bottom: 1%;
 }
-/* .suit {
+.suit {
   width: 10%;
   position: absolute;
   z-index: 1;
   top: 15%;
   left: 10%;
-} */
-.symbol {
-  width: 100%;
-  position: absolute;
-  z-index: 4;
-  font-size: 50%;
-  font-style: italic;
-  color: aliceblue;
-  top: 13%;
-  left: 8%;
-  margin: 0 auto;
 }
 
 /* .skill-area {
@@ -96,7 +79,7 @@
   font-family: Greek;
   font-size: 40%;
   font-style: italic;
-  -webkit-text-stroke: 2px rgba(64, 83, 168, 0.479);
+  -webkit-text-stroke: 2px rgba(251, 255, 2, 0.479);
   color: aliceblue;
   top: 3%;
   text-align: center;
@@ -134,9 +117,8 @@
 <script>
 export default {
   data: () => ({
-    name: "shield",
-    cardType: "equipment",
-    number: "3",
+    name: "Aphrodite",
+    cardType: "Basic Card",
   }),
 };
 </script>
