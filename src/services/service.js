@@ -6,10 +6,12 @@ const BASE_URL = "http://localhost:8080";
 const LOGIN_URL = BASE_URL + "/users/login";
 const REGISTER_URL = BASE_URL + "/users/register";
 const AUTH_URL = BASE_URL + "/users/data";
+const RES_LOBBY_URL = BASE_URL + "/lobbies";
 
 export default {
   LOGIN_URL,
   REGISTER_URL,
   AUTH_HEADER,
   AUTH_URL,
+  RES_LOBBY_URL,
 };

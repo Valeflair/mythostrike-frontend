@@ -40,9 +40,9 @@
             <tr v-for="lobby in lobbies" :key="lobby.iD">
               <td>{{ lobby.status }}</td>
               <td>{{ lobby.id }}</td>
-              <td>{{ lobby.lobbyLeader }}</td>
+              <td>{{ lobby.owner }}</td>
               <td>{{ lobby.mode }}</td>
-              <td>{{ lobby.players }}</td>
+              <td>{{ lobby.numberOfPlayers }}</td>
               <td><v-btn variant="outlined">Join</v-btn></td>
             </tr>
           </tbody>
@@ -89,15 +89,16 @@ tr:hover {
 </style>
 
 <script>
-import axios from "axios";
+import resourceService from "@/services/resourceService";
 export default {
   data: () => ({
     lobbies: [],
   }),
   methods: {
     async getLobbies() {
-      await axios.get("http://localhost:8080/lobbies").then(
+      await resourceService.getLobbies().then(
         (response) => {
+          console.log(response);
           this.lobbies = response.data;
         },
         (error) => {
