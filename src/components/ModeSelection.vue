@@ -1,7 +1,3 @@
-<script setup>
-import axios from'axios';
-</script>
-
 <template>
   <div class="overlay">
     <div class="model bg-image">
@@ -17,7 +13,7 @@ import axios from'axios';
       <button class="imageLeft" @click="updatePointer(-1)"></button> 
       <button
         class="confirmButton"
-        :disabled="!this.status"
+        :disabled="!this.isLobbyOwner"
         @click="confirm()"
       >
         CONFIRM
@@ -34,10 +30,7 @@ import axios from'axios';
 export default {
   data() {
     return {
-      modes: this.modes,
-      pointer: this.currentModeId,
-      currentMode: this.currentModeProp,
-      status: this.isLobbyOwner
+      pointer: this.currentModeId
     };
   },
 

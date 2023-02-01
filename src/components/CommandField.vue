@@ -7,19 +7,19 @@
       <v-col cols="3" class="labelMove">
         <div class="labelclass">Lobby ID: {{ this.lobbyId }}</div>
         <div class="labelclass">
-          Lobby Owner: {{ this.lobbyleader }}
+          Owner: {{ this.lobbyleader }}
         </div>
         <div class="labelclass">
           Players: 8/8
         </div>
       </v-col>
       <v-col cols="3" class="buttonMove">
-        <button class="seatButton" @click="selectMode">Select Mode</button>
+        <button class="seatButton" @click="selectMode" :disabled="!this.isLobbyOwner">Select Mode</button>
         <button class="seatButton">Invite</button>
         <button
-          :disabled="this.cPlayer !== this.lobbyleader"
           class="seatButton"
           @click="start"
+          :disabled="!this.isLobbyOwner"
         >
           Start Game
         </button>
@@ -27,7 +27,7 @@
       <v-col cols="3" class="buttonMove">
         <button class="seatButton">Options</button>
         <div class="dropdown">
-          <button class="seatButton" @click="addBot">Add Bot</button>
+          <button class="seatButton" @click="addBot" :disabled="!this.isLobbyOwner">Add Bot</button>
         </div>
         <button class="seatButton" @click="leave">Leave</button>
       </v-col>
@@ -43,7 +43,6 @@ export default {
       lobbyleader: this.lobbyleader,
       maxSlots: 8,
       seats: this.slots,
-      currentMode: this.modeProp,
       gameModes: this.gameModesProp,
     };
   },
@@ -52,24 +51,19 @@ export default {
     lobbyleader: String,
     currentPlayer: Number,
     slots: Array,
-    modeProp: Object,
+    modeProp: Number,
     gameModesProp: Array,
-  },
-  computed:{
-    getMode(){
-      return this.modeProp;
-    }
-
+    isLobbyOwner: Boolean
   },
   methods: {
     addBot() {
-      this.$emit("update:Bot");
+      this.$emit("update:bot");
     },
     start() {
-      this.$emit("update:Bot");
+      this.$emit("open:game");
     },
     selectMode() {
-      this.$emit("open:Mode");
+      this.$emit("open:mode");
     },
     leave(){
       this.$emit("update:leave");
@@ -109,7 +103,6 @@ export default {
   font-size: 20px;
   transition-duration: 0.4s;
   background-image: url("@/assets/elements/button.png");
-  
 }
 
 .seatButton:hover {
@@ -148,6 +141,4 @@ export default {
   display: block;
 }
 
-.dropdown:hover .seatButton {
-}
 </style>

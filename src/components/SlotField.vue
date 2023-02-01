@@ -27,11 +27,11 @@ import CommandField from "@/components/CommandField.vue";
     :lobbyId="this.lobbyID"
     :lobbyleader="this.lobbyLeader"
     :slots="this.slots"
-    :modeProp="getCurrentMode"
     :gameModesProp="this.gameModes"
-    @update:Bot="addBot"
-    @open:Mode="toggleModeSelection"
+    :isLobbyOwner="this.isLobbyOwner"
+    @open:mode="toggleModeSelection"
     @update:leave="leave"
+    @update:bot="addBot"
     @open:game="start"
     />
         </div>
@@ -76,14 +76,14 @@ export default {
     lobbyLeader:String,
     slotsProp:Array,
     gameModesProp:Array,
+    isLobbyOwner: Boolean
   },
   methods: {
+    addBot() {
+      this.$emit("update:bot");
+    },
     start(){
       this.$emit("open:game");
-    },
-    confirmMode(newMode) {
-      this.currentMode = newMode;
-      this.$emit("confirm:Mode", newMode);
     },
     toggleModeSelection() {
       this.isModeShown = !this.isModeShown;

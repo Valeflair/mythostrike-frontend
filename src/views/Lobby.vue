@@ -5,7 +5,7 @@
     v-if="isModeShown"
     @close:Mode="toggleModeSelection"
     @confirm:Mode="confirmMode"
-    :isLobbyOwner= true 
+    :isLobbyOwner= "this.isLobbyOwner"
     :modes="this.gameModes"
     :currentModeId="this.currentModeId"
   />
@@ -13,21 +13,20 @@
 
 
 <div class="slotStyle">
-  <header><h1>{{gameModeName}}</h1></header>
+  <header><h1>{{this.currentModeName}}</h1></header>
 
     <slotView
       :lobbyId="this.lobbyID"
       :currentModeProp="this.currentModeId"
       :lobbyLeader="this.currentLeader"
+      :isLobbyOwner= "this.isLobbyOwner"
       :slotsProp="this.slots"
       :gameModesProp="this.gameModes"
       @confirm:Mode="confirmMode"
       @update:Mode="toggleModeSelection"
       @update:leave="leave"
-      @update:players="updatePlayers"
       @open:game="start"
       @update:bot="addBot"
-      @update:slots="changeSeat"
     />
     </div>
   </div>
@@ -51,17 +50,12 @@ export default {
         { id: 7, username: "R8" },
       ],
       gameModes:[],
-      currentLeader: "x",
+      currentModeName:"",
+      currentLeader: "Holder",
       currentModeId: 0,
       lobbyID: 5045,
-      isModeShown:false,
-      gameModeName:'',
-      defaultPlayer: {
-        id: -1,
-        name: "Empty",
-        occupation: "Bot",
-        seat: -1,
-      },
+      isModeShown: false,
+      isLobbyOwner: false
     };
   },
   components: {
@@ -69,25 +63,20 @@ export default {
     ModeSelection,
   },
   methods: {
-    async changeSeat(newSlots){
+    addBot() {
+      console.log("add Bot");
     },
-
-    async addBot() {
-
-    },
-    
-    async start(){
+    start(){
+      console.log("start");
     },
     confirmMode(newMode) {
+      this.currentModeId = newMode;
       console.log("newMode" + newMode);
     },
     toggleModeSelection(){
       this.isModeShown=!this.isModeShown;
     },
-    updatePlayers(newPlayers){
-      this.players = newPlayers;
-    },
-    async leave(){
+    leave(){
         console.log("leave");
     },
     async initModes(){
@@ -99,18 +88,23 @@ export default {
             this.gameModes = response.data;
             console.log(response.data); 
             this.$nextTick(() => {
-                    // Your DOM update code here
-                });
+              this.currentModeName = this.gameModes[this.currentModeId].name;
+            });
           },
           (error) => {
             console.log("fehler, mode data initialisieren");
             console.log(error);
           }
-          )
+      )
     }
   },
   created(){
     this.initModes();
+  },
+  watch: {
+    currentModeId(){
+      this.currentModeName= this.gameModes[this.currentModeId].name;
+    }
   }
 };
 </script>
