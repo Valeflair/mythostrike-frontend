@@ -2,16 +2,6 @@
     <div class="description">
         <span>{{ description }}</span>
     </div>
-    <!-- <div class="skill-area">
-        <div class="aktive">
-            <div class="a-name">{{ aktiveName }} <br> <span>&lt;aktive&gt;</span></div>
-            <div class="a-des"></div>
-        </div>
-        <div class="passive">
-            <div class="p-name">{{ passiveName }} <br> <span>&lt;passive&gt;</span></div>
-            <div class="p-des"></div>
-        </div>
-    </div> -->
 </template>
 
 <style>
@@ -20,7 +10,7 @@
   padding: 0;
 }
 .description {
-    background-image: url(../assets/card/text-background.png);
+    background-image: url(../assets/card/text/text-background.png);
     background-repeat: round ;
     max-height: 300px;
     max-width: 300px;

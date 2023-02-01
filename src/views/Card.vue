@@ -2,23 +2,20 @@
 </script>
 <template>
   <div class="card">
-    <img class="frame" src="../assets/card/silver_card_frame02_p.png" alt="" />
+    <img class="frame" src="../assets/card/frame/silver_card_frame_p.png" alt="" />
 
-    <img class="avatar" src="../assets/card/shield.png" alt="" />
+    <img class="avatar" src="../assets/card/pictures/shield.png" alt="" />
 
     <div class="name">
       <span>{{ name }}</span>
     </div>
 
-    <!-- <img class="suit" src="../assets/card/club.png" alt="" /> -->
-
     <div class="symbol">
-      <img src="../assets/card/club.png" alt="" />
-
+      <img src="../assets/card/smallParts/club.png" alt="" />
       <span>{{ number }}</span>
     </div>
 
-    <img class="stone" src="../assets/card/stone-p.png" alt="" />
+    <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
 
     <div class="card-type">
       <span>{{ cardType }}</span>
@@ -61,13 +58,6 @@
   z-index: 0;
   bottom: 1%;
 }
-/* .suit {
-  width: 10%;
-  position: absolute;
-  z-index: 1;
-  top: 15%;
-  left: 10%;
-} */
 .symbol {
   width: 100%;
   position: absolute;
@@ -79,16 +69,6 @@
   left: 8%;
   margin: 0 auto;
 }
-
-/* .skill-area {
-  position: absolute;
-  z-index: 1;
-  bottom: 3%;
-}
-.suit {
-  position: absolute;
-  z-index: 1;
-} */
 .name {
   width: 100%;
   position: absolute;
@@ -105,7 +85,6 @@
   width: 100%;
   position: absolute;
   z-index: 4;
-  /* font-family: Rhianne; */
   font-size: 30%;
   font-style: italic;
   -webkit-text-stroke: 2px rgb(236, 23, 23);
@@ -121,14 +100,6 @@
   bottom: 0%;
   left: 46.5%;
 }
-/* .a-skill {
-  position: absolute;
-  z-index: 2;
-}
-.p-skill {
-  position: absolute;
-  z-index: 2;
-} */
 </style>
 
 <script>
