@@ -1,3 +1,1 @@
-<template>
-    Game
-</template>
+<template>game</template>
