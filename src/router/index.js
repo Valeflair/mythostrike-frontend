@@ -29,11 +29,6 @@ const router = createRouter({
       component: () => import("../views/Game.vue"),
     },
     {
-      path: "/championselect",
-      name: "ChampionSelect",
-      component: () => import("../views/ChampionSelectionView.vue"),
-    },
-    {
       path: "/Library",
       name: "Library",
       component: () => import("../views/Library.vue"),

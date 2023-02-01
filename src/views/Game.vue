@@ -8,11 +8,17 @@
         <header class="table-wrapper ">
             <table>
                 <tr>
-                    <td v-for="player in players.filter(player=>player.id !== this.currentPlayer)" :key="player.id">
-                       <button class="enemyChampions" 
-                        :class="{'usableClass':containsId(player.name,this.messageActivitysUsable.players), notUsableClass:!containsId(player.name,this.messageActivitysUsable.players)}">
-                       {{ player.name }} 
-                       </button>
+                    <td v-for="player in playerDaten.filter(player => player.username !== this.username)" :key="player.username">
+                       <div class="playerChampions" 
+                        @click="pickPlayer(player.username,this.messageActivitysUsable.players)"
+                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players), notUsableClass:!containsId(player.username,this.messageActivitysUsable.players)}">
+                        <div> <h2> {{ player.username }}</h2> </div> 
+                        <div>CurrentHP: {{player.currentHP}} </div>
+                        <p>Champion: {{player.champion.name}}</p>
+                        <div>CardCount: {{player.cardCount}} </div>
+                        <div>Identity: {{player.identity}} </div>
+                        <div class="cardOverlay" v-if="containsId(player.username,this.playerPicked)"></div>
+                       </div>
                     </td>
                 </tr>
             </table>
@@ -47,9 +53,8 @@
                         </div>
                     </td>
                 </tr>
-                
                 </table>
-        
+                <Card :name='Till' :health="3" :identity="BLAU" />
         </div>
         </div>
 
@@ -97,18 +102,20 @@
                 @mouseenter="hoverStart(card)"
                 @mouseleave="hoverEnd(card)">
                 <div class="card" 
-                :class="{'usableClass':containsId(card.id,this.messageActivitysUsable.cardsId), notUsableClass:!containsId(card.id,this.messageActivitysUsable.cardsId)}"
+                :class="{'usableClass':containsId(card.id,this.messageActivitysUsable.cardsId),
+                        'notUsableClass':!containsId(card.id,this.messageActivitysUsable.cardsId)}"
                     @click="useCard(card.id,this.messageActivitysUsable.cardsId)"
+                    
                     >
                     <p>{{ card.id }}</p>
                     <p>{{ card.name }}</p>
                     <div class="description"  v-if="card.showDescription">
                         {{ card.description }}
                     </div>
+                    <div class="cardOverlay" v-if="containsId(card.id,this.cardsBeingUsed)"></div>
                 </div>
             </div>
         </div>  
-
 
     <div class="cardUsed" v-if="cardUsed">
         <div class="discardPile">
@@ -117,14 +124,24 @@
             <p>{{ this.currentCard.description }}</p>
         </div>
         <div class="cardConditionRead" >    
-            <button class="confirmB">Confirm</button>
-            <button class="cancelB" @click="this.cardUsed=false">Cancel</button>
+            <div class="confirmB"  :class="{'usableClass':checkConfirmStatus(),'notUsableClass':!checkConfirmStatus()}">
+                <p>Confirm</p>
+            </div>
+            <button class="cancelB" @click="cancel">Cancel</button>
         </div>
     </div>
+
+    <div class="information">
+        <p>MinCard: {{this.messageActivitysUsable.minCard}}</p>
+        <p>MaxCard: {{this.messageActivitysUsable.maxCard}}</p>
+        <p>minPlayer: {{this.messageActivitysUsable.minPlayer}}</p>
+        <p>maxPlayer: {{this.messageActivitysUsable.maxPlayer}}</p>
+        <p>reason: {{this.messageActivitysUsable.reason}} </p>
+    </div>
+
+
 </div>
 </template>
-
-
 
 <script>
 export default {
@@ -133,10 +150,12 @@ export default {
             currentCard:Object,
             cardUsed:false,
             backgroundImage:'@/assets/backgrounds/game_background.png',
-            players: playerData,
             currentPlayer: 0,
             timerDelay:1000,
             usable:true,
+            cardsBeingUsed:[],
+            playerPicked:[],
+            username:'Minh',
             champion:{
                 name:'Nyx',
                 description:'Description of Nyx',
@@ -173,20 +192,78 @@ export default {
                 cardsId:[0,2,3],
                 players:[],
                 skillsID:[0,1],
-                minCard:0,
-                maxCard:0,
+                minCard:2,
+                maxCard:2,
                 minPlayer:0,
                 maxPlayer:0,
                 reason: 'Alles was der Spieler einsetzen kann: hier nur die Karten und skills mit den Ids',
             },
+            playerDaten:[
+                {
+                    username: 'Minh',
+                    cardCount: 4,
+                    isAlive: true,
+                    champion:{
+                        name: 'VirusByus',
+                    } ,
+                    maxHP: 5,
+                    currentHP: 5,
+                    identity: 'TEAM_INDEPENDENT',
+                },
+                {
+                    username: 'Till',
+                    cardCount: 2,
+                    isAlive: true,
+                    champion:{
+                        name: 'Ares',
+                    } ,
+                    maxHP: 4,
+                    currentHP: 2,
+                    identity: 'TEAM_BLUE',
+                },
+                {
+                    username: 'Jack',
+                    cardCount: 2,
+                    isAlive: true,
+                    champion:{
+                        name: 'Poseidon',
+                    } ,
+                    maxHP: 3,
+                    currentHP: 2,
+                    identity: 'TEAM_BLUE',
+                },
+                {
+                    username: 'Hong',
+                    cardCount: 3,
+                    isAlive: true,
+                    champion:{
+                        name: 'Athena',
+                    } ,
+                    maxHP: 4,
+                    currentHP: 4,
+                    identity: 'TEAM_RED',
+                },
+                {
+                    username: 'Laito',
+                    cardCount: 3,
+                    isAlive: true,
+                    champion:{
+                        name: 'Urania',
+                    } ,
+                    maxHP: 5,
+                    currentHP: 3,
+                    identity: 'TEAM_RED',
+                },
+            ],
+
             messageAttackCard:{ //alle messages sollen immer ein szenario darstellen um es aber hier wirklich zu nutzen überschreibe messageActivityUsable hierein
                 cardsId:[],
                 players:['Jack','Till'],
                 skillsID:[],
                 minCard:0,
                 maxCard:0,
-                minPlayer:0,
-                maxPlayer:0,
+                minPlayer:1,
+                maxPlayer:1,
                 reason: 'Der Spieler hat eine Angriffskarte ausgespielt und kann nun Jack oder Till angreifen ',
             },
             messageDefendCard:{ //alle messages sollen immer ein szenario darstellen um es aber hier wirklich zu nutzen überschreibe messageActivityUsable hierein
@@ -199,6 +276,10 @@ export default {
                 maxPlayer:0,
                 reason: 'Der Spieler spielt eine Verteidigungskarte aus ',
             },
+            cardMoveMessage1:{
+                
+            },
+
             passiveEffects:[
               {
                 id:0,
@@ -245,14 +326,14 @@ export default {
           name:'Attack',
           showDescription:false,
           description:'Description of Attack',
-          usable: true,
+          used: false,
         },
         {
           id:1,
           name:'Defense',
           showDescription:false,
           description:'Description of Defense',
-          usable: false,
+          used: false,
           
         },
         {
@@ -260,18 +341,22 @@ export default {
           name:'Attack',
           showDescription:false,
           description:'Description of Attack',
-          usable: true,
+          used: false,
         },
         {
           id:3,
           name:'Golden Apple',
           showDescription:false,
           description:'Description of Golden Apple',
-          usable: true,
+          used: false,
         }
       ]
         }
     },
+    computed:{
+
+    },
+    
     methods: {
         hoverStart(item) {
             this.hoverTimer = setTimeout(() => {
@@ -306,22 +391,88 @@ export default {
             }
             return false;
         },
+        cancel(){
+            this.cardUsed=false;
+
+            this.cardsBeingUsed.splice(0, this.cardsBeingUsed.length);
+            this.playerPicked.splice(0,this.playerPicked.length);
+
+        },
         useCard(id, searchArray){
-            for(let i=0;i<searchArray.length;i++){
-                if(searchArray[i] === id){
-                    this.cardUsed=true;
-                    this.currentCard = this.cards[i];
+            let count=this.cardsBeingUsed.length;
+
+            if(this.containsId(id,searchArray) && count <this.messageActivitysUsable.maxCard && !this.containsId(id,this.cardsBeingUsed)){
+                for(let i=0;i<this.cards.length;i++){
+                    if(this.cards[i].id === id){
+                        this.cardUsed=true;
+                        this.cards[i].used =true;
+                        this.currentCard = this.cards[i];    
+                        this.cardsBeingUsed.push(this.cards[i].id);
+                        break;
+                    }
                 }
             }
+
+        },
+        pickPlayer(name,searchArray){
             
+            let count=this.playerPicked.length;
+
+            if(this.containsId(name,searchArray) && count < this.messageActivitysUsable.maxPlayer && !this.containsId(id,this.playerPicked)){
+                for(let i=0;i<searchArray.length;i++){
+                    if(name === searchArray[i]){
+                        this.playerPicked.push(name);
+                        break;
+                    }
+                }
+            }
+        },
+        checkConfirmStatus(){
+            console.log("cardsused: "+this.cardsBeingUsed.length);
+            console.log("minCard: "+this.messageActivitysUsable.minCard);
+            if(this.playerPicked.length<this.messageActivitysUsable.minPlayer || 
+                this.cardsBeingUsed.length<this.messageActivitysUsable.minCard)
+                return false;
+            return true;
+        }
         }
 }
 
-}
+
 </script>
 
 <style scoped>
 
+
+
+.playerChampions{
+    width: 10vw;
+    height: 13vw;
+    margin-left: 1vh;
+    margin-right: 1vh;
+    background-image: url("@/assets/champions/nyx.png");
+    background-size:cover;
+}
+
+
+.cardOverlay{
+    width: 4vw;
+    height: 4vw;
+    background-color: red;
+}
+
+.information{
+    background-color: rgb(54, 164, 215);
+    height: 22vh;
+    width: 10vw;
+    position: absolute;
+    right:5px;
+    bottom:18vw;
+}
+
+.information p{
+    border: solid yellow 1px;
+}
 
 .playerChampion{
     position: absolute;
@@ -491,8 +642,6 @@ transform: translateX(2rem);
     z-index: 3;
 }
 
-
-
 .equipmentSlot:hover + .overlayDescription{
       display:block;
 }
@@ -506,25 +655,12 @@ transform: translateX(2rem);
     background-color: white;
 }
 
-
-
 .table-wrapper {
     display: flex;
     justify-content: center;
 }
 
-.enemyChampions{
-    width: 10vw;
-    height: 13vw;
-    margin-left: 1vh;
-    margin-right: 1vh;
-    background-image: url("@/assets/champions/nyx.png");
-    background-size:cover;
-}
 
-header{
-    background-color: red;
-}
 
 .bg-image {
   background: url("@/assets/backgrounds/game_background.png");

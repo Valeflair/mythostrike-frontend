@@ -15,5 +15,5 @@ export default {
   AUTH_HEADER,
   AUTH_URL,
   LOBBY_URL,
-  JOIN_LOBBY_URL
+  JOIN_LOBBY_URL,
 };
