@@ -128,6 +128,7 @@ export default {
       console.log(id);
       await lobbyService.joinLobby(id).then(
         (response) => {
+          this.$router.push({ path: "./Lobby" });
           console.log(response);
         },
         (error) => {

@@ -112,7 +112,7 @@ export default {
             },
             (error) => {
               console.log(error);
-              this.showAlert(error.response.data);
+              this.showAlert(error.response.data.message);
             }
           );
       }
