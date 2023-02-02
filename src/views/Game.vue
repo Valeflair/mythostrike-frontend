@@ -1,6 +1,7 @@
 <script setup>
     import playerData from '../data/players.json'
     import axios from 'axios';
+import ChampionCard from '../views/ChampionCard.vue';
 </script>
 
 <template>
@@ -12,11 +13,11 @@
                        <div class="playerChampions" 
                         @click="pickPlayer(player.username,this.messageActivitysUsable.players)"
                         :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players), notUsableClass:!containsId(player.username,this.messageActivitysUsable.players)}">
-                        <div> <h2> {{ player.username }}</h2> </div> 
-                        <div>CurrentHP: {{player.currentHP}} </div>
-                        <p>Champion: {{player.champion.name}}</p>
-                        <div>CardCount: {{player.cardCount}} </div>
-                        <div>Identity: {{player.identity}} </div>
+                        <p>{{player.username}} </p>
+                        <p>CardCount : {{player.cardCount}} </p>
+                        <p>Champion : {{player.champion.name}} </p>
+                        <p>HP : {{player.currentHP}} </p>
+                        <p>Identity : {{player.identity}} </p>
                         <div class="cardOverlay" v-if="containsId(player.username,this.playerPicked)"></div>
                        </div>
                     </td>
@@ -101,7 +102,7 @@
                 :style="{'margin-left': calculateMarginLeft(cards.length,i) }"
                 @mouseenter="hoverStart(card)"
                 @mouseleave="hoverEnd(card)">
-                <div class="card" 
+                <div class="handCard" 
                 :class="{'usableClass':containsId(card.id,this.messageActivitysUsable.cardsId),
                         'notUsableClass':!containsId(card.id,this.messageActivitysUsable.cardsId)}"
                     @click="useCard(card.id,this.messageActivitysUsable.cardsId)"
@@ -122,14 +123,15 @@
             <p>{{ this.currentCard.id }}</p>
             <p>{{ this.currentCard.name }}</p>
             <p>{{ this.currentCard.description }}</p>
-        </div>
-        <div class="cardConditionRead" >    
+        </div>  
             <div class="confirmB"  :class="{'usableClass':checkConfirmStatus(),'notUsableClass':!checkConfirmStatus()}">
                 <p>Confirm</p>
             </div>
             <button class="cancelB" @click="cancel">Cancel</button>
-        </div>
     </div>
+
+    <div class="drawPile"> DRAWPILE</div>
+
 
     <div class="information">
         <p>MinCard: {{this.messageActivitysUsable.minCard}}</p>
@@ -138,13 +140,17 @@
         <p>maxPlayer: {{this.messageActivitysUsable.maxPlayer}}</p>
         <p>reason: {{this.messageActivitysUsable.reason}} </p>
     </div>
-
+    
+    
+    <!-- Ab hier ist ein biscchen komisch. wir machen hier  cardmovemessage. Normalerweise aber in update aber hier ka deshalb erstmal ein div wo es simuliert wird-->
+    <div class="clickCardMoveMessage" @click="updateCardMoveMessage"> Click me</div>
 
 </div>
 </template>
 
 <script>
 export default {
+  components: { ChampionCard },
     data(){
         return{
             currentCard:Object,
@@ -276,8 +282,11 @@ export default {
                 maxPlayer:0,
                 reason: 'Der Spieler spielt eine Verteidigungskarte aus ',
             },
-            cardMoveMessage1:{
-                
+            cardMoveMessage:{
+                source:'Minh',
+                destination:'Till',
+                count:1,
+                cardsId:[0],
             },
 
             passiveEffects:[
@@ -353,10 +362,6 @@ export default {
       ]
         }
     },
-    computed:{
-
-    },
-    
     methods: {
         hoverStart(item) {
             this.hoverTimer = setTimeout(() => {
@@ -434,8 +439,36 @@ export default {
                 this.cardsBeingUsed.length<this.messageActivitysUsable.minCard)
                 return false;
             return true;
+        },
+        updateCardMoveMessage(){ 
+            
+            for(let i=0;i<this.playerDaten.length;i++){
+                if(this.playerDaten[i].username === this.cardMoveMessage.source){
+                    this.playerDaten[i].cardCount-=this.cardMoveMessage.count;
+                    if(this.cardMoveMessage.source === this.username){
+                        for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
+                            this.cards = this.cards.filter(card => card.id !== this.cardMoveMessage.cardsId[j]);
+                        }
+                    }
+                }
+            }
+
+            var humanDestination=false;
+            for(let i=0;i<this.playerDaten.length;i++){
+                if(this.cardMoveMessage.destination === this.playerDaten[i].username){
+                    humanDestination=true;
+                    this.playerDaten[i].cardCount+=this.cardMoveMessage.count;
+                    if(this.cardMoveMessage.destination === this.username){
+                        for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
+                            this.cards.push(this.cardMoveMessage.cardsId[j]);
+                        }
+                    }
+                }
+            }
         }
-        }
+    
+    
+    }
 }
 
 
@@ -443,6 +476,25 @@ export default {
 
 <style scoped>
 
+.clickCardMoveMessage{
+    position: absolute;
+    left: 22vw;
+    bottom:18vw;
+    width: 5vw;
+    height: 5vh;
+    background-color: red;
+    cursor: pointer;
+}
+
+.drawPile{
+    position: absolute;
+    left:1vw;
+    bottom:18vw;
+    border-radius: 1rem;
+    width: 13vw;
+    height: 33vh;
+    background-color: green;
+}
 
 
 .playerChampions{
@@ -450,8 +502,12 @@ export default {
     height: 13vw;
     margin-left: 1vh;
     margin-right: 1vh;
-    background-image: url("@/assets/champions/nyx.png");
     background-size:cover;
+}
+
+.card{
+    width: 10vw;
+    height: 13vw;
 }
 
 
@@ -561,7 +617,7 @@ export default {
     border: solid black 5px;
 }
 
-.card {
+.handCard {
   width: 13vw;
   height: 33vh;
   background: white;
