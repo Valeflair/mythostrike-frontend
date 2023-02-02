@@ -1,7 +1,7 @@
 <template>
   <div class="bg-image">
     
-     <mode-selection 
+     <Mode-selection 
     v-if="isModeShown"
     @close:Mode="toggleModeSelection"
     @confirm:Mode="confirmMode"
@@ -13,15 +13,13 @@
 
 
 <div class="slotStyle">
-  <header><h1>{{this.currentModeName}}</h1></header>
 
-    <slotView
+    <SlotView
       :lobbyId="this.lobbyID"
-      :currentModeProp="this.currentModeId"
       :lobbyLeader="this.currentLeader"
       :isLobbyOwner= "this.isLobbyOwner"
       :slotsProp="this.slots"
-      :gameModesProp="this.gameModes"
+      :gameModeName="this.currentModeName"
       @confirm:Mode="confirmMode"
       @update:Mode="toggleModeSelection"
       @update:leave="leave"
@@ -33,7 +31,7 @@
 </template>
 
 <script>
-import slotView from "../components/SlotField.vue";
+import SlotView from "../components/SlotField.vue";
 import ModeSelection from "../components/ModeSelection.vue"
 import axios from "axios";
 export default {
@@ -55,11 +53,11 @@ export default {
       currentModeId: 0,
       lobbyID: 5045,
       isModeShown: false,
-      isLobbyOwner: false
+      isLobbyOwner: true
     };
   },
   components: {
-    slotView,
+    SlotView,
     ModeSelection,
   },
   methods: {

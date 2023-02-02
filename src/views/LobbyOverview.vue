@@ -37,7 +37,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="lobby in lobbies" :key="lobby.iD">
+            <tr v-for="lobby in lobbies" :key="lobby.id">
               <td>{{ lobby.status }}</td>
               <td>{{ lobby.id }}</td>
               <td>{{ lobby.owner }}</td>

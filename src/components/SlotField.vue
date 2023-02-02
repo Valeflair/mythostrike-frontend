@@ -20,14 +20,21 @@ import CommandField from "@/components/CommandField.vue";
   </v-row>
 
 
-  <v-row >
-    <v-col  cols="12">
+  <v-row class="ma-8">
+    <v-col cols="3"></v-col>
+    <v-col cols="2">
+      <div class="label">
+        <p class="labelText">Lobby ID: {{ this.lobbyId }}</p>
+        <p class="labelText">
+          Owner: {{ this.lobbyLeader }}
+        </p>
+        <p class="labelText">
+          Mode: {{this.gameModeName}}
+        </p></div>
+    </v-col>
+    <v-col  cols="4">
         <div class="field">
       <command-field 
-    :lobbyId="this.lobbyID"
-    :lobbyleader="this.lobbyLeader"
-    :slots="this.slots"
-    :gameModesProp="this.gameModes"
     :isLobbyOwner="this.isLobbyOwner"
     @open:mode="toggleModeSelection"
     @update:leave="leave"
@@ -57,26 +64,21 @@ import CommandField from "@/components/CommandField.vue";
 <script>
 export default {
   components: {
-    // slotButton,
     CommandField,
   },
   data() {
     return {
       slots: this.slotsProp,
       lobbyID: this.lobbyId,
-      isModeShown: false,
-      currentMode: this.currentModeProp,
-      gameModes:this.gameModesProp,
-      lobbyLeader: this.lobbyLeader
+      isModeShown: false
     };
   },
   props: {
     lobbyId: Number,
-    currentModeProp: Number,
     lobbyLeader:String,
     slotsProp:Array,
-    gameModesProp:Array,
-    isLobbyOwner: Boolean
+    isLobbyOwner: Boolean,
+    gameModeName:String
   },
   methods: {
     addBot() {
@@ -92,23 +94,33 @@ export default {
     leave(){
         this.$emit('update:leave');
     }
-  },
-  mounted() {
   }
 };
 </script>
 
 <style scoped>
+
+.labelText{
+  font-size: 165%;
+  color:black;
+  margin-top: 4vh;
+  margin-bottom: 2vh;
+  font-weight: bold;
+  margin-left: 1vh;
+} 
+
+
+.label{
+  background-color: rgba(255,255,255,0.3);
+}
+
 .SeatCommandContainer {
  position: relative;
   top:10vh;
 }
 
 .field {
-    background-color: darkblue;
-    position: relative;
-    left:20vw;
-    width: 50vw;
+  background-color: rgba(255,255,255,0.2);
 }
 
 .seatButton {
@@ -124,14 +136,12 @@ export default {
   border-radius: 12px;
   margin-left: 1vh;
   margin-right: 1vh;
-  
   transition-duration: 0.4s;
 }
 
-
 .seatButton:hover {
   background-color: white;
-  color: #4caf50;
+  color: #181d18;
 }
 
 button:hover {
