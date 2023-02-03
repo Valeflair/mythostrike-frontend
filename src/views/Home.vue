@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     toLobbyOverview() {
-      this.$router.push({ path: "./LobbyOverview" });
+      this.$router.push({ path: "./lobbyOverview" });
     },
     /*
         toQueue() {

@@ -117,6 +117,8 @@ export default {
       console.log(this.lobbyId);
       await lobbyService.joinLobby(this.lobbyId).then(
         (response) => {
+          this.userStore.joinLobby(this.id);
+          this.$router.push({ path: "./Lobby" });
           console.log(response);
         },
         (error) => {
@@ -128,6 +130,7 @@ export default {
       console.log(id);
       await lobbyService.joinLobby(id).then(
         (response) => {
+          this.userStore.joinLobby(id);
           this.$router.push({ path: "./Lobby" });
           console.log(response);
         },
@@ -140,6 +143,9 @@ export default {
       await lobbyService.createLobby().then(
         (response) => {
           console.log(response);
+          console.log("Create lobby");
+          this.userStore.joinLobby(id);
+          this.$router.push({ path: "./Lobby" });
         },
         (error) => {
           console.log(error);

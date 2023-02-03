@@ -33,7 +33,8 @@
 <script>
 import SlotView from "../components/SlotField.vue";
 import ModeSelection from "../components/ModeSelection.vue"
-import axios from "axios";
+import lobbyService from "@/services/lobbyService";
+import { useUserStore } from "@/stores/user";
 export default {
   data() {
     return {
@@ -51,31 +52,68 @@ export default {
       currentModeName:"",
       currentLeader: "Holder",
       currentModeId: 0,
-      lobbyID: 5045,
+      lobbyId: 0,
       isModeShown: false,
       isLobbyOwner: false
     };
+  },
+  setup() {
+    const userStore = useUserStore();
+
+    return { userStore };
   },
   components: {
     SlotView,
     ModeSelection,
   },
   methods: {
-    addBot() {
-      console.log("add Bot");
+    async addBot() {
+      await lobbyService.addBot(this.lobbyId).then(
+        (response) => {
+          console.log(response);
+          console.log("add Bot");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-    start(){
-      this.$router.push({ path: "./championselection" });
+    async start(){
+      await lobbyService.start(this.lobbyId).then(
+        (response) => {
+          console.log(response);
+          console.log("start");
+          this.$router.push({ path: "./championselection" });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-    confirmMode(newMode) {
-      this.currentModeId = newMode;
-      console.log("newMode" + newMode);
+    async changeMode(newMode) {
+      await lobbyService.changeMode(this.lobbyId,this.currentModeId).then(
+        (response) => {
+          this.currentModeId = newMode;
+          console.log("newMode" + newMode);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
     toggleModeSelection(){
       this.isModeShown=!this.isModeShown;
     },
-    leave(){
-        console.log("leave");
+    async leave(){
+      await lobbyService.leave(this.lobbyId).then(
+        (response) => {
+          this.$router.push({ path: "./lobbyoverview" });
+          console.log("leave");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
     async initModes(){
       await axios
@@ -98,6 +136,7 @@ export default {
   },
   created(){
     this.initModes();
+    this.lobbyId = this.userStore.getLobby();
   },
   watch: {
     currentModeId(){

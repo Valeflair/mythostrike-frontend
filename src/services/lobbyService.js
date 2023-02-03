@@ -28,4 +28,45 @@ export default {
           headers: service.AUTH_HEADER
         });
     },
+    addBot(lobbyId) {
+      return axios({
+        method: "POST",
+        url: service.JOIN_LOBBY_URL,
+        data:{
+          lobbyId: lobbyId
+        },
+        headers: service.AUTH_HEADER
+      });
+  },
+  start(lobbyId) {
+    return axios({
+      method: "POST",
+      url: service.JOIN_LOBBY_URL,
+      data:{
+        lobbyId: lobbyId
+      },
+      headers: service.AUTH_HEADER
+    });
+},
+leave(lobbyId) {
+  return axios({
+    method: "POST",
+    url: service.JOIN_LOBBY_URL,
+    data:{
+      lobbyId: lobbyId
+    },
+    headers: service.AUTH_HEADER
+  });
+},
+changeMode(lobbyId,newModeId) {
+  return axios({
+    method: "POST",
+    url: service.JOIN_LOBBY_URL,
+    data:{
+      lobbyId: lobbyId,
+      newModeId: newModeId
+    },
+    headers: service.AUTH_HEADER
+  });
+},
   };
