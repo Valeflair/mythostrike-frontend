@@ -1,6 +1,7 @@
 <script setup>
     import playerData from '../data/players.json'
     import axios from 'axios';
+    import championCard from './ChampionCard.vue'
 </script>
 
 <template>
@@ -9,16 +10,13 @@
             <table>
                 <tr>
                     <td v-for="player in playerDaten.filter(player => player.username !== this.username)" :key="player.username">
-                       <div class="playerChampions" 
-                        @click="pickPlayer(player.username,this.messageActivitysUsable.players)"
-                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players), notUsableClass:!containsId(player.username,this.messageActivitysUsable.players)}">
-                        <p>{{player.username}} </p>
-                        <p>CardCount : {{player.cardCount}} </p>
-                        <p>Champion : {{player.champion.name}} </p>
-                        <p>HP : {{player.currentHP}} </p>
-                        <p>Identity : {{player.identity}} </p>
+                       <championCard class="playerChampions"
+                       @click="pickPlayer(player.username,this.messageActivitysUsable.players)"
+                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players), notUsableClass:!containsId(player.username,this.messageActivitysUsable.players)}" />
+                       
+                       
                         <div class="cardOverlay" v-if="containsId(player.username,this.playerPicked)"></div>
-                       </div>
+                       
                     </td>
                 </tr>
             </table>
@@ -259,7 +257,6 @@ export default {
                     identity: 'TEAM_RED',
                 },
             ],
-
             messageAttackCard:{ //alle messages sollen immer ein szenario darstellen um es aber hier wirklich zu nutzen überschreibe messageActivityUsable hierein
                 cardsId:[],
                 players:['Jack','Till'],
@@ -286,7 +283,6 @@ export default {
                 count:1,
                 cardsId:[0],
             },
-
             passiveEffects:[
               {
                 id:0,
@@ -357,8 +353,11 @@ export default {
           description:'Description of Golden Apple',
           used: false,
         }
-      ]
+            ]
         }
+    },
+    components:{
+        championCard,
     },
     methods: {
         //wenn maus über das item hovert
@@ -504,18 +503,11 @@ export default {
 
 
 .playerChampions{
-    width: 10vw;
-    height: 13vw;
+  width: 10vw;
+  height: 29vh;
     margin-left: 1vh;
     margin-right: 1vh;
-    background-size:cover;
 }
-
-.card{
-    width: 10vw;
-    height: 13vw;
-}
-
 
 .cardOverlay{
     width: 4vw;
@@ -624,8 +616,8 @@ export default {
 }
 
 .handCard {
-  width: 13vw;
-  height: 33vh;
+  width: 10vw;
+  height: 29vh;
   background: white;
   border-radius: 1rem;
   padding: 1.5rem;
@@ -649,7 +641,7 @@ transform: translateX(2rem);
   bottom:0;
   left:22vw;
   width: 61vw;
-  height: 33vh;
+  height: 29vh;
 }
 
 .passiveSlot{
