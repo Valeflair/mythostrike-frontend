@@ -8,7 +8,7 @@
 
     <div class="name">
       <span>
-        <!-- {{ this.name }} -->Aphrodite
+         {{ this.name }} 
       </span>
     </div>
 
@@ -22,16 +22,16 @@
       </tr>
     </table>
 
-    <div class="handcard-num"><!-- {{ this.handcardNum }} -->3</div>
+    <div class="handcard-num"> {{ this.handcardNum }} </div>
     <div class="identity">
-      <!-- {{ this.identity }} -->K
+      {{ this.identity }} 
     </div>
     <div class="equipments">
       <div id="e1" src="" alt="">
-        <!-- {{ this.e1 }} -->e1
+         {{ this.e1 }} 
       </div>
       <div id="e2" src="" alt="">
-        <!-- {{ this.e2 }} -->e2
+       {{ this.e2 }} 
       </div>
     </div>
     <table>
@@ -44,6 +44,22 @@
 
   </div>
 </template>
+
+<script>
+export default {
+  data: () => ({
+    // name: "Aphrodite",
+    // cardType: "Basic Card",
+  }),
+  props: {
+    name: "",
+    handcardNum: Number,
+    identity: "",
+    e1: "",
+    e2: "",
+  },
+};
+</script>
 
 <style scoped>
 * {
@@ -65,8 +81,6 @@
 .championCard {
   width: 10vw;
   height: 29vh;
-  border-style: solid;
-  border-color: cornflowerblue;
   position: relative;
 }
 .frame {
@@ -166,18 +180,3 @@
 }
 </style>
 
-<script>
-export default {
-  data: () => ({
-    // name: "Aphrodite",
-    // cardType: "Basic Card",
-  }),
-  props: {
-    name: "",
-    handcardNum: Number,
-    identity: "",
-    e1: "",
-    e2: "",
-  },
-};
-</script>

@@ -12,7 +12,7 @@
                     <td v-for="player in playerDaten.filter(player => player.username !== this.username)" :key="player.username">
                        <championCard class="playerChampions"
                        @click="pickPlayer(player.username,this.messageActivitysUsable.players)"
-                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players), notUsableClass:!containsId(player.username,this.messageActivitysUsable.players)}" />
+                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players)}" />
                        
                        
                         <div class="cardOverlay" v-if="containsId(player.username,this.playerPicked)"></div>
