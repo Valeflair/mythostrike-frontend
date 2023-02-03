@@ -65,7 +65,7 @@ export default {
       console.log("add Bot");
     },
     start(){
-      console.log("start");
+      this.$router.push({ path: "./championselection" });
     },
     confirmMode(newMode) {
       this.currentModeId = newMode;
