@@ -34,10 +34,14 @@
         <!-- {{ this.e2 }} -->e2
       </div>
     </div>
-    <div class="debuff">
-      <img id="d1" src="../assets/card/smallParts/ring-o.png" alt="" />
-      <img id="d2" src="../assets/card/smallParts/ring-o.png" alt="" />
-    </div>
+    <table>
+      <tr>
+        <td v-for="i in 5" :key="i" >
+          <img id="d1" class="debuff" :style="{left:-2+ i*4 +'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
+        </td>
+      </tr>
+    </table>
+
   </div>
 </template>
 
@@ -82,7 +86,7 @@
   width: 100%;
   position: absolute;
   z-index: 4; 
-  font-size: 20px;
+  font-size: 2vh;
   font-style: italic;
   -webkit-text-stroke: 1px black;
   color: aliceblue;
@@ -104,63 +108,61 @@
   
 }
 .handcard-num {
-  width: 11%;
-  height: 11%;
+  width: 2.5vh;
+  height: 2.5vh;
   position: absolute;
-  z-index: 4;
-  background-image: url(../assets/card/smallParts/ring-g.png);
+  z-index: 5;
+  background-color: red;
+  border-radius: 100%;
   background-repeat: no-repeat;
-  font-size: 40%;
+  font-size: 2vh;
   color: aliceblue;
   text-align: center;
-  top: 3%;
-  left: 88%;
+  top: 0.5vw;
+  left: 9.5vw;
 }
 .identity {
-  width: 11%;
-  height: 11%;
+  width: 4vh;
+  height: 4vh;
+  border-radius: 100%;
   position: absolute;
   z-index: 4;
-  background-image: url(../assets/card/smallParts/ring.png);
+  background-color: green;
   background-repeat: no-repeat;
-  font-size: 40%;
+  font-size: 3vh;
   color: aliceblue;
   text-align: center;
-  top: 13%;
-  left: 80%;
+  top: 2.5vw;
+  left: 8.5vw;
 }
 #e1,
 #e2 {
-  width: 89%;
-  height: 11%;
+  width: 10vw;
+  height: 3.5vh;
   left: 5%;
   position: absolute;
   background-image: url(../assets/card/frame/silver_top_frame-p.png);
   background-repeat: round;
   z-index: 4;
-  font-size: 52%;
-  -webkit-text-stroke: 2px rgba(2, 2, 2, 0.63);
+  font-size: 1.8vh;
+  -webkit-text-stroke: 2px rgba(100, 83, 83, 0.63);
   color: white;
   text-align: center;
   margin: 0 auto;
   line-height: 180%;
 }
 #e1 {
-  bottom: 19%;
+  bottom: 10vh;
 }
 #e2 {
-  bottom: 8%;
+  bottom: 5.5vh;
 }
 .debuff {
-  width: 100%;
-  height: 11%;
+  width: 4vh;
+  height: 4vh;
   position: absolute;
   z-index: 4;
-  bottom: 2.5%;
-  left: 70%;
-}
-#d1, #d2 {
-  width: 14%;
+  bottom: 1.5vh;
 }
 </style>
 
