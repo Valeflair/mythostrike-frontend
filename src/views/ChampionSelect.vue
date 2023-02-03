@@ -15,7 +15,16 @@ import axios from 'axios';
             <div v-for="champion in champions" :key="champion.id">
              <v-col  :key="champion.id">   
                <!-- <button class="championButton" @click="changeChampion(champion.id)">{{champion.name}}</button>-->
-                <championCard class="championButton"/>
+                <championCard class="championButton"
+                game="true"
+                name= "Minh"
+                handcardNum= "5"
+                identity= "King"
+                health=5
+                :equipment="this.equipment"
+                :passiveEffect="this.equipment"
+                
+                />
             </v-col>
         </div>         
         </v-row>
@@ -65,6 +74,8 @@ import axios from 'axios';
 export default {
     data(){
         return{
+            equipment: ["Spear of poseidon"],
+            
             champions: championData,
             currentChampion: 0,
             championSelection:'Select your Champion',

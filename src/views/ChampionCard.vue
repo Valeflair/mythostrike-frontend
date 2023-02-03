@@ -8,35 +8,39 @@
 
     <div class="name">
       <span>
-        <!-- {{ this.name }} -->Aphrodite
+        {{ this.name }}
       </span>
     </div>
 
     <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
     
     <table >
-      <tr  v-for="i in 5" :key="i">
+      <tr  v-for="i in this.health" :key="i">
         <td>
           <img class="heart" :style="{ top: 2+2 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
         </td>
       </tr>
     </table>
 
-    <div v-if="game" class="handcard-num"><!-- {{ this.handcardNum }} -->3</div>
+    <div v-if="game" class="handcard-num"> {{ this.handcardNum }} </div>
     <div  v-if="game" class="identity">
-      <!-- {{ this.identity }} -->K
+      <!-- {{ this.identity }}-->K
     </div>
+
+
     <div  v-if="game" class="equipments">
-      <div id="e1" src="" alt="">
-        <!-- {{ this.e1 }} -->e1
+      <div id="e1" v-if="this.equip1!==null" src="" alt="">
+        {{ this.equip1 }} 
       </div>
-      <div  v-if="game" id="e2" src="" alt="">
-        <!-- {{ this.e2 }} -->e2
+      <div  v-if="this.equip2!==null" id="e2" src="" alt="">
+         {{ this.equip2 }} 
       </div>
     </div>
+
+
     <table  v-if="game">
       <tr>
-        <td  v-for="i in 3" :key="i" >
+        <td  v-for="i in this.passiveEffect.length" :key="i" >
           <img id="d1" class="debuff" :style="{left:-2+ i*4 +'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
         </td>
       </tr>
@@ -48,16 +52,23 @@
 
 <script>
 export default {
-  data: () => ({
-    game:false,    
-  }),
+    data(){
+        return{
+            equip1 : this.equipment[0],
+            equip2 : this.equipment[1],
+            game:true,
+            health:3,
+        }
+    },
+
   props: {
-    isGame:Boolean,
+    games:Boolean,
     name: "",
     handcardNum: Number,
+    health:Number,
     identity: "",
-    e1: "",
-    e2: "",
+    equipment:Array,
+    passiveEffect:Array,
   },
 };
 </script>
@@ -82,8 +93,6 @@ export default {
 .championCard {
   width: 10vw;
   height: 29vh;
-  border-style: solid;
-  border-color: cornflowerblue;
   position: relative;
 }
 .frame {
@@ -154,7 +163,7 @@ export default {
 }
 #e1,
 #e2 {
-  width: 8.7vw;
+  width: 8.9vw;
   height: 3.5vh;
   left: 5%;
   position: absolute;
