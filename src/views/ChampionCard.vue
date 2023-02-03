@@ -17,7 +17,7 @@
     <table >
       <tr  v-for="i in this.health" :key="i">
         <td>
-          <img class="heart" :style="{ top: 2+2 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
+          <img class="heart" :style="{ top: 2+3 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
         </td>
       </tr>
     </table>
@@ -29,11 +29,17 @@
 
 
     <div  v-if="game" class="equipments">
-      <div id="e1" v-if="this.equip1!==null" src="" alt="">
+      <div id="e1" v-if="this.equipment.length>0" src="" alt="">
         {{ this.equip1 }} 
       </div>
-      <div  v-if="this.equip2!==null" id="e2" src="" alt="">
+      <div class="e1-description">
+        asdasdasda
+      </div>
+      <div  v-if="this.equipment.length>1" id="e2" src="" alt="">
          {{ this.equip2 }} 
+      </div>
+      <div class="e2-description">
+        asdsadsadasadasdsad
       </div>
     </div>
 
@@ -56,20 +62,19 @@ export default {
         return{
             equip1 : this.equipment[0],
             equip2 : this.equipment[1],
-       
             health:3,
         }
     },
 
-  props: {
-    game:Boolean,
-    name: "",
-    handcardNum: Number,
-    health:Number,
-    identity: "",
-    equipment:Array,
-    passiveEffect:Array,
-  },
+    props: {
+        game:Boolean,
+        name: "",
+        handcardNum: Number,
+        health:Number,
+        identity: "",
+        equipment:Array,
+        passiveEffect:Array,
+    },
 };
 </script>
 
@@ -128,7 +133,7 @@ export default {
   left: 46.5%;
 }
 .heart {
-  width: 1vw;
+  width: 1.5vw;
   position: absolute;
   z-index: 4;
   top:1vh;
@@ -183,6 +188,36 @@ export default {
 #e2 {
   bottom: 6vh;
 }
+.e1-description{
+    display: none;
+    width :10vw;
+    height: 15vh;
+    background-color: red;
+    position: absolute;
+    top:6vh;
+    z-index: 5;
+}
+
+.e2-description{
+    display: none;
+    width :10vw;
+    height: 15vh;
+    background-color: red;
+    position: absolute;
+    top:9.5vh;
+    z-index: 5;
+
+}
+#e1:hover + .e1-description{
+    display: block;
+}
+
+#e2:hover + .e2-description{
+    display: block;
+
+}
+
+
 .debuff {
   width: 4vh;
   height: 4vh;

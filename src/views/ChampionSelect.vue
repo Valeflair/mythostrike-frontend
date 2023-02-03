@@ -22,7 +22,7 @@ import axios from 'axios';
                 identity= "King"
                 health=5
                 :equipment="this.equipment"
-                :passiveEffect="this.equipment"
+                :passiveEffect="this.passive"
                 
                 />
             </v-col>
@@ -74,7 +74,8 @@ import axios from 'axios';
 export default {
     data(){
         return{
-            equipment: ["Spear of poseidon"],
+            equipment: ["Spear of poseidon","Shield of athena"],
+            passive:["nightmare","drought","flood"],
             
             champions: championData,
             currentChampion: 0,
