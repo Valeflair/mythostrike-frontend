@@ -4,7 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: "/start",
       name: "Start",
       component: () => import("../views/Start.vue"),
     },
@@ -32,6 +32,16 @@ const router = createRouter({
       path: "/Library",
       name: "Library",
       component: () => import("../views/Library.vue"),
+    },
+    {
+      path: "/",
+      name: "Statment",
+      component: () => import("../components/Statment.vue"),
+    },
+    {
+      path: "/modeselection",
+      name: "ModeSelection",
+      component: () => import("../components/ModeSelection.vue"),
     },
   ],
 });
