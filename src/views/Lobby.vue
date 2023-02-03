@@ -53,7 +53,7 @@ export default {
       currentModeId: 0,
       lobbyID: 5045,
       isModeShown: false,
-      isLobbyOwner: true
+      isLobbyOwner: false
     };
   },
   components: {
@@ -110,8 +110,9 @@ export default {
 <style scoped>
 .bg-image {
   background: url("@/assets/backgrounds/lobby_background.png");
-  height:100%;
-  width: 100%;
+  height: 100vh;
+  background-size:cover;
+  background-repeat: no-repeat;
 }
 .slotStyle{
   position: relative;   

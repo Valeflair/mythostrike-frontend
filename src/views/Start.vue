@@ -12,17 +12,17 @@
       </v-col>
       <v-col cols="4" class="text-center">
         <div class="text-h2 pt-10">
-          <span id="text">Μ ψ τ η ο σ τ ρ ι κ ε</span>
+          <p class="text" id="title-greek">Μ ψ τ η ο σ τ ρ ι κ ε</p>
         </div>
-        <div class="text-h1 font-weight-regular" id="title">
-          <span id="text">ΜYTHOSTRIKE</span>
+        <div class="text-h1 font-weight-regular pt-1">
+          <span class="text" id="title">ΜYTHOSTRIKE</span>
         </div>
         <div class="text-h4 pa-4">
-          <span id="text">-online-</span>
+          <span class="text" id="title-small">-online-</span>
         </div>
       </v-col>
     </div>
-    <v-responsive class="mx-auto pt-5" max-width="450">
+    <v-responsive class="mx-auto pt-5 inputBox" max-width="450">
       <v-text-field
         class="text-field"
         label="username"
@@ -43,7 +43,7 @@
       <v-btn class="startButton" @click="register">Register</v-btn>
       <v-btn class="startButton" @click="login">Login</v-btn>
     </div>
-    <v-responsive class="mx-auto" max-width="450">
+    <v-responsive class="mx-auto ma-3" max-width="450">
       <v-alert v-show="alertStatus" type="error">
         {{ this.alertMessage }}
       </v-alert>
@@ -51,37 +51,57 @@
   </div>
 </template>
 <style scoped>
+.logo{
+  width: 16vw;
+  height: 16vw;
+}
 .bg-image {
   background: url("@/assets/backgrounds/start_background.png");
   height: 100vh;
+  background-size:cover;
+  background-repeat: no-repeat;
 }
 
 .startButton {
-  width: 197px;
-  min-height: 61px;
+  width: 10.25vw;
+  min-height: 6vh;
   margin: 15px;
   color: white;
-  font-size: 20px;
+  font-size:1vw;
   border-radius: 15px;
   background: url("@/assets/elements/button.png");
 }
 
-#text {
+.text {
   color: white;
 }
 
 #title {
+  font-size:5vw;
+}
+
+.text-h1 {
+  text-underline-offset: 15px;
   text-decoration-line: underline;
   text-decoration-color: white;
   text-decoration-thickness: 5px;
 }
 
-.text-h1 {
-  text-underline-offset: 15px;
-}
-
 .text-field {
   color: white;
+}
+
+.inputBox {
+  height: 18vh;
+  width: 75vw;
+}
+
+#title-greek{
+  font-size:3.5vw;
+}
+
+#title-small{
+  font-size:2vw;
 }
 </style>
 
@@ -112,7 +132,7 @@ export default {
             },
             (error) => {
               console.log(error);
-              this.showAlert(error.response.data.message);
+              this.showAlert(error.response.data);
             }
           );
       }
