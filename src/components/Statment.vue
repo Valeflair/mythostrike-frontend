@@ -1,8 +1,12 @@
 <template>
   <div class="statment">
-    <img class="bg-image" src="../assets/backgrounds/modeSelect_background.png" alt="">
+    <img
+      class="bg-image"
+      src="../assets/backgrounds/modeSelect_background.png"
+      alt=""
+    />
     <div id="table">
-      <v-table theme="dark" hover="true" tag="wattt">
+      <v-table theme="dark" hover="true" tag="wattttt">
         <thead>
           <tr id="head">
             <th class="text-left">User</th>
@@ -42,23 +46,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
 .bg-image {
-position: absolute;
-width: 80vw;
-background-repeat: round;
-opacity: 0.5;
+  position: absolute;
+  width: 80vw;
+  background-repeat: round;
+  opacity: 0.5;
 }
 
 #table {
-position: absolute;
-width: 68vw;
-top: 18%;
+  position: absolute;
+  width: 68vw;
+  top: 18%;
 }
 
 .quit {
-    position:absolute;
+  position: absolute;
   background-image: url(../assets/elements/modeSelection/return.png);
   width: 94px;
   height: 64px;
@@ -68,7 +71,6 @@ top: 18%;
   left: 80%;
   top: 20%;
 }
-
 </style>
 
 <script>
@@ -146,10 +148,8 @@ export default {
           rankPoints: "0",
           hasWon: "no",
         },
-
       ],
     };
   },
- 
 };
 </script>
