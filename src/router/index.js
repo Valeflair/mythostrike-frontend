@@ -24,12 +24,17 @@ const router = createRouter({
       component: () => import("../views/LobbyOverview.vue")
     },
     {
+      path: "/",
+      name: "ChampionSelect",
+      component: () => import("../views/ChampionSelect.vue")
+    },
+    {
       path: "/game",
       name: "Game",
       component: () => import("../views/game.vue")
     },
     {
-      path: "/",
+      path: "/asdads",
       name: "Card",
       component: () => import("../views/Card.vue")
     },
