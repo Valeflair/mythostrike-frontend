@@ -56,13 +56,13 @@ export default {
         return{
             equip1 : this.equipment[0],
             equip2 : this.equipment[1],
-            game:true,
+       
             health:3,
         }
     },
 
   props: {
-    games:Boolean,
+    game:Boolean,
     name: "",
     handcardNum: Number,
     health:Number,
