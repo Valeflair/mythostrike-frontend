@@ -44,7 +44,7 @@ const router = createRouter({
       component: () => import("../views/Description.vue")
     },
     {
-      path: "/championcard",
+      path: "/asd",
       name: "ChampionCard",
       component: () => import("../views/ChampionCard.vue")
     },

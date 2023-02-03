@@ -220,9 +220,8 @@ export default {
     left:1vw;
 }
 .championButton{
-    width: 12vw;
-    height: 41vh;
-    padding: 1vh;
+    width: 11.5vw;
+    height: 35vh;
     margin-left: 3vh;
     margin-right: 3vh;
     margin-top: 3vh;

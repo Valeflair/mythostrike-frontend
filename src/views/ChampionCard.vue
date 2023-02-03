@@ -1,7 +1,7 @@
 <script setup>
 </script>
 <template>
-  <div class="card">
+  <div class="championCard">
     <img class="frame" src="../assets/card/frame/gold_card_frame_r.png" alt="" />
 
     <img class="avatar" src="../assets/card/pictures/Aphrodite.png" alt="" />
@@ -13,14 +13,15 @@
     </div>
 
     <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
+    
+    <table >
+      <tr  v-for="i in 4" :key="i">
+        <td>
+          <img class="heart" :style="{ top: 3+2 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
+        </td>
+      </tr>
+    </table>
 
-    <div class="life-points">
-      <img id="p1" class="heart" src="../assets/card/smallParts/Health_Light.png" alt="" /> 
-      <img id="p2" class="heart" src="../assets/card/smallParts/Health_Light.png" alt="" /> 
-      <img id="p3" class="heart" src="../assets/card/smallParts/Health_Light.png" alt="" /> 
-      <img id="p4" class="heart" src="../assets/card/smallParts/Health_Light.png" alt="" /> 
-      <img id="p5" class="heart" src="../assets/card/smallParts/Health_Light.png" alt="" /> 
-    </div>
     <div class="handcard-num"><!-- {{ this.handcardNum }} -->3</div>
     <div class="identity">
       <!-- {{ this.identity }} -->K
@@ -57,13 +58,12 @@
   font-family: "Blackadder";
   src: url(../assets/fontStyle/Blackadder.ttf);
 }
-.card {
-  width: 512px;
-  height: 815px;
+.championCard {
+  width: 11.5vw;
+    height: 35vh;
   border-style: solid;
   border-color: cornflowerblue;
   position: relative;
-  font-size: 100px;
 }
 .frame {
   width: 100%;
@@ -81,9 +81,8 @@
 .name {
   width: 100%;
   position: absolute;
-  z-index: 4;
-  font-family: Blackadder;
-  font-size: 60%;
+  z-index: 4; 
+  font-size: 20px;
   font-style: italic;
   -webkit-text-stroke: 1px black;
   color: aliceblue;
@@ -91,22 +90,18 @@
   text-align: center;
 }
 .stone {
-  width: 7%;
-  height: 6%;
+  width: 2vh;
+  height: 2vh;
   position: absolute;
   z-index: 4;
   bottom: 0%;
   left: 46.5%;
 }
-.life-points {
+.heart {
   width: 8%;
   position: absolute;
   z-index: 4;
-  top: 13%;
-  left: 7%;
-}
-.heart {
-  display: block;
+  
 }
 .handcard-num {
   width: 11%;
