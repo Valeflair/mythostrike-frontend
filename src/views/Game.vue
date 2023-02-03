@@ -1,6 +1,4 @@
 <script setup>
-    import playerData from '../data/players.json'
-    import axios from 'axios';
     import championCard from './ChampionCard.vue'
 </script>
 
@@ -101,6 +99,7 @@
         </div>
 
         <div class="handCardSlot">
+            <div class="cardContainer">
             <div v-for="(card,i) in cards" :key="i" 
                 :class="[{'not-first-card': i !==0}, 'not-last-card']" 
                 :style="{'margin-left': calculateMarginLeft(cards.length,i) }"
@@ -117,22 +116,43 @@
                     <div class="description"  v-if="card.showDescription">
                         {{ card.description }}
                     </div>
-                    <div class="cardOverlay" v-if="containsId(card.id,this.cardsBeingUsed)"></div>
+                    <div class="cardOverlay" v-if="containsId(card.id,this.tablePile)"></div>
                 </div>
+            </div>
             </div>
         </div>  
 
-    <div class="cardUsed" v-if="cardUsed">
-        <div class="discardPile">
-            <p>{{ this.currentCard.id }}</p>
-            <p>{{ this.currentCard.name }}</p>
-            <p>{{ this.currentCard.description }}</p>
-        </div>  
+        <div class="tablePileSlot" v-if="cardUsed">
+            <div class="tableContainer">
+                <!--
+
+                    FEHLER this.cards[card] gibt fehler  -> erstelle methode die karte findet mit richtige id 
+
+
+
+                -->
+            <div v-for="(card,i) in this.tablePile" :key="i" 
+                :class="[{'not-first-card': i !==0}, 'not-last-card']" 
+                :style="{'margin-left': calculateMarginLeft(this.tablePile.length,i) }"
+                @mouseenter="hoverStart(this.cards[card])"
+                @mouseleave="hoverEnd(this.cards[card])">
+                <div class="tablePile">
+                    <p>{{ this.cards[card].id }}</p>
+                    <p>{{ this.cards[card].name }}</p>
+                    <div class="description"  v-if="this.cards[card].showDescription">
+                        {{ this.cards[card].description }}
+                    </div>
+                    <div class="cardOverlay" v-if="containsId(card,this.tablePile)"></div>
+                </div>
+            </div>            
+            </div>
+
             <div class="confirmB"  :class="{'usableClass':checkConfirmStatus(),'notUsableClass':!checkConfirmStatus()}">
                 <p>Confirm</p>
             </div>
             <button class="cancelB" @click="cancel">Cancel</button>
-    </div>
+        </div>  
+
 
     <div class="drawPile"> DRAWPILE</div>
 
@@ -162,8 +182,8 @@ export default {
             currentPlayer: 0,
             timerDelay:1000,
             usable:true,
-            cardsBeingUsed:[],
             playerPicked:[],
+            tablePile:[],
             username:'Minh',
             champion:{
                 name:'Nyx',
@@ -201,8 +221,8 @@ export default {
                 cardsId:[0,2,3],
                 players:[],
                 skillsID:[0,1],
-                minCard:2,
-                maxCard:2,
+                minCard:10,
+                maxCard:10,
                 minPlayer:0,
                 maxPlayer:0,
                 reason: 'Alles was der Spieler einsetzen kann: hier nur die Karten und skills mit den Ids',
@@ -296,7 +316,7 @@ export default {
             },
             cardMoveMessage:{
                 source:'Minh',
-                destination:'discardPile',
+                destination:'Till',
                 count:1,
                 cardsId:[0],
             },
@@ -377,6 +397,7 @@ export default {
         championCard,
     },
     methods: {
+        
         //wenn maus über das item hovert
         hoverStart(item) {
             this.hoverTimer = setTimeout(() => {
@@ -394,7 +415,7 @@ export default {
                 return 0;
             let margin=0;
             if(length>=10)
-                margin=9;
+                margin=7;
             else if(length>=8)
                 margin=7;
             else if(length>=6)
@@ -419,21 +440,23 @@ export default {
         cancel(){
             this.cardUsed=false;
 
-            this.cardsBeingUsed.splice(0, this.cardsBeingUsed.length);
+            this.tablePile.splice(0, this.tablePile.length);
             this.playerPicked.splice(0,this.playerPicked.length);
 
         },
         //wenn der Spieler auf eine Karte drückt
         useCard(id, searchArray){
-            let count=this.cardsBeingUsed.length;
-
-            if(this.containsId(id,searchArray) && count <this.messageActivitysUsable.maxCard && !this.containsId(id,this.cardsBeingUsed)){
+            let count=this.tablePile.length;
+            console.log("useCard: "+id);
+            if(this.containsId(id,searchArray) && count <this.messageActivitysUsable.maxCard && !this.containsId(id,this.tablePile)){
                 for(let i=0;i<this.cards.length;i++){
                     if(this.cards[i].id === id){
+                        console.log(this.cards[i].id);
                         this.cardUsed=true;
                         this.cards[i].used =true;
                         this.currentCard = this.cards[i];    
-                        this.cardsBeingUsed.push(this.cards[i].id);
+                        this.tablePile.push(this.cards[i].id);
+                        console.log("table pile: "+this.tablePile);
                         break;
                     }
                 }
@@ -455,10 +478,8 @@ export default {
         //prüft ob alle Bedingungen erreicht sind um den confirm button zu drücken.
         //Z.B. ob mindestens ein Spieler ausgewählt wurde beim Angriff.
         checkConfirmStatus(){
-            console.log("cardsused: "+this.cardsBeingUsed.length);
-            console.log("minCard: "+this.messageActivitysUsable.minCard);
             if(this.playerPicked.length<this.messageActivitysUsable.minPlayer || 
-                this.cardsBeingUsed.length<this.messageActivitysUsable.minCard)
+                this.tablePile.length<this.messageActivitysUsable.minCard)
                 return false;
             return true;
         },
@@ -487,6 +508,8 @@ export default {
                     }
                 }
             }
+            console.log(this.cards);
+            
         }
     
     
@@ -498,9 +521,46 @@ export default {
 
 <style scoped>
 
+
+.tablePile{
+  width: 10vw;
+  height: 29vh;
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 3px 3px 12px 2px rgba(black, 0.6);
+  transition: 0.2s;
+  border: solid black 2px;
+}
+
+.cardContainer{
+    
+    position: absolute;
+  display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.tableContainer{
+    position: absolute;
+  display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.tablePileSlot{
+    
+  position: absolute;
+  display: flex;
+  bottom:32vh;
+  left:25vw;
+  width: 50vw;
+  height: 29vh;
+  border: solid green 5px;
+}
 .clickCardMoveMessage{
     position: absolute;
-    left: 22vw;
+    left: 19vw;
     bottom:18vw;
     width: 5vw;
     height: 5vh;
@@ -513,8 +573,8 @@ export default {
     left:1vw;
     bottom:18vw;
     border-radius: 1rem;
-    width: 13vw;
-    height: 33vh;
+  width: 10vw;
+  height: 29vh;
     background-color: green;
 }
 
@@ -591,29 +651,20 @@ export default {
     height: 6vh;
     background-color: pink;
     position: absolute;
-    left: 70vw;
+    left: 50vw;
     border-radius: 10px;
-    bottom: 36vh;
+    bottom: 0;
 }
 .confirmB{
     width: 7vw;
     height: 6vh;
     background-color: pink;
     position: absolute;
-    left: 60vw;
+    left: 50vw;
     border-radius: 10px;
-    bottom: 36vh;
+    bottom: 8vh;
 }
 
-.discardPile{
-    position: absolute;
-    left:43.5vw;
-    bottom:36vh;
-    border-radius: 1rem;
-    width: 13vw;
-    height: 33vh;
-    background-color: green;
-}
 .description {
   position: absolute;
   top: 1vw;
