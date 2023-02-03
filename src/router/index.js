@@ -30,7 +30,7 @@ const router = createRouter({
     },
     
     {
-      path: "/sad",
+      path: "/as",
       name: "ChampionCard",
       component: () => import("../views/ChampionCard.vue"),
     },

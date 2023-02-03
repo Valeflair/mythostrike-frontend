@@ -12,7 +12,14 @@
                     <td v-for="player in playerDaten.filter(player => player.username !== this.username)" :key="player.username">
                        <championCard class="playerChampions"
                        @click="pickPlayer(player.username,this.messageActivitysUsable.players)"
-                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players)}" />
+                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players)}" 
+                        game="true"
+                        :name="player.username"
+                        :handcardNum="player.cardCount"
+                        :identity="player.identity"
+                        :equipment="player.equipment" 
+                        :passiveEffect="player.passiveEffect"
+                        />
                        
                        
                         <div class="cardOverlay" v-if="containsId(player.username,this.playerPicked)"></div>
@@ -211,6 +218,8 @@ export default {
                     maxHP: 5,
                     currentHP: 5,
                     identity: 'TEAM_INDEPENDENT',
+                    equipment: ['Trident of Poseidon'],
+                    passiveEffect:['nightmare','drought'],
                 },
                 {
                     username: 'Till',
@@ -222,6 +231,8 @@ export default {
                     maxHP: 4,
                     currentHP: 2,
                     identity: 'TEAM_BLUE',
+                    equipment: ['shield of Athena'],
+                    passiveEffect:['nightmare'],
                 },
                 {
                     username: 'Jack',
@@ -233,6 +244,8 @@ export default {
                     maxHP: 3,
                     currentHP: 2,
                     identity: 'TEAM_BLUE',
+                    equipment: ['Spear of Ares'],
+                    passiveEffect:[],
                 },
                 {
                     username: 'Hong',
@@ -244,6 +257,8 @@ export default {
                     maxHP: 4,
                     currentHP: 4,
                     identity: 'TEAM_RED',
+                    equipment: ['Trident of Poseidon','Hourglass'],
+                    passiveEffect:['nightmare','drought'],
                 },
                 {
                     username: 'Laito',
@@ -255,6 +270,8 @@ export default {
                     maxHP: 5,
                     currentHP: 3,
                     identity: 'TEAM_RED',
+                    equipment: [],
+                    passiveEffect:['nightmare','drought'],
                 },
             ],
             messageAttackCard:{ //alle messages sollen immer ein szenario darstellen um es aber hier wirklich zu nutzen überschreibe messageActivityUsable hierein

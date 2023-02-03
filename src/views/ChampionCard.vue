@@ -8,7 +8,7 @@
 
     <div class="name">
       <span>
-         {{ this.name }} 
+        {{ this.name }}
       </span>
     </div>
 
@@ -22,21 +22,25 @@
       </tr>
     </table>
 
-    <div class="handcard-num"> {{ this.handcardNum }} </div>
-    <div class="identity">
-      {{ this.identity }} 
+    <div v-if="game" class="handcard-num"> {{ this.handcardNum }} </div>
+    <div  v-if="game" class="identity">
+      <!-- {{ this.identity }}-->K
     </div>
-    <div class="equipments">
-      <div id="e1" src="" alt="">
-         {{ this.e1 }} 
+
+
+    <div  v-if="game" class="equipments">
+      <div id="e1" v-if="this.equip1!==null" src="" alt="">
+        {{ this.equip1 }} 
       </div>
-      <div id="e2" src="" alt="">
-       {{ this.e2 }} 
+      <div  v-if="this.equip2!==null" id="e2" src="" alt="">
+         {{ this.equip2 }} 
       </div>
     </div>
-    <table>
+
+
+    <table  v-if="game">
       <tr>
-        <td v-for="i in 3" :key="i" >
+        <td  v-for="i in this.passiveEffect.length" :key="i" >
           <img id="d1" class="debuff" :style="{left:-2+ i*4 +'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
         </td>
       </tr>
@@ -45,18 +49,26 @@
   </div>
 </template>
 
+
 <script>
 export default {
-  data: () => ({
-    // name: "Aphrodite",
-    // cardType: "Basic Card",
-  }),
+    data(){
+        return{
+            equip1 : this.equipment[0],
+            equip2 : this.equipment[1],
+            
+
+
+        }
+    },
+
   props: {
+    game:Boolean,
     name: "",
     handcardNum: Number,
     identity: "",
-    e1: "",
-    e2: "",
+    equipment:Array,
+    passiveEffect:Array,
   },
 };
 </script>
@@ -151,7 +163,7 @@ export default {
 }
 #e1,
 #e2 {
-  width: 8.7vw;
+  width: 8.9vw;
   height: 3.5vh;
   left: 5%;
   position: absolute;
@@ -179,4 +191,3 @@ export default {
   bottom: 1.5vh;
 }
 </style>
-
