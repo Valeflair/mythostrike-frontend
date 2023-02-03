@@ -22,21 +22,21 @@
       </tr>
     </table>
 
-    <div class="handcard-num"><!-- {{ this.handcardNum }} -->3</div>
-    <div class="identity">
+    <div v-if="game" class="handcard-num"><!-- {{ this.handcardNum }} -->3</div>
+    <div  v-if="game" class="identity">
       <!-- {{ this.identity }} -->K
     </div>
-    <div class="equipments">
+    <div  v-if="game" class="equipments">
       <div id="e1" src="" alt="">
         <!-- {{ this.e1 }} -->e1
       </div>
-      <div id="e2" src="" alt="">
+      <div  v-if="game" id="e2" src="" alt="">
         <!-- {{ this.e2 }} -->e2
       </div>
     </div>
-    <table>
+    <table  v-if="game">
       <tr>
-        <td v-for="i in 3" :key="i" >
+        <td  v-for="i in 3" :key="i" >
           <img id="d1" class="debuff" :style="{left:-2+ i*4 +'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
         </td>
       </tr>
@@ -44,6 +44,23 @@
 
   </div>
 </template>
+
+
+<script>
+export default {
+  data: () => ({
+    game:false,    
+  }),
+  props: {
+    isGame:Boolean,
+    name: "",
+    handcardNum: Number,
+    identity: "",
+    e1: "",
+    e2: "",
+  },
+};
+</script>
 
 <style scoped>
 * {
@@ -165,19 +182,3 @@
   bottom: 1.5vh;
 }
 </style>
-
-<script>
-export default {
-  data: () => ({
-    // name: "Aphrodite",
-    // cardType: "Basic Card",
-  }),
-  props: {
-    name: "",
-    handcardNum: Number,
-    identity: "",
-    e1: "",
-    e2: "",
-  },
-};
-</script>
