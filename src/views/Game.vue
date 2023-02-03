@@ -1,7 +1,6 @@
 <script setup>
     import playerData from '../data/players.json'
     import axios from 'axios';
-import ChampionCard from '../views/ChampionCard.vue';
 </script>
 
 <template>
@@ -150,7 +149,6 @@ import ChampionCard from '../views/ChampionCard.vue';
 
 <script>
 export default {
-  components: { ChampionCard },
     data(){
         return{
             currentCard:Object,
@@ -284,7 +282,7 @@ export default {
             },
             cardMoveMessage:{
                 source:'Minh',
-                destination:'Till',
+                destination:'discardPile',
                 count:1,
                 cardsId:[0],
             },
@@ -363,15 +361,18 @@ export default {
         }
     },
     methods: {
+        //wenn maus über das item hovert
         hoverStart(item) {
             this.hoverTimer = setTimeout(() => {
                 item.showDescription = true
             }, this.timerDelay)
         },
+        //wenn maus nicht mehr das item hovert
         hoverEnd(item) {
             clearTimeout(this.hoverTimer)
             item.showDescription = false
         },
+        //die Abstände der Karten auf der Hand. Je mehr Karten, desto näher werden diese
         calculateMarginLeft(length,i){
             if(i===0)
                 return 0;
@@ -390,12 +391,15 @@ export default {
                 margin=0;
             return `-${margin}rem`;
         },
+        //methode bekommt eine art id und ein array und prüft ob die id im array drinn ist
+        //wird verwendet um strings und nummern zu prüfen
         containsId(id, searchArray){
             for(let i=0;i<searchArray.length;i++){
                 if(searchArray[i] === id) return true;
             }
             return false;
         },
+        //wenn der cancel button gedrückt wird
         cancel(){
             this.cardUsed=false;
 
@@ -403,6 +407,7 @@ export default {
             this.playerPicked.splice(0,this.playerPicked.length);
 
         },
+        //wenn der Spieler auf eine Karte drückt
         useCard(id, searchArray){
             let count=this.cardsBeingUsed.length;
 
@@ -419,10 +424,9 @@ export default {
             }
 
         },
-        pickPlayer(name,searchArray){
-            
+        //wenn der Spieler auf einen Spieler drückt
+        pickPlayer(name,searchArray){          
             let count=this.playerPicked.length;
-
             if(this.containsId(name,searchArray) && count < this.messageActivitysUsable.maxPlayer && !this.containsId(id,this.playerPicked)){
                 for(let i=0;i<searchArray.length;i++){
                     if(name === searchArray[i]){
@@ -432,6 +436,8 @@ export default {
                 }
             }
         },
+        //prüft ob alle Bedingungen erreicht sind um den confirm button zu drücken.
+        //Z.B. ob mindestens ein Spieler ausgewählt wurde beim Angriff.
         checkConfirmStatus(){
             console.log("cardsused: "+this.cardsBeingUsed.length);
             console.log("minCard: "+this.messageActivitysUsable.minCard);
@@ -440,8 +446,9 @@ export default {
                 return false;
             return true;
         },
-        updateCardMoveMessage(){ 
-            
+        //Eine Methode die verwendet wird um das bewegen eine karte zu simulieren eigentlich in lifecyclehook update
+        //
+        updateCardMoveMessage(){
             for(let i=0;i<this.playerDaten.length;i++){
                 if(this.playerDaten[i].username === this.cardMoveMessage.source){
                     this.playerDaten[i].cardCount-=this.cardMoveMessage.count;
@@ -452,7 +459,6 @@ export default {
                     }
                 }
             }
-
             var humanDestination=false;
             for(let i=0;i<this.playerDaten.length;i++){
                 if(this.cardMoveMessage.destination === this.playerDaten[i].username){
