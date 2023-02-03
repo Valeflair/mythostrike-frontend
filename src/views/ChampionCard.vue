@@ -15,9 +15,9 @@
     <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
     
     <table >
-      <tr  v-for="i in 4" :key="i">
+      <tr  v-for="i in 5" :key="i">
         <td>
-          <img class="heart" :style="{ top: 3+2 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
+          <img class="heart" :style="{ top: 2+2 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
         </td>
       </tr>
     </table>
@@ -36,7 +36,7 @@
     </div>
     <table>
       <tr>
-        <td v-for="i in 5" :key="i" >
+        <td v-for="i in 3" :key="i" >
           <img id="d1" class="debuff" :style="{left:-2+ i*4 +'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
         </td>
       </tr>
@@ -63,8 +63,8 @@
   src: url(../assets/fontStyle/Blackadder.ttf);
 }
 .championCard {
-  width: 11.5vw;
-    height: 35vh;
+  width: 10vw;
+  height: 29vh;
   border-style: solid;
   border-color: cornflowerblue;
   position: relative;
@@ -102,10 +102,10 @@
   left: 46.5%;
 }
 .heart {
-  width: 8%;
+  width: 1vw;
   position: absolute;
   z-index: 4;
-  
+  top:1vh;
 }
 .handcard-num {
   width: 2.5vh;
@@ -118,8 +118,8 @@
   font-size: 2vh;
   color: aliceblue;
   text-align: center;
-  top: 0.5vw;
-  left: 9.5vw;
+  top: 0.2vw;
+  left: 8vw;
 }
 .identity {
   width: 4vh;
@@ -132,12 +132,12 @@
   font-size: 3vh;
   color: aliceblue;
   text-align: center;
-  top: 2.5vw;
-  left: 8.5vw;
+  top: 4vh;
+  left: 7vw;
 }
 #e1,
 #e2 {
-  width: 10vw;
+  width: 8.7vw;
   height: 3.5vh;
   left: 5%;
   position: absolute;
@@ -155,7 +155,7 @@
   bottom: 10vh;
 }
 #e2 {
-  bottom: 5.5vh;
+  bottom: 6vh;
 }
 .debuff {
   width: 4vh;
