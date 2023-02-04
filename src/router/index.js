@@ -34,7 +34,7 @@ const router = createRouter({
       component: () => import("../views/game.vue")
     },
     {
-      path: "/asdads",
+      path: "/asd",
       name: "Card",
       component: () => import("../views/Card.vue")
     },
