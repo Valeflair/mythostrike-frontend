@@ -15,9 +15,9 @@
     <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
     
     <table >
-      <tr  v-for="i in 5" :key="i">
+      <tr  v-for="i in this.health" :key="i">
         <td>
-          <img class="heart" :style="{ top: 2+2 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
+          <img class="heart" :style="{ top: 2+3 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
         </td>
       </tr>
     </table>
@@ -29,11 +29,17 @@
 
 
     <div  v-if="game" class="equipments">
-      <div id="e1" v-if="this.equip1!==null" src="" alt="">
+      <div id="e1" v-if="this.equipment.length>0" src="" alt="">
         {{ this.equip1 }} 
       </div>
-      <div  v-if="this.equip2!==null" id="e2" src="" alt="">
+      <div class="e1-description">
+        asdasdasda
+      </div>
+      <div  v-if="this.equipment.length>1" id="e2" src="" alt="">
          {{ this.equip2 }} 
+      </div>
+      <div class="e2-description">
+        asdsadsadasadasdsad
       </div>
     </div>
 
@@ -42,6 +48,7 @@
       <tr>
         <td  v-for="i in this.passiveEffect.length" :key="i" >
           <img id="d1" class="debuff" :style="{left:-2+ i*4 +'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
+          <div class="debuff-description" :style="{ left:-2+ i*4 +'vh'}"></div>
         </td>
       </tr>
     </table>
@@ -56,20 +63,19 @@ export default {
         return{
             equip1 : this.equipment[0],
             equip2 : this.equipment[1],
-            
-
-
+            health:3,
         }
     },
 
-  props: {
-    game:Boolean,
-    name: "",
-    handcardNum: Number,
-    identity: "",
-    equipment:Array,
-    passiveEffect:Array,
-  },
+    props: {
+        game:Boolean,
+        name: "",
+        handcardNum: Number,
+        health:Number,
+        identity: "",
+        equipment:Array,
+        passiveEffect:Array,
+    },
 };
 </script>
 
@@ -128,7 +134,7 @@ export default {
   left: 46.5%;
 }
 .heart {
-  width: 1vw;
+  width: 1.5vw;
   position: absolute;
   z-index: 4;
   top:1vh;
@@ -169,7 +175,7 @@ export default {
   position: absolute;
   background-image: url(../assets/card/frame/silver_top_frame-p.png);
   background-repeat: round;
-  z-index: 4;
+  z-index: 5;
   font-size: 1.8vh;
   -webkit-text-stroke: 2px rgba(100, 83, 83, 0.63);
   color: white;
@@ -183,6 +189,49 @@ export default {
 #e2 {
   bottom: 6vh;
 }
+.e1-description{
+    display: none;
+    width :10vw;
+    height: 15vh;
+    background-color: red;
+    position: absolute;
+    top:0;
+    z-index: 5;
+}
+
+.e2-description{
+    display: none;
+    width :10vw;
+    height: 15vh;
+    background-color: red;
+    position: absolute;
+    top:4vh;
+    z-index: 5;
+
+}
+#e1:hover + .e1-description{
+    display: block;
+}
+
+#e2:hover + .e2-description{
+    display: block;
+
+}
+
+.debuff-description{
+  display: none;
+    width :10vw;
+    height: 15vh;
+    background-color: green;
+    position: absolute;
+    top:8.5vh;
+    z-index: 5;
+}
+
+.debuff:hover + .debuff-description{
+  display: block;
+}
+
 .debuff {
   width: 4vh;
   height: 4vh;
