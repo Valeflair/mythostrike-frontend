@@ -175,7 +175,7 @@ export default {
   position: absolute;
   background-image: url(../assets/card/frame/silver_top_frame-p.png);
   background-repeat: round;
-  z-index: 4;
+  z-index: 5;
   font-size: 1.8vh;
   -webkit-text-stroke: 2px rgba(100, 83, 83, 0.63);
   color: white;
@@ -195,7 +195,7 @@ export default {
     height: 15vh;
     background-color: red;
     position: absolute;
-    top:6vh;
+    top:0;
     z-index: 5;
 }
 
@@ -205,7 +205,7 @@ export default {
     height: 15vh;
     background-color: red;
     position: absolute;
-    top:9.5vh;
+    top:4vh;
     z-index: 5;
 
 }
