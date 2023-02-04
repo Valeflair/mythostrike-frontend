@@ -31,7 +31,7 @@ export default {
     addBot(lobbyId) {
       return axios({
         method: "POST",
-        url: service.JOIN_LOBBY_URL,
+        url: service.ADD_BOT_LOBBY_URL,
         data:{
           lobbyId: lobbyId
         },
@@ -41,7 +41,7 @@ export default {
   start(lobbyId) {
     return axios({
       method: "POST",
-      url: service.JOIN_LOBBY_URL,
+      url: service.START_LOBBY_URL,
       data:{
         lobbyId: lobbyId
       },
@@ -51,7 +51,7 @@ export default {
 leave(lobbyId) {
   return axios({
     method: "POST",
-    url: service.JOIN_LOBBY_URL,
+    url: service.LEAVE_LOBBY_URL,
     data:{
       lobbyId: lobbyId
     },
@@ -60,8 +60,8 @@ leave(lobbyId) {
 },
 changeMode(lobbyId,newModeId) {
   return axios({
-    method: "POST",
-    url: service.JOIN_LOBBY_URL,
+    method: "PUT",
+    url: service.CHANGE_MODE_LOBBY_URL,
     data:{
       lobbyId: lobbyId,
       newModeId: newModeId

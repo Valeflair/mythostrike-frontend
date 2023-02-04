@@ -26,7 +26,7 @@ import CommandField from "@/components/CommandField.vue";
       <div class="label">
         <p class="labelText">Lobby ID: {{ this.lobbyId }}</p>
         <p class="labelText">
-          Owner: {{ this.lobbyLeader }}
+          Owner: {{ this.lobbyOwner }}
         </p>
         <p class="labelText">
           Mode: {{this.gameModeName}}
@@ -75,7 +75,7 @@ export default {
   },
   props: {
     lobbyId: Number,
-    lobbyLeader:String,
+    lobbyOwner:String,
     slotsProp:Array,
     isLobbyOwner: Boolean,
     gameModeName:String

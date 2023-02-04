@@ -4,7 +4,7 @@
      <Mode-selection 
     v-if="isModeShown"
     @close:Mode="toggleModeSelection"
-    @confirm:Mode="confirmMode"
+    @confirm:Mode="changeMode"
     :isLobbyOwner= "this.isLobbyOwner"
     :modes="this.gameModes"
     :currentModeId="this.currentModeId"
@@ -15,12 +15,12 @@
 <div class="slotStyle">
 
     <SlotView
-      :lobbyId="this.lobbyID"
-      :lobbyLeader="this.currentLeader"
+      :lobbyId="this.lobbyId"
+      :lobbyOwner="this.currentOwner"
       :isLobbyOwner= "this.isLobbyOwner"
       :slotsProp="this.slots"
       :gameModeName="this.currentModeName"
-      @confirm:Mode="confirmMode"
+      @confirm:Mode="changeMode"
       @update:Mode="toggleModeSelection"
       @update:leave="leave"
       @open:game="start"
@@ -34,6 +34,7 @@
 import SlotView from "../components/SlotField.vue";
 import ModeSelection from "../components/ModeSelection.vue"
 import lobbyService from "@/services/lobbyService";
+import resourceService from "@/services/resourceService";
 import { useUserStore } from "@/stores/user";
 export default {
   data() {
@@ -50,11 +51,11 @@ export default {
       ],
       gameModes:[],
       currentModeName:"",
-      currentLeader: "Holder",
-      currentModeId: 0,
+      currentOwner: "Holder",
+      currentModeId: null,
       lobbyId: 0,
       isModeShown: false,
-      isLobbyOwner: false
+      isLobbyOwner: true
     };
   },
   setup() {
@@ -95,6 +96,7 @@ export default {
         (response) => {
           this.currentModeId = newMode;
           console.log("newMode" + newMode);
+          console.log(response.data);
         },
         (error) => {
           console.log(error);
@@ -107,6 +109,7 @@ export default {
     async leave(){
       await lobbyService.leave(this.lobbyId).then(
         (response) => {
+          this.userStore.leaveLobby();
           this.$router.push({ path: "./lobbyoverview" });
           console.log("leave");
         },
@@ -116,27 +119,21 @@ export default {
       );
     },
     async initModes(){
-      await axios
-        .get("http://localhost:8080/resources/modes")
-        .then(
-          (response) => {
-            console.log("erfolgreich, mode data initialisiert");
-            this.gameModes = response.data;
-            console.log(response.data); 
-            this.$nextTick(() => {
-              this.currentModeName = this.gameModes[this.currentModeId].name;
-            });
-          },
-          (error) => {
-            console.log("fehler, mode data initialisieren");
-            console.log(error);
-          }
-      )
+      await resourceService.getModes().then(
+        (response) => {
+          console.log(response);
+          this.gameModes = response.data;
+          this.currentModeId = 0;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     }
   },
   created(){
     this.initModes();
-    this.lobbyId = this.userStore.getLobby();
+    this.lobbyId = this.userStore.getLobbyId();
   },
   watch: {
     currentModeId(){
