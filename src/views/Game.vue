@@ -57,7 +57,6 @@
                     </td>
                 </tr>
                 </table>
-                <Card :name='Till' :health="3" :identity="BLAU" />
         </div>
         </div>
 
@@ -134,13 +133,13 @@
             <div v-for="(card,i) in this.tablePile" :key="i" 
                 :class="[{'not-first-card': i !==0}, 'not-last-card']" 
                 :style="{'margin-left': calculateMarginLeft(this.tablePile.length,i) }"
-                @mouseenter="hoverStart(this.cards[card])"
-                @mouseleave="hoverEnd(this.cards[card])">
+                @mouseenter="hoverStart(getCard(card))"
+                @mouseleave="hoverEnd(getCard(card))">
                 <div class="tablePile">
-                    <p>{{ this.cards[card].id }}</p>
-                    <p>{{ this.cards[card].name }}</p>
-                    <div class="description"  v-if="this.cards[card].showDescription">
-                        {{ this.cards[card].description }}
+                    <p>{{ getCard(card).id }}</p>
+                    <p>{{ getCard(card).name }}</p>
+                    <div class="description"  v-if="getCard(card).showDescription">
+                        {{ getCard(card).description }}
                     </div>
                     <div class="cardOverlay" v-if="containsId(card,this.tablePile)"></div>
                 </div>
@@ -221,8 +220,8 @@ export default {
                 cardsId:[0,2,3],
                 players:[],
                 skillsID:[0,1],
-                minCard:10,
-                maxCard:10,
+                minCard:2,
+                maxCard:2,
                 minPlayer:0,
                 maxPlayer:0,
                 reason: 'Alles was der Spieler einsetzen kann: hier nur die Karten und skills mit den Ids',
@@ -346,12 +345,6 @@ export default {
                     name:'Trident of Poseidon',
                     showDescription:false,
                     description:'Description of Trident of Poseidon',
-                },
-                {
-                    id:1,
-                    name:'Spear of Ares',
-                    showDescription:false,
-                    description:'Description of Spear of Ares',
                 },
                 {
                     id:2,
@@ -486,6 +479,8 @@ export default {
         //Eine Methode die verwendet wird um das bewegen eine karte zu simulieren eigentlich in lifecyclehook update
         //
         updateCardMoveMessage(){
+            
+
             for(let i=0;i<this.playerDaten.length;i++){
                 if(this.playerDaten[i].username === this.cardMoveMessage.source){
                     this.playerDaten[i].cardCount-=this.cardMoveMessage.count;
@@ -510,6 +505,13 @@ export default {
             }
             console.log(this.cards);
             
+        },
+
+        getCard(id){
+            for(let i=0;i<this.cards.length;i++){
+                if(this.cards[i].id === id)
+                    return this.cards[i];
+            }
         }
     
     
@@ -744,7 +746,7 @@ transform: translateX(2rem);
     left: 0;
     bottom: 0;
     width: 18vw;
-    height: 10vw;
+    height: 7vw;
     background-color: red;
 }
 
@@ -773,7 +775,7 @@ transform: translateX(2rem);
     left:0;
     bottom:0;
     width: 18vw;
-    height: 17vw;
+    height: 13vw;
     background-color: white;
 }
 
