@@ -1,5 +1,6 @@
 <script setup>
 import equipmentComponent from '../components/EquipmentComponent.vue'
+import delayComponent from '../components/DelayedeffectComponent.vue'
 </script>
 <template>
   <div class="championCard">
@@ -39,8 +40,9 @@ import equipmentComponent from '../components/EquipmentComponent.vue'
     <table  v-if="game">
       <tr>
         <td  v-for="i in this.passiveEffect.length" :key="i" >
-          <img id="d1" class="debuff" :style="{left:-2+ i*4 +'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
-          <div class="debuff-description" :style="{ left:-2+ i*4 +'vh'}"></div>
+          <div class="delayEffect" :style="{left:-2+ i*4 +'vh'}">
+          <delay-component />
+          </div>
         </td>
       </tr>
     </table>
@@ -60,7 +62,7 @@ export default {
         }
     },
     components:{
-      equipmentComponent,
+      equipmentComponent,delayComponent
     },
 
     props: {
@@ -175,25 +177,10 @@ export default {
   line-height: 180%;
 }
 
-.debuff-description{
-  display: none;
-    width :10vw;
-    height: 15vh;
-    background-color: green;
-    position: absolute;
-    top:8.5vh;
-    z-index: 5;
-}
-
-.debuff:hover + .debuff-description{
-  display: block;
-}
-
-.debuff {
-  width: 4vh;
-  height: 4vh;
+.delayEffect{
+  
   position: absolute;
-  z-index: 4;
-  bottom: 1.5vh;
+  bottom: 6vh;
 }
+
 </style>
