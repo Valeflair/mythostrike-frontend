@@ -11,6 +11,7 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
     <div class="name">
       <span>
         {{ this.name }}
+        
       </span>
     </div>
 
@@ -41,7 +42,7 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
       <tr>
         <td  v-for="i in this.passiveEffect.length" :key="i" >
           <div class="delayEffect" :style="{left:-2+ i*4 +'vh'}">
-          <delay-component />
+          <delay-component :diameter="4"/>
           </div>
         </td>
       </tr>
