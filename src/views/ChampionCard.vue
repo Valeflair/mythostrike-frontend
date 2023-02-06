@@ -1,4 +1,5 @@
 <script setup>
+import equipmentComponent from '../components/EquipmentComponent.vue'
 </script>
 <template>
   <div class="championCard">
@@ -17,7 +18,7 @@
     <table >
       <tr  v-for="i in this.health" :key="i">
         <td>
-          <img class="heart" :style="{ top: 2+3 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
+          <img class="heart" :style="{ top: 2+2 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
         </td>
       </tr>
     </table>
@@ -27,23 +28,14 @@
       <!-- {{ this.identity }}-->K
     </div>
 
-
-    <div  v-if="game" class="equipments">
-      <div id="e1" v-if="this.equipment.length>0" src="" alt="">
-        {{ this.equip1 }} 
-      </div>
-      <div class="e1-description">
-        asdasdasda
-      </div>
-      <div  v-if="this.equipment.length>1" id="e2" src="" alt="">
-         {{ this.equip2 }} 
-      </div>
-      <div class="e2-description">
-        asdsadsadasadasdsad
-      </div>
-    </div>
-
-
+  <table>
+    <tr v-for="i in 2" :key="i">
+      <td  v-if="game" class="equip" :style="{bottom: 13-(i-1)*3.5+ 'vh'}">
+            <equipment-component widthProp="8.9" heightProp="3.5" name="NAME EQUIPMENT" description="Description Equipment" fontProp="1.5"/>
+      </td>
+    </tr>
+  </table>
+  
     <table  v-if="game">
       <tr>
         <td  v-for="i in this.passiveEffect.length" :key="i" >
@@ -65,6 +57,9 @@ export default {
             equip2 : this.equipment[1],
             health:3,
         }
+    },
+    components:{
+      equipmentComponent,
     },
 
     props: {
@@ -134,7 +129,7 @@ export default {
   left: 46.5%;
 }
 .heart {
-  width: 1.5vw;
+  width: 1vw;
   position: absolute;
   z-index: 4;
   top:1vh;
@@ -167,55 +162,10 @@ export default {
   top: 4vh;
   left: 7vw;
 }
-#e1,
-#e2 {
-  width: 8.9vw;
-  height: 3.5vh;
+.equip {
   left: 5%;
   position: absolute;
-  background-image: url(../assets/card/frame/silver_top_frame-p.png);
-  background-repeat: round;
-  z-index: 5;
-  font-size: 1.8vh;
-  -webkit-text-stroke: 2px rgba(100, 83, 83, 0.63);
-  color: white;
-  text-align: center;
-  margin: 0 auto;
   line-height: 180%;
-}
-#e1 {
-  bottom: 10vh;
-}
-#e2 {
-  bottom: 6vh;
-}
-.e1-description{
-    display: none;
-    width :10vw;
-    height: 15vh;
-    background-color: red;
-    position: absolute;
-    top:0;
-    z-index: 5;
-}
-
-.e2-description{
-    display: none;
-    width :10vw;
-    height: 15vh;
-    background-color: red;
-    position: absolute;
-    top:4vh;
-    z-index: 5;
-
-}
-#e1:hover + .e1-description{
-    display: block;
-}
-
-#e2:hover + .e2-description{
-    display: block;
-
 }
 
 .debuff-description{

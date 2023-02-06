@@ -1,5 +1,6 @@
 <script setup>
     import championCard from './ChampionCard.vue'
+    import equipmentComponent from '../components/EquipmentComponent.vue'
 </script>
 
 <template>
@@ -79,17 +80,13 @@
 
             <div class="equipmentSlot">
                 <table>
-                <tr v-for="equip in equipment" :key="equip.id"
+                <tr v-for="(equip,i) in equipment" :key="equip.id"
                 @mouseenter="hoverStart(equip)"
                 @mouseleave="hoverEnd(equip)">
                 
                     <td>
-                        <div class="equipmentButton">
-                            <p>{{ equip.id }}</p>
-                            <p>{{ equip.name }}</p>
-                            <div class="equipmentDescription" v-if="equip.showDescription">
-                                {{ equip.description }}
-                            </div>  
+                        <div class="equipment" :style="{bottom: 15-(i)*8+'vh'}">
+                            <equipment-component widthProp="18" heightProp="6.5" name="MYEQUIPMENT" description="DESCRIPTION_EQUIPMENT" fontProp="2"/>
                         </div>
                     </td>
                 </tr>
@@ -154,6 +151,7 @@
 
 
     <div class="drawPile"> DRAWPILE</div>
+    <div class="discardPile"> DISCARDPILE</div>
 
 
     <div class="information">
@@ -387,7 +385,7 @@ export default {
         }
     },
     components:{
-        championCard,
+        championCard,equipmentComponent,
     },
     methods: {
         
@@ -563,7 +561,7 @@ export default {
 .clickCardMoveMessage{
     position: absolute;
     left: 19vw;
-    bottom:18vw;
+    bottom:10vw;
     width: 5vw;
     height: 5vh;
     background-color: red;
@@ -573,13 +571,21 @@ export default {
 .drawPile{
     position: absolute;
     left:1vw;
-    bottom:18vw;
+    bottom:32vh;
     border-radius: 1rem;
   width: 10vw;
   height: 29vh;
     background-color: green;
 }
-
+.discardPile{
+    position: absolute;
+    left:13vw;
+    bottom:32vh;
+    border-radius: 1rem;
+  width: 10vw;
+  height: 29vh;
+    background-color: green;
+}
 
 .playerChampions{
   width: 10vw;
@@ -746,13 +752,17 @@ transform: translateX(2rem);
     left: 0;
     bottom: 0;
     width: 18vw;
-    height: 7vw;
-    background-color: red;
+    height: 15vh;
 }
-
+.equipment{
+    position: absolute;
+    left: 0;
+    
+  line-height: 350%;
+}
 .equipmentButton{
     width: 18vw;
-    height: 3vw;
+    height: 6.5vh;
     background-color: green;
     border-radius: 1rem ;
     transition: 0.2s;
@@ -776,7 +786,6 @@ transform: translateX(2rem);
     bottom:0;
     width: 18vw;
     height: 13vw;
-    background-color: white;
 }
 
 .table-wrapper {
