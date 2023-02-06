@@ -1,6 +1,7 @@
 <script setup>
     import championCard from './ChampionCard.vue'
     import equipmentComponent from '../components/EquipmentComponent.vue'
+    import DelayedeffectComponent from '../components/DelayedeffectComponent.vue'
 </script>
 
 <template>
@@ -12,7 +13,7 @@
                        <championCard class="playerChampions"
                        @click="pickPlayer(player.username,this.messageActivitysUsable.players)"
                         :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players)}" 
-                        game="true"
+                        :isGame="true"
                         :name="player.username"
                         :handcardNum="player.cardCount"
                         :identity="player.identity"
@@ -65,14 +66,12 @@
             <div class="passiveSlot">
                 <table>
                   <tr v-for="i in Math.ceil(passiveEffects.length/4)" :key="i">
-                    <td v-for="passive in passiveEffects.slice((i-1)*4, i*4)" :key="passive.id"
+                    <td v-for="(passive,j) in passiveEffects.slice((i-1)*4, i*4)" :key="passive.id"
                     @mouseenter="hoverStart(passive)"
-                    @mouseleave="hoverEnd(passive)">
-                      <div class="passiveSlotCircle">
-                        <div class="passiveDescription" v-if="passive.showDescription">
-                                {{ passive.description }}
-                          </div>
-                      </div>
+                    @mouseleave="hoverEnd(passive)"
+                    class="passiveCircle"
+                     :style="{left: j*3.5 +'vw'}">
+                      <delayedeffect-component :diameter="7" />
                     </td>
                   </tr>
                 </table>
@@ -120,13 +119,6 @@
 
         <div class="tablePileSlot" v-if="cardUsed">
             <div class="tableContainer">
-                <!--
-
-                    FEHLER this.cards[card] gibt fehler  -> erstelle methode die karte findet mit richtige id 
-
-
-
-                -->
             <div v-for="(card,i) in this.tablePile" :key="i" 
                 :class="[{'not-first-card': i !==0}, 'not-last-card']" 
                 :style="{'margin-left': calculateMarginLeft(this.tablePile.length,i) }"
@@ -150,8 +142,8 @@
         </div>  
 
 
-    <div class="drawPile"> DRAWPILE</div>
-    <div class="discardPile"> DISCARDPILE</div>
+    <div class="drawPile" v-if="this.drawPile.length>0"> DRAWPILE</div>
+    <div class="discardPile" v-if="this.discardPile.length>0">{{this.discardPile[this.discardPile.length-1]}}</div>
 
 
     <div class="information">
@@ -181,6 +173,8 @@ export default {
             usable:true,
             playerPicked:[],
             tablePile:[],
+            discardPile:[],
+            drawPile:[],
             username:'Minh',
             champion:{
                 name:'Nyx',
@@ -313,9 +307,9 @@ export default {
             },
             cardMoveMessage:{
                 source:'Minh',
-                destination:'Till',
+                destination:'discardPile',
                 count:1,
-                cardsId:[0],
+                cardsId:[0,1],
             },
             passiveEffects:[
               {
@@ -385,7 +379,7 @@ export default {
         }
     },
     components:{
-        championCard,equipmentComponent,
+        championCard,equipmentComponent,DelayedeffectComponent
     },
     methods: {
         
@@ -477,8 +471,20 @@ export default {
         //Eine Methode die verwendet wird um das bewegen eine karte zu simulieren eigentlich in lifecyclehook update
         //
         updateCardMoveMessage(){
-            
+            //1. wir entfernen die Karten.
 
+            //erst prüfen ob es eines der Stapeln ist
+            if(this.cardMoveMessage.source === 'discardPile'){
+                for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
+                    this.discardPile.pop();
+            }else if(this.cardMoveMessage.source === 'drawPile'){
+                for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
+                    this.drawPile.pop();
+            }else if(this.cardMoveMessage.source === 'tablePile'){
+                for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
+                    this.tablePile.pop();
+            }
+            //wenn es ein Stapel ist kann es kein Mensch sein. sonst nehmen wir die karten vom Menschen weg
             for(let i=0;i<this.playerDaten.length;i++){
                 if(this.playerDaten[i].username === this.cardMoveMessage.source){
                     this.playerDaten[i].cardCount-=this.cardMoveMessage.count;
@@ -489,10 +495,24 @@ export default {
                     }
                 }
             }
-            var humanDestination=false;
+
+
+            //2. wir fügen die Karte nun dahin wohin sie hingehört ein
+            if(this.cardMoveMessage.destination === 'discardPile'){
+                for(let i=0;i<this.cardMoveMessage.cardsId.length;i++){
+                    this.discardPile.push(this.cardMoveMessage.cardsId[i]);
+                    console.log(this.discardPile);
+                }
+            }else if(this.cardMoveMessage.destination === 'drawPile'){
+                for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
+                    this.drawPile.push(this.cardMoveMessage.cardsId[i]);
+            }else if(this.cardMoveMessage.destination === 'tablePile'){
+                for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
+                    this.tablePile.push(this.cardMoveMessage.cardsId[i]);
+            }
+        	
             for(let i=0;i<this.playerDaten.length;i++){
                 if(this.cardMoveMessage.destination === this.playerDaten[i].username){
-                    humanDestination=true;
                     this.playerDaten[i].cardCount+=this.cardMoveMessage.count;
                     if(this.cardMoveMessage.destination === this.username){
                         for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
@@ -501,10 +521,9 @@ export default {
                     }
                 }
             }
-            console.log(this.cards);
             
         },
-
+        /*sucht die Karte mit der bestimmten id */
         getCard(id){
             for(let i=0;i<this.cards.length;i++){
                 if(this.cards[i].id === id)
@@ -724,17 +743,14 @@ transform: translateX(2rem);
     left: 0;
     bottom:3vw;
     width: 18vw;
-    height: 10vw;
+    height: 5vw;
     background-color: yellow;
+    overflow:auto;
 }
 
-.passiveSlotCircle{
-    position: relative;
+.passiveCircle{
+    position: absolute;
     background-color: purple;
-    top:1vh;
-    width: 4vw;
-    height: 4vw;
-    border-radius: 100%;
 }
 
 .passiveDescription{

@@ -1,8 +1,9 @@
 <script setup>
 import equipmentComponent from '../components/EquipmentComponent.vue'
+import delayComponent from '../components/DelayedeffectComponent.vue'
 </script>
 <template>
-  <div class="championCard">
+  <div class="championCard" @mouseover="hoverStart()" @mouseout="hoverEnd()">
     <img class="frame" src="../assets/card/frame/gold_card_frame_r.png" alt="" />
 
     <img class="avatar" src="../assets/card/pictures/Aphrodite.png" alt="" />
@@ -10,6 +11,7 @@ import equipmentComponent from '../components/EquipmentComponent.vue'
     <div class="name">
       <span>
         {{ this.name }}
+        
       </span>
     </div>
 
@@ -18,7 +20,7 @@ import equipmentComponent from '../components/EquipmentComponent.vue'
     <table >
       <tr  v-for="i in this.health" :key="i">
         <td>
-          <img class="heart" :style="{ top: 2+2 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
+          <img :class="{'heartSmall':this.game,'heartBig':!this.game }" :style="{ top: 2+(this.game?2:3) * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
         </td>
       </tr>
     </table>
@@ -30,7 +32,7 @@ import equipmentComponent from '../components/EquipmentComponent.vue'
 
   <table>
     <tr v-for="i in 2" :key="i">
-      <td  v-if="game" class="equip" :style="{bottom: 13-(i-1)*3.5+ 'vh'}">
+      <td  v-if="game" class="equip" :style="{bottom: 13-(i-1)*3.5+ 'vh'}" @mouseenter="showInnerComponents(true)" @mouseleave="showInnerComponents(false)">
             <equipment-component widthProp="8.9" heightProp="3.5" name="NAME EQUIPMENT" description="Description Equipment" fontProp="1.5"/>
       </td>
     </tr>
@@ -39,11 +41,14 @@ import equipmentComponent from '../components/EquipmentComponent.vue'
     <table  v-if="game">
       <tr>
         <td  v-for="i in this.passiveEffect.length" :key="i" >
-          <img id="d1" class="debuff" :style="{left:-2+ i*4 +'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
-          <div class="debuff-description" :style="{ left:-2+ i*4 +'vh'}"></div>
+          <div class="delayEffect" :style="{left:-2+ i*4 +'vh'}" @mouseenter="showInnerComponents(true)" @mouseleave="showInnerComponents(false)">
+          <delay-component :diameter="4"   />
+          </div>
         </td>
       </tr>
     </table>
+
+    <div class="description"  v-if="this.showDescription">{{ this.description }}</div>
 
   </div>
 </template>
@@ -56,25 +61,60 @@ export default {
             equip1 : this.equipment[0],
             equip2 : this.equipment[1],
             health:3,
+            game:this.isGame,
+            showDescription:false,
+            timerDelay:1000,
+            hoverComponents:false,
         }
     },
     components:{
-      equipmentComponent,
+      equipmentComponent,delayComponent
+    },
+    methods:{
+      showInnerComponents(item){
+        this.hoverComponents=item;
+        this.hoverEnd(); // oder nur showDescription = false;
+},
+      hoverStart(){
+        console.log("in hoverStart: "+this.hoverComponents);
+
+        if(this.hoverComponents===false &&  !this.showDescription){
+         this.hoverTimer = setTimeout(() => {
+          if(this.hoverComponents===false&&  !this.showDescription)
+                this.showDescription = true
+            }, this.timerDelay)
+        }
+      },
+      hoverEnd(){
+        clearTimeout(this.hoverTimer);
+        this.showDescription = false;
+      }
     },
 
     props: {
-        game:Boolean,
+        isGame:Boolean,
         name: "",
         handcardNum: Number,
         health:Number,
         identity: "",
         equipment:Array,
         passiveEffect:Array,
+        description:'',
     },
 };
 </script>
 
 <style scoped>
+.description{
+  width: 20vw;
+  height: 22vh;
+  background-color: red;
+  left:10vw;
+  position: absolute;
+  z-index: 6;
+  border:solid green 3px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -128,8 +168,14 @@ export default {
   bottom: 0%;
   left: 46.5%;
 }
-.heart {
+.heartSmall {
   width: 1vw;
+  position: absolute;
+  z-index: 4;
+  top:1vh;
+}
+.heartBig {
+  width: 1.5vw;
   position: absolute;
   z-index: 4;
   top:1vh;
@@ -168,25 +214,10 @@ export default {
   line-height: 180%;
 }
 
-.debuff-description{
-  display: none;
-    width :10vw;
-    height: 15vh;
-    background-color: green;
-    position: absolute;
-    top:8.5vh;
-    z-index: 5;
-}
-
-.debuff:hover + .debuff-description{
-  display: block;
-}
-
-.debuff {
-  width: 4vh;
-  height: 4vh;
+.delayEffect{
+  
   position: absolute;
-  z-index: 4;
-  bottom: 1.5vh;
+  bottom: 6vh;
 }
+
 </style>
