@@ -48,7 +48,7 @@
       <tr>
         <td  v-for="i in this.passiveEffect.length" :key="i" >
           <img id="d1" class="debuff" :style="{left:-2+ i*4 +'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
-          <div class="debuff-description"></div>
+          <div class="debuff-description" :style="{ left:-2+ i*4 +'vh'}"></div>
         </td>
       </tr>
     </table>
@@ -224,6 +224,7 @@ export default {
     height: 15vh;
     background-color: green;
     position: absolute;
+    top:8.5vh;
     z-index: 5;
 }
 
