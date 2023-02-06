@@ -1,8 +1,16 @@
 <template>
-    <img class="debuff" src="../assets/card/smallParts/ring-o.png" alt="" />
+    <img class="debuff" :style="{width: diameter+'vh',height: diameter+'vh'}" src="../assets/card/smallParts/ring-o.png" alt="" />
     <div class="debuff-description">Description</div>
        
 </template>
+
+<script>
+export default {
+    props:{
+        diameter:Number,
+    }
+}
+</script>
 
 
 <style scoped>
@@ -22,8 +30,6 @@
 }
 
 .debuff {
-  width: 4vh;
-  height: 4vh;
   position: absolute;
   z-index: 4;
 }

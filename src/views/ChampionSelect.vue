@@ -16,7 +16,7 @@ import axios from 'axios';
              <v-col  :key="champion.id">   
                <!-- <button class="championButton" @click="changeChampion(champion.id)">{{champion.name}}</button>-->
                 <championCard class="championButton"
-                :isGame="true"
+                :isGame="false"
                 name= "Minh"
                 handcardNum= 5
                 identity= "King"
