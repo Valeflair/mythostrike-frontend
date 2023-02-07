@@ -679,7 +679,7 @@ export default {
     right: 5px;
     bottom: 5px;
     width: 13vw;
-    height: 17vw;
+    height: 36vh;
     background-color: grey;
 }
 
