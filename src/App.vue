@@ -15,28 +15,28 @@ export default {
   data: () => ({
     //
   }),
-  setup() {
-    const userStore = useUserStore();
-    return { userStore };
-  },
-  async beforeCreate() {
-    if (this.userStore.getStatus() == false) {
-      if (localStorage.getItem("token") == null) {
-        this.$router.push("/");
-      } else {
-        await authService.auth().then(
-          (response) => {
-            console.log(response);
-            this.userStore.setUserData(response.data);
-            this.$router.push("/home");
-          },
-          (error) => {
-            console.log(error);
-            this.$router.push("/");
-          }
-        );
-      }
-    }
-  },
+  // setup() {
+  //   const userStore = useUserStore();
+  //   return { userStore };
+  // },
+  // async beforeCreate() {
+  //   if (this.userStore.getStatus() == false) {
+  //     if (localStorage.getItem("token") == null) {
+  //       this.$router.push("/");
+  //     } else {
+  //       await authService.auth().then(
+  //         (response) => {
+  //           console.log(response);
+  //           this.userStore.setUserData(response.data);
+  //           this.$router.push("/home");
+  //         },
+  //         (error) => {
+  //           console.log(error);
+  //           this.$router.push("/");
+  //         }
+  //       );
+  //     }
+  //   }
+  // },
 };
 </script>

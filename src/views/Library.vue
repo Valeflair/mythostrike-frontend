@@ -4,7 +4,7 @@ import championData from "../data/champions.json";
 <template>
   <div class="library">
     <h1>Library</h1>
-    <button class="back"></button>
+    <button class="back" @click="back"></button>
     <div class="cardContainer">
       <v-row class="d-flex justify-left">
         <div v-for="champion in champions" :key="champion.id">
@@ -105,6 +105,9 @@ export default {
       console.log(this.champions[championId]);
       this.currentChampion = this.champions[championId];
     },
+    back() {
+      history.back();
+    }
   },
 };
 </script>

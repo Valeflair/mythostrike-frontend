@@ -1,3 +1,6 @@
+<script setup>
+import users from "../data/users.json";
+</script>
 <template>
   <div class="statment">
     <img
@@ -5,26 +8,54 @@
       src="../assets/backgrounds/modeSelect_background.png"
       alt=""
     />
-    <div id="table">
+    <div id="table1">
       <v-table theme="dark" hover="true" tag="wattttt">
-        <thead>
+        <thead class="bg-blue-lighten-4">
           <tr id="head">
-            <th class="text-left">User</th>
-            <th class="text-left">Identity</th>
-            <th class="text-left">Drachma</th>
-            <th class="text-left">Rank Points</th>
-            <th class="text-left">Has Won</th>
+            <th class="text-left text-grey-darken-4">Team</th>
+            <th class="text-left text-grey-darken-4">User</th>
+            <th class="text-left text-grey-darken-4">User ID</th>
+            <th class="text-left text-grey-darken-4">Identity</th>
+            <th class="text-left text-grey-darken-4">Drachma</th>
+            <th class="text-left text-grey-darken-4">Rank Points</th>
+            <th class="text-left text-grey-darken-4">Has Won</th>
           </tr>
         </thead>
-        <tbody id="body">
-          <tr v-for="item in desserts" :key="item.name">
-            <td>{{ item.userName }}</td>
-            <td>{{ item.identity }}</td>
-            <td>{{ item.drachma }}</td>
-            <td>{{ item.rankPoints }}</td>
-            <td>{{ item.hasWon }}</td>
-            <td></td>
-            <td></td>
+        <tbody id="body" v-for="user in users" :key="user.userId">
+          <tr v-if="user.hasWon == true">
+            <td>{{ user.team }}</td>
+            <td>{{ user.userName }}</td>
+            <td>{{ user.userId }}</td>
+            <td>{{ user.identity }}</td>
+            <td>{{ user.drachma }}</td>
+            <td>{{ user.rankPoints }}</td>
+            <td>YEAHH!</td>
+          </tr>
+        </tbody>
+      </v-table>
+    </div>
+    <div id="table2">
+      <v-table theme="dark" hover="true" tag="wattttt">
+        <thead class="bg-red-lighten-4">
+          <tr id="head">
+            <th class="text-left text-grey-darken-4">Team</th>
+            <th class="text-left text-grey-darken-4">User</th>
+            <th class="text-left text-grey-darken-4">User ID</th>
+            <th class="text-left text-grey-darken-4">Identity</th>
+            <th class="text-left text-grey-darken-4">Drachma</th>
+            <th class="text-left text-grey-darken-4">Rank Points</th>
+            <th class="text-left text-grey-darken-4">Has Won</th>
+          </tr>
+        </thead>
+        <tbody id="body" v-for="user in users" :key="user.userId">
+          <tr v-if="user.hasWon == false">
+            <td>{{ user.team }}</td>
+            <td>{{ user.userName }}</td>
+            <td>{{ user.userId }}</td>
+            <td>{{ user.identity }}</td>
+            <td>{{ user.drachma }}</td>
+            <td>{{ user.rankPoints }}</td>
+            <td>NOOOOE!</td>
           </tr>
         </tbody>
       </v-table>
@@ -37,6 +68,10 @@
 * {
   margin: 0;
   padding: 0;
+}
+th {
+  font-size: large;
+  font-style: italic;
 }
 .statment {
   position: relative;
@@ -53,11 +88,15 @@
   background-repeat: round;
   opacity: 0.5;
 }
-
-#table {
+#table1 {
   position: absolute;
   width: 68vw;
   top: 18%;
+}
+#table2 {
+  position: absolute;
+  width: 68vw;
+  top: 50%;
 }
 
 .quit {
@@ -68,88 +107,18 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  left: 80%;
-  top: 20%;
+  left: 83%;
+  top: 10%;
 }
 </style>
 
 <script>
 export default {
-  data() {
-    return {
-      desserts: [
-        {
-          userName: "noob chicken",
-          identity: "God King",
-          drachma: "9999",
-          rankPoints: "9999",
-          hasWon: "yes",
-        },
-        {
-          userName: "noob king",
-          identity: "Rebel",
-          drachma: "0",
-          rankPoints: "0",
-          hasWon: "no",
-        },
-        {
-          userName: "frog of shadow",
-          identity: "rebel",
-          drachma: "-9999",
-          rankPoints: "0",
-          hasWon: "no",
-        },
-        {
-          userName: "frog of shadow",
-          identity: "rebel",
-          drachma: "-9999",
-          rankPoints: "0",
-          hasWon: "no",
-        },
-        {
-          userName: "frog of shadow",
-          identity: "rebel",
-          drachma: "-9999",
-          rankPoints: "0",
-          hasWon: "no",
-        },
-        {
-          userName: "frog of shadow",
-          identity: "rebel",
-          drachma: "-9999",
-          rankPoints: "0",
-          hasWon: "no",
-        },
-        {
-          userName: "frog of shadow",
-          identity: "rebel",
-          drachma: "-9999",
-          rankPoints: "0",
-          hasWon: "no",
-        },
-        {
-          userName: "frog of shadow",
-          identity: "rebel",
-          drachma: "-9999",
-          rankPoints: "0",
-          hasWon: "no",
-        },
-        {
-          userName: "frog of shadow",
-          identity: "rebel",
-          drachma: "-9999",
-          rankPoints: "0",
-          hasWon: "no",
-        },
-        {
-          userName: "frog of shadow",
-          identity: "rebel",
-          drachma: "-9999",
-          rankPoints: "0",
-          hasWon: "no",
-        },
-      ],
-    };
+  data() {},
+  methods: {
+    quitGame() {
+      history.back();
+    },
   },
 };
 </script>
