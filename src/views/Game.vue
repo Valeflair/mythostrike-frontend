@@ -12,7 +12,8 @@
                     <td v-for="player in playerDaten.filter(player => player.username !== this.username)" :key="player.username">
                        <championCard class="playerChampions"
                        @click="pickPlayer(player.username,this.messageActivitysUsable.players)"
-                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players)}" 
+                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players)&&player.username!==this.currentPlayer
+                                , 'actualPlayer':player.username === this.currentPlayer}" 
                         :isGame="true"
                         :name="player.username"
                         :handcardNum="player.cardCount"
@@ -28,6 +29,10 @@
                 </tr>
             </table>
         </header>
+        <div class="logClass">
+            <button class="logBtn" @click="logOpen = !logOpen"> Log</button>
+            <div class="logTextArea" v-if="this.logOpen">{{logText}} </div>
+        </div>
 
         <div class="playerChampion">
             <div class="skillContainer">
@@ -165,17 +170,17 @@
 export default {
     data(){
         return{
-            currentCard:Object,
-            cardUsed:false,
-            backgroundImage:'@/assets/backgrounds/game_background.png',
-            currentPlayer: 0,
-            timerDelay:1000,
-            usable:true,
-            playerPicked:[],
-            tablePile:[],
-            discardPile:[],
-            drawPile:[],
-            username:'Minh',
+            logText:'Text', // der text für den log
+            logOpen:false, // boolean der prüft ob der log geöffnet wurde oder nicht
+            cardUsed:false, // wird genutzt um confirm und cancel button anzuzeigen wenn eine Karte verwendet wurde
+            backgroundImage:'@/assets/backgrounds/game_background.png', // backgroundimage
+            timerDelay:1000,// der delay für karten hover
+            playerPicked:[], // ein Array das alle Spieler die ausgewählt wurde enthält
+            tablePile:[], // der Stapel für die gerade ausgespielten Karten
+            discardPile:[], // der AblegeStapel
+            drawPile:[], // der Ziehstapel
+            username:'Minh', // hält der Spieler immer bei sich
+            currentPlayer:'Till', // bekommen wir von websocket
             champion:{
                 name:'Nyx',
                 description:'Description of Nyx',
@@ -207,7 +212,7 @@ export default {
                         showDescription:false,
                     },
                 ]
-            },
+            },// Der champion von diesem Spieler. Wird über REST mit dem Spieler bereits mitgegeben. muss hier geändert werden
             messageActivitysUsable:{
                 cardsId:[0,2,3],
                 players:[],
@@ -217,7 +222,7 @@ export default {
                 minPlayer:0,
                 maxPlayer:0,
                 reason: 'Alles was der Spieler einsetzen kann: hier nur die Karten und skills mit den Ids',
-            },
+            },// Highlightmessage wird simuliert 
             playerDaten:[
                 {
                     username: 'Minh',
@@ -283,8 +288,8 @@ export default {
                     identity: 'TEAM_RED',
                     equipment: [],
                     passiveEffect:['nightmare','drought'],
-                },
-            ],
+                }
+            ],// eine Liste aller Spieler mit ihren Infos. Wird verwendet um die Anzeige aller Spieler zu aktualisieren
             messageAttackCard:{ //alle messages sollen immer ein szenario darstellen um es aber hier wirklich zu nutzen überschreibe messageActivityUsable hierein
                 cardsId:[],
                 players:['Jack','Till'],
@@ -294,7 +299,7 @@ export default {
                 minPlayer:1,
                 maxPlayer:1,
                 reason: 'Der Spieler hat eine Angriffskarte ausgespielt und kann nun Jack oder Till angreifen ',
-            },
+            },// Highlightmessage wird simuliert
             messageDefendCard:{ //alle messages sollen immer ein szenario darstellen um es aber hier wirklich zu nutzen überschreibe messageActivityUsable hierein
                 cardsId:[1],
                 players:[],
@@ -304,13 +309,13 @@ export default {
                 minPlayer:0,
                 maxPlayer:0,
                 reason: 'Der Spieler spielt eine Verteidigungskarte aus ',
-            },
+            },//Highlightmessage wird simuliert 
             cardMoveMessage:{
                 source:'Minh',
                 destination:'discardPile',
                 count:1,
                 cardsId:[0,1],
-            },
+            },// Cardmovemessage wird simuliert
             passiveEffects:[
               {
                 id:0,
@@ -330,7 +335,7 @@ export default {
                 showDescription:false,
                 description:"Description Effect 2",
               }
-            ],
+            ],// die passiven effects die der Spieler drunter leidet. Bekommen wir von playerDaten
             equipment:[
                 {
                     id:0,
@@ -344,7 +349,7 @@ export default {
                     showDescription:false,
                     description:'Description of Shield of Athena',
                 },
-            ],
+            ],// die equipments die der spieler hat. Bekommen wir von playerdaten.
             cards:[
         {
           id:0,
@@ -375,7 +380,7 @@ export default {
           description:'Description of Golden Apple',
           used: false,
         }
-            ]
+            ]// DIe karten von diesen Spieler. Müssen gespeichert werden für jeden Spieler. Aber nur dessen id. Wir haben nnähmlich noch eine Liste bei der wir durch die Id die karte erhalten.
         }
     },
     components:{
@@ -439,7 +444,6 @@ export default {
                         console.log(this.cards[i].id);
                         this.cardUsed=true;
                         this.cards[i].used =true;
-                        this.currentCard = this.cards[i];    
                         this.tablePile.push(this.cards[i].id);
                         console.log("table pile: "+this.tablePile);
                         break;
@@ -539,7 +543,45 @@ export default {
 </script>
 
 <style scoped>
+.actualPlayer{
+    border: solid red 5px;
+}
 
+.logBtn{
+    position: absolute;
+    right: 0;
+    width: 5vw;
+    height: 5vh;
+    background-color: green;
+    
+}
+
+.logTextArea{
+    position: relative;
+    width: 15vw;
+    right: 0;
+    top:5vh;
+    height: 40vh;
+    background-color: blue;
+   overflow-y: scroll;
+    word-wrap: break-word;
+}
+
+.logClass{
+    width: 15vw;
+    height: 45vh;
+    position: absolute;
+    right:0;
+    top:0;
+    overflow: auto;
+}
+
+
+.table-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 90vw;
+}
 
 .tablePile{
   width: 10vw;
@@ -804,10 +846,6 @@ transform: translateX(2rem);
     height: 13vw;
 }
 
-.table-wrapper {
-    display: flex;
-    justify-content: center;
-}
 
 
 
