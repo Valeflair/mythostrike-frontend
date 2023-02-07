@@ -1,16 +1,16 @@
 <script setup>
-import equipmentComponent from '../components/EquipmentComponent.vue'
+import equipmentComponent from '../components/blockWithDescription.vue'
 import delayComponent from '../components/DelayedeffectComponent.vue'
 </script>
 <template>
-  <div class="championCard" @mouseover="hoverStart()" @mouseout="hoverEnd()">
+  <div class="championCard" @mouseenter="this.showSkills=true" @mouseleave="this.showSkills=false">
     <img class="frame" src="../assets/card/frame/gold_card_frame_r.png" alt="" />
 
     <img class="avatar" src="../assets/card/pictures/Aphrodite.png" alt="" />
 
     <div class="name">
       <span>
-        {{ this.name }}
+        <!--{{ this.name }}--> NAME
         
       </span>
     </div>
@@ -20,35 +20,25 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
     <table >
       <tr  v-for="i in this.health" :key="i">
         <td>
-          <img :class="{'heartSmall':this.game,'heartBig':!this.game }" :style="{ top: 2+(this.game?2:3) * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
+          <img class="heartBig" :style="{ top: 2+3 * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
         </td>
       </tr>
     </table>
 
-    <div v-if="game" class="handcard-num"> {{ this.handcardNum }} </div>
     <div  v-if="game" class="identity">
       <!-- {{ this.identity }}-->K
     </div>
-
-  <table>
-    <tr v-for="i in 2" :key="i">
-      <td  v-if="game" class="equip" :style="{bottom: 13-(i-1)*3.5+ 'vh'}" @mouseenter="showInnerComponents(true)" @mouseleave="showInnerComponents(false)">
-            <equipment-component widthProp="8.9" heightProp="3.5" name="NAME EQUIPMENT" description="Description Equipment" fontProp="1.5"/>
-      </td>
-    </tr>
-  </table>
-  
-    <table  v-if="game">
-      <tr>
-        <td  v-for="i in this.passiveEffect.length" :key="i" >
-          <div class="delayEffect" :style="{left:-2+ i*4 +'vh'}" @mouseenter="showInnerComponents(true)" @mouseleave="showInnerComponents(false)">
-          <delay-component :diameter="4"   />
-          </div>
+    
+    <table class="skillList" v-if="this.showSkills">
+      <tr v-for="(skill,i) in skills" :key="skill.name">
+        <td class="skill"  :style="{bottom: 5*i+ 'vh'}" >
+            <equipment-component widthProp="10.2" heightProp="5" name="NAME SKILL" description="Description SKILL" fontProp="1.5" :usableProp="containsId(skill.id,this.messageActivitysUsable.skillsID)" :id="skill.id"
+              @skillUsed="useSkill"
+            />
         </td>
       </tr>
     </table>
 
-    <div class="description"  v-if="this.showDescription">{{ this.description }}</div>
 
   </div>
 </template>
@@ -58,53 +48,116 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
 export default {
     data(){
         return{
-            equip1 : this.equipment[0],
-            equip2 : this.equipment[1],
             health:3,
-            game:this.isGame,
-            showDescription:false,
+            game:true,
+            showSkills:false,
             timerDelay:1000,
             hoverComponents:false,
+            messageActivitysUsable:{
+                cardsId:[0,2,3],
+                players:[],
+                skillsID:[0,1],
+                minCard:2,
+                maxCard:2,
+                minPlayer:0,
+                maxPlayer:0,
+                reason: 'Alles was der Spieler einsetzen kann: hier nur die Karten und skills mit den Ids',
+            },
+            skills:[
+              {
+                name:'Name1',
+                description:'Description1',
+                id:0,
+              },
+              {
+                name:'Name2',
+                description:'Description2',
+                id:1,
+              },
+              {
+                name:'Name3',
+                description:'Description3',
+                id:2,
+              },
+              {
+                name:'Name4',
+                description:'Description4',
+                id:3,
+              }
+            ]
         }
     },
     components:{
       equipmentComponent,delayComponent
     },
     methods:{
-      showInnerComponents(item){
-        this.hoverComponents=item;
-        this.hoverEnd(); // oder nur showDescription = false;
-},
-      hoverStart(){
-        console.log("in hoverStart: "+this.hoverComponents);
-
-        if(this.hoverComponents===false &&  !this.showDescription){
-         this.hoverTimer = setTimeout(() => {
-          if(this.hoverComponents===false&&  !this.showDescription)
-                this.showDescription = true
-            }, this.timerDelay)
-        }
+      useSkill(skillId){
+        this.$emit('skillUsed',skillId);
       },
-      hoverEnd(){
+      containsId(id, array){
+        for(let i=0;i<array.length;i++){
+          if(id===array[i]) return true;
+        }
+        return false;
+      },
+      hoverStart(skill){
+
+         this.hoverTimer = setTimeout(() => {
+                skill.showSkills = true
+            }, this.timerDelay)
+        
+      },
+      hoverEnd(skill){
         clearTimeout(this.hoverTimer);
-        this.showDescription = false;
+        skill.showSkills = false;
       }
     },
 
     props: {
-        isGame:Boolean,
         name: "",
-        handcardNum: Number,
         health:Number,
         identity: "",
-        equipment:Array,
-        passiveEffect:Array,
-        description:'',
+        messageActivitysUsable:Object,
+        skillsProp:Array,
+
+
     },
 };
 </script>
 
 <style scoped>
+
+
+.usableClass{
+    border: solid yellow 10px;
+    cursor: pointer;
+}
+
+.notUsableClass{
+    border: solid black 5px;
+}
+
+.skill-description{
+  width: 10vw;
+  height: 10vh;
+  top:-10vh;
+  position: absolute;
+  background-color: blueviolet;
+}
+
+.skill{
+
+  left: 5%;
+  position: absolute;
+  line-height: 180%;
+}
+
+.skillList{
+  position:absolute;
+  bottom:8vh;
+  left:0.6vw;
+}
+
 .description{
   width: 20vw;
   height: 22vh;
@@ -132,8 +185,8 @@ export default {
   src: url(../assets/fontStyle/Blackadder.ttf);
 }
 .championCard {
-  width: 10vw;
-  height: 29vh;
+    width: 11.5vw;
+    height: 35vh;
   position: relative;
 }
 .frame {
@@ -191,8 +244,8 @@ export default {
   font-size: 2vh;
   color: aliceblue;
   text-align: center;
-  top: 0.2vw;
-  left: 8vw;
+  top: 0.5vw;
+  left: 9.5vw;
 }
 .identity {
   width: 4vh;
@@ -205,19 +258,8 @@ export default {
   font-size: 3vh;
   color: aliceblue;
   text-align: center;
-  top: 4vh;
-  left: 7vw;
-}
-.equip {
-  left: 5%;
-  position: absolute;
-  line-height: 180%;
-}
-
-.delayEffect{
-  
-  position: absolute;
-  bottom: 6vh;
+  top: 5vh;
+  left: 8.5vw;
 }
 
 </style>

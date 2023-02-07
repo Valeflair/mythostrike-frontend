@@ -1,5 +1,5 @@
 <script setup>
-import equipmentComponent from '../components/EquipmentComponent.vue'
+import equipmentComponent from '../components/blockWithDescription.vue'
 import delayComponent from '../components/DelayedeffectComponent.vue'
 </script>
 <template>
@@ -33,7 +33,7 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
   <table>
     <tr v-for="i in 2" :key="i">
       <td  v-if="game" class="equip" :style="{bottom: 13-(i-1)*3.5+ 'vh'}" @mouseenter="showInnerComponents(true)" @mouseleave="showInnerComponents(false)">
-            <equipment-component widthProp="8.9" heightProp="3.5" name="NAME EQUIPMENT" description="Description Equipment" fontProp="1.5"/>
+            <equipment-component widthProp="8.9" heightProp="3.5" name="NAME EQUIPMENT" description="Description Equipment" fontProp="1.5" :usableProp="false" :id=i />
       </td>
     </tr>
   </table>
@@ -58,8 +58,6 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
 export default {
     data(){
         return{
-            equip1 : this.equipment[0],
-            equip2 : this.equipment[1],
             health:3,
             game:this.isGame,
             showDescription:false,

@@ -1,5 +1,7 @@
 <template>
-    <div class="equipment" :style="{width: widthProp+'vw', height:heightProp+'vh', 'font-size':fontProp+'vh'}">
+    <div class="equipment" :class="{'usableClass':usableProp,'notUsableClass':!usableProp}" 
+    :style="{width: widthProp+'vw', height:heightProp+'vh', 'font-size':fontProp+'vh'}" 
+    @click="emitSkillUsed()">
         {{ this.name }} 
       </div>
       <div class="equipment-description" :style="{width: widthProp+'vw', height:3*heightProp+'vh', top:-3*heightProp+'vh'}">
@@ -14,14 +16,31 @@ export default {
         widthProp: Number,
         heightProp:Number,
         fontProp:Number,
+        usableProp:false,
         name:'',
-        description:''
+        description:'',
+        id:Number,
+    },
+    methods:{
+        emitSkillUsed(){
+            if(this.usableProp===true)
+                this.$emit('skillUsed',this.id);
+        }
     }
 }
 </script>
 
 
 <style scoped>
+.usableClass{
+    border: solid yellow 2px;
+    cursor: pointer;
+}
+
+.notUsableClass{
+    border: solid black 2px;
+}
+
 .equipment{
     transition: 0.2s;
     position: absolute;

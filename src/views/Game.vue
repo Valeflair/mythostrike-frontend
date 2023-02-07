@@ -1,7 +1,8 @@
 <script setup>
     import championCard from './ChampionCard.vue'
-    import equipmentComponent from '../components/EquipmentComponent.vue'
+    import equipmentComponent from '../components/blockWithDescription.vue'
     import DelayedeffectComponent from '../components/DelayedeffectComponent.vue'
+    import playerCard from './PlayerChampionCard.vue'
 </script>
 
 <template>
@@ -34,39 +35,11 @@
             <div class="logTextArea" v-if="this.logOpen">{{logText}} </div>
         </div>
 
-        <div class="playerChampion">
-            <div class="skillContainer">
-                <table>
-                <tr v-for="passive in this.champion.passiveSkills" :key="passive.id"
-                @mouseenter="hoverStart(passive)"
-                @mouseleave="hoverEnd(passive)">
-                    <td>
-                        <div class="skill"
-                        :class="{'usableClass':containsId(passive.id,this.messageActivitysUsable.skillsID), notUsableClass:!containsId(passive.id,this.messageActivitysUsable.skillsID)}">
-                            <p>{{ passive.name }}</p>
-                            <div class="skillDescription" v-if="passive.showDescription">
-                            {{ passive.description }}
-                            </div>  
-                        </div>
-                    </td>
-                </tr>
-                <tr v-for="active in this.champion.activeSkills" :key="active.id"
-                @mouseenter="hoverStart(active)"
-                @mouseleave="hoverEnd(active)">
-                    <td>
-                        <div class="skill"
-                        :class="{'usableClass':containsId(active.id,this.messageActivitysUsable.skillsID), notUsableClass:!containsId(active.id,this.messageActivitysUsable.skillsID)}">
-                            <p>{{ active.name }}</p>
-                            <div class="skillDescription" v-if="active.showDescription">
-                                {{ active.description }}
-                            </div>  
-                        </div>
-                    </td>
-                </tr>
-                </table>
+        <div class="player">
+            <player-card :name="this.username" :health="this.findPlayer(this.username).health" :identity="this.findPlayer(this.username).identity"
+            :messageActivitysUsable="this.messageActivitysUsable" :skillsProp="null" 
+            @skillUsed="useSkill"/>
         </div>
-        </div>
-
         <div class="passivePosNegSlot">
             <div class="passiveSlot">
                 <table>
@@ -384,7 +357,7 @@ export default {
         }
     },
     components:{
-        championCard,equipmentComponent,DelayedeffectComponent
+        championCard,equipmentComponent,DelayedeffectComponent,playerCard
     },
     methods: {
         
@@ -450,7 +423,9 @@ export default {
                     }
                 }
             }
-
+        },
+        useSkill(skillId){
+            console.log('erfolgreich skill eingesetzt '+skillId);
         },
         //wenn der Spieler auf einen Spieler drückt
         pickPlayer(name,searchArray){          
@@ -533,6 +508,13 @@ export default {
                 if(this.cards[i].id === id)
                     return this.cards[i];
             }
+        },
+        findPlayer(id){
+            for(let i=0;i<this.playerDaten.length;i++){
+                if(id===this.playerDaten[i].username)
+                    return this.playerDaten[i];
+            }
+            return null;
         }
     
     
@@ -543,6 +525,12 @@ export default {
 </script>
 
 <style scoped>
+.player{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
 .actualPlayer{
     border: solid red 5px;
 }
@@ -678,8 +666,8 @@ export default {
     position: absolute;
     right: 5px;
     bottom: 5px;
-    width: 13vw;
-    height: 36vh;
+    width: 11.5vw;
+    height: 35vh;
     background-color: grey;
 }
 
