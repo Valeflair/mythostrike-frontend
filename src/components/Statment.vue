@@ -8,17 +8,17 @@ import users from "../data/users.json";
       src="../assets/backgrounds/modeSelect_background.png"
       alt=""
     />
-    <div id="table1">
+    <div class="table">
       <v-table theme="dark" hover="true" tag="wattttt">
-        <thead class="bg-blue-lighten-4">
-          <tr id="head">
+        <thead class="head1">
+          <tr>
             <th class="text-left text-grey-darken-4">Team</th>
             <th class="text-left text-grey-darken-4">User</th>
             <th class="text-left text-grey-darken-4">User ID</th>
             <th class="text-left text-grey-darken-4">Identity</th>
             <th class="text-left text-grey-darken-4">Drachma</th>
             <th class="text-left text-grey-darken-4">Rank Points</th>
-            <th class="text-left text-grey-darken-4">Has Won</th>
+            <th class="text-left text-grey-darken-4">Win</th>
           </tr>
         </thead>
         <tbody id="body" v-for="user in users" :key="user.userId">
@@ -33,18 +33,16 @@ import users from "../data/users.json";
           </tr>
         </tbody>
       </v-table>
-    </div>
-    <div id="table2">
       <v-table theme="dark" hover="true" tag="wattttt">
-        <thead class="bg-red-lighten-4">
-          <tr id="head">
+        <thead class="head2">
+          <tr>
             <th class="text-left text-grey-darken-4">Team</th>
             <th class="text-left text-grey-darken-4">User</th>
             <th class="text-left text-grey-darken-4">User ID</th>
             <th class="text-left text-grey-darken-4">Identity</th>
             <th class="text-left text-grey-darken-4">Drachma</th>
             <th class="text-left text-grey-darken-4">Rank Points</th>
-            <th class="text-left text-grey-darken-4">Has Won</th>
+            <th class="text-left text-grey-darken-4">Lose</th>
           </tr>
         </thead>
         <tbody id="body" v-for="user in users" :key="user.userId">
@@ -88,15 +86,16 @@ th {
   background-repeat: round;
   opacity: 0.5;
 }
-#table1 {
+.head1 {
+  background-color: rgba(26, 98, 207, 0.699);
+}
+.head2 {
+  background-color: rgba(104, 21, 21, 0.801);
+}
+.table {
   position: absolute;
   width: 68vw;
   top: 18%;
-}
-#table2 {
-  position: absolute;
-  width: 68vw;
-  top: 50%;
 }
 
 .quit {
@@ -117,7 +116,7 @@ export default {
   data() {},
   methods: {
     quitGame() {
-      history.back();
+      this.$router.push({ path: "./home" });
     },
   },
 };

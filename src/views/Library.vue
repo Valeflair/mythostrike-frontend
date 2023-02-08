@@ -106,7 +106,7 @@ export default {
       this.currentChampion = this.champions[championId];
     },
     back() {
-      history.back();
+      this.$router.push({ path: "./home" });
     }
   },
 };
