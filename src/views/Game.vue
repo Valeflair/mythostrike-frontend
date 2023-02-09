@@ -119,6 +119,7 @@
 
     <div class="discardPile" v-if="this.discardPile.length>0">
         <play-card :name="getCard(this.discardPile[this.discardPile.length-1]).name" :description="getCard(this.discardPile[this.discardPile.length-1]).description" />
+        <div class="discardPileOverlay"></div>
     </div>
 
     <div class="information">
@@ -679,6 +680,16 @@ export default {
   width: 10vw;
   height: 29vh;
     background-color: pink;
+    
+}
+
+.discardPileOverlay{
+    position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .playerChampions{
