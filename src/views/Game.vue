@@ -3,6 +3,8 @@
     import equipmentComponent from '../components/blockWithDescription.vue'
     import DelayedeffectComponent from '../components/DelayedeffectComponent.vue'
     import playerCard from './PlayerChampionCard.vue'
+    import resultPage from '../components/Statement.vue'
+    import playCard from './PlayCard.vue'
 </script>
 
 <template>
@@ -30,6 +32,9 @@
                 </tr>
             </table>
         </header>
+        
+    <result-page v-if="this.playerSummarize.length!==0" :users = "this.playerSummarize" class="playerSummarizeStyle" />
+
         <div class="logClass">
             <button class="logBtn" @click="logOpen = !logOpen"> Log</button>
             <div class="logTextArea" v-if="this.logOpen">{{logText}} </div>
@@ -38,6 +43,7 @@
         <div class="player">
             <player-card :name="this.username" :health="this.findPlayer(this.username).health" :identity="this.findPlayer(this.username).identity"
             :messageActivitysUsable="this.messageActivitysUsable" :skillsProp="null" 
+            :class="{'actualPlayer':this.username === this.currentPlayer}"
             @skillUsed="useSkill"/>
         </div>
         <div class="passivePosNegSlot">
@@ -78,19 +84,13 @@
                 :style="{'margin-left': calculateMarginLeft(cards.length,i) }"
                 @mouseenter="hoverStart(card)"
                 @mouseleave="hoverEnd(card)">
-                <div class="handCard" 
+                <play-card class="playCard"
                 :class="{'usableClass':containsId(card.id,this.messageActivitysUsable.cardsId),
                         'notUsableClass':!containsId(card.id,this.messageActivitysUsable.cardsId)}"
                     @click="useCard(card.id,this.messageActivitysUsable.cardsId)"
-                    
-                    >
-                    <p>{{ card.id }}</p>
-                    <p>{{ card.name }}</p>
-                    <div class="description"  v-if="card.showDescription">
-                        {{ card.description }}
-                    </div>
-                    <div class="cardOverlay" v-if="containsId(card.id,this.tablePile)"></div>
-                </div>
+                    :name="card.name"
+                    :description="card.description"
+                />
             </div>
             </div>
         </div>  
@@ -102,14 +102,7 @@
                 :style="{'margin-left': calculateMarginLeft(this.tablePile.length,i) }"
                 @mouseenter="hoverStart(getCard(card))"
                 @mouseleave="hoverEnd(getCard(card))">
-                <div class="tablePile">
-                    <p>{{ getCard(card).id }}</p>
-                    <p>{{ getCard(card).name }}</p>
-                    <div class="description"  v-if="getCard(card).showDescription">
-                        {{ getCard(card).description }}
-                    </div>
-                    <div class="cardOverlay" v-if="containsId(card,this.tablePile)"></div>
-                </div>
+                <play-card :name="getCard(card).name" :description="getCard(card).description"  />
             </div>            
             </div>
 
@@ -121,7 +114,9 @@
 
 
     <div class="drawPile" v-if="this.drawPile.length>0"> DRAWPILE</div>
-    <div class="discardPile" v-if="this.discardPile.length>0">{{this.discardPile[this.discardPile.length-1]}}</div>
+    <div class="discardPile" v-if="this.discardPile.length>0">
+        {{this.discardPile[this.discardPile.length-1]}}
+    </div>
 
 
     <div class="information">
@@ -153,7 +148,7 @@ export default {
             discardPile:[], // der AblegeStapel
             drawPile:[], // der Ziehstapel
             username:'Minh', // hält der Spieler immer bei sich
-            currentPlayer:'Till', // bekommen wir von websocket
+            currentPlayer:'Minh', // bekommen wir von websocket
             champion:{
                 name:'Nyx',
                 description:'Description of Nyx',
@@ -186,6 +181,44 @@ export default {
                     },
                 ]
             },// Der champion von diesem Spieler. Wird über REST mit dem Spieler bereits mitgegeben. muss hier geändert werden
+            playerSummarize:[
+                // {
+                //     username:'Minh',
+                //     identity:'Independent',
+                //     drachma: 320,
+                //     rankPoints: 60,
+                //     hasWon: false,
+                // },
+                // {
+                //     username:'Laito',
+                //     identity:'Independent',
+                //     drachma: 400,
+                //     rankPoints: 1000,
+                //     hasWon: true,
+                // },
+                // {
+                //     username:'Jack',
+                //     identity:'BLUE',
+                //     drachma: 10,
+                //     rankPoints: 160,
+                //     hasWon: false,
+                // },
+                // {
+                //     username:'Till',
+                //     identity:'BLUE',
+                //     drachma: 150,
+                //     rankPoints: 30,
+                //     hasWon: false,
+                // },
+                // {
+                //     username:'Hong',
+                //     identity:'RED',
+                //     drachma: 200,
+                //     rankPoints: 100,
+                //     hasWon: true,
+                // },
+
+            ],
             messageActivitysUsable:{
                 cardsId:[0,2,3],
                 players:[],
@@ -357,7 +390,7 @@ export default {
         }
     },
     components:{
-        championCard,equipmentComponent,DelayedeffectComponent,playerCard
+        championCard,equipmentComponent,DelayedeffectComponent,playerCard,resultPage,playCard
     },
     methods: {
         
@@ -500,11 +533,15 @@ export default {
                     }
                 }
             }
+
+            console.log("discardpile"+this.discardPile[this.discardPile.length-1]);
             
         },
         /*sucht die Karte mit der bestimmten id */
         getCard(id){
+            console.log("used id"+id);
             for(let i=0;i<this.cards.length;i++){
+                console.log("id:"+id+"    cardsID:"+this.cards[i].id)
                 if(this.cards[i].id === id)
                     return this.cards[i];
             }
@@ -525,6 +562,18 @@ export default {
 </script>
 
 <style scoped>
+
+.playCard{
+    z-index: 3;
+}
+
+.playerSummarizeStyle{
+    position: absolute;
+    top:0;
+    left:0;
+    z-index:8;
+}
+
 .player{
     position: absolute;
     bottom: 5px;
@@ -551,7 +600,7 @@ export default {
     top:5vh;
     height: 40vh;
     background-color: blue;
-   overflow-y: scroll;
+    overflow-y: scroll;
     word-wrap: break-word;
 }
 
@@ -622,8 +671,8 @@ export default {
     left:1vw;
     bottom:32vh;
     border-radius: 1rem;
-  width: 10vw;
-  height: 29vh;
+    width: 10vw;
+    height: 29vh;
     background-color: green;
 }
 .discardPile{
@@ -740,12 +789,8 @@ export default {
     border: solid black 5px;
 }
 
-.handCard {
-  width: 10vw;
-  height: 29vh;
-  background: white;
+.playCard {
   border-radius: 1rem;
-  padding: 1.5rem;
   box-shadow: 3px 3px 12px 2px rgba(black, 0.6);
   transition: 0.2s;
 }
@@ -755,6 +800,7 @@ export default {
 .not-last-card:hover,
 .not-last-card:focus-within {
   transform: translateY(-1rem);
+  z-index: 6;;
 }
 .not-last-card:focus-within ~ .card {
 transform: translateX(2rem);
