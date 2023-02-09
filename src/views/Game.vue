@@ -879,10 +879,6 @@ transform: translateX(2rem);
       display:block;
 }
 
-
-
-
-
 .bg-image {
   background: url("@/assets/backgrounds/game_background.png");
   height:100%;
