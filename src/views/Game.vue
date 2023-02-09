@@ -46,11 +46,12 @@
             :class="{'actualPlayer':this.username === this.currentPlayer}"
             @skillUsed="useSkill"/>
         </div>
+
         <div class="passivePosNegSlot">
             <div class="passiveSlot">
                 <table>
-                  <tr v-for="i in Math.ceil(passiveEffects.length/4)" :key="i">
-                    <td v-for="(passive,j) in passiveEffects.slice((i-1)*4, i*4)" :key="passive.id"
+                  <tr >
+                    <td v-for="(passive,j) in 3" :key="passive.id"
                     @mouseenter="hoverStart(passive)"
                     @mouseleave="hoverEnd(passive)"
                     class="passiveCircle"
@@ -79,23 +80,23 @@
 
         <div class="handCardSlot">
             <div class="cardContainer">
-            <div v-for="(card,i) in cards" :key="i" 
+            <div v-for="(card,i) in this.playerCards" :key="i" 
                 :class="[{'not-first-card': i !==0}, 'not-last-card']" 
-                :style="{'margin-left': calculateMarginLeft(cards.length,i) }"
-                @mouseenter="hoverStart(card)"
-                @mouseleave="hoverEnd(card)">
+                :style="{'margin-left': calculateMarginLeft(this.playerCards.length,i) }"
+                @mouseenter="hoverStart(getCard(card))"
+                @mouseleave="hoverEnd(getCard(card))">
                 <play-card class="playCard"
-                :class="{'usableClass':containsId(card.id,this.messageActivitysUsable.cardsId),
-                        'notUsableClass':!containsId(card.id,this.messageActivitysUsable.cardsId)}"
-                    @click="useCard(card.id,this.messageActivitysUsable.cardsId)"
-                    :name="card.name"
-                    :description="card.description"
+                :class="{'usableClass':containsId(card,this.messageActivitysUsable.cardsId),
+                        'notUsableClass':!containsId(card,this.messageActivitysUsable.cardsId)}"
+                    @click="useCard(card,this.messageActivitysUsable.cardsId)"
+                    :name="getCard(card).name"
+                    :description="getCard(card).description"
                 />
             </div>
             </div>
         </div>  
 
-        <div class="tablePileSlot" v-if="cardUsed">
+        <div class="tablePileSlot" >
             <div class="tableContainer">
             <div v-for="(card,i) in this.tablePile" :key="i" 
                 :class="[{'not-first-card': i !==0}, 'not-last-card']" 
@@ -106,18 +107,19 @@
             </div>            
             </div>
 
-            <div class="confirmB"  :class="{'usableClass':checkConfirmStatus(),'notUsableClass':!checkConfirmStatus()}">
+            <div v-if="cardUsed" class="confirmB"  :class="{'usableClass':checkConfirmStatus(),'notUsableClass':!checkConfirmStatus()}">
                 <p>Confirm</p>
             </div>
-            <button class="cancelB" @click="cancel">Cancel</button>
+            <button v-if="cardUsed" class="cancelB" @click="cancel">Cancel</button>
         </div>  
 
-
-    <div class="drawPile" v-if="this.drawPile.length>0"> DRAWPILE</div>
-    <div class="discardPile" v-if="this.discardPile.length>0">
-        {{this.discardPile[this.discardPile.length-1]}}
+    <div class="drawPile" v-if="this.drawPile.length>0"> 
+        
     </div>
 
+    <div class="discardPile" v-if="this.discardPile.length>0">
+        <play-card :name="getCard(this.discardPile[this.discardPile.length-1]).name" :description="getCard(this.discardPile[this.discardPile.length-1]).description" />
+    </div>
 
     <div class="information">
         <p>MinCard: {{this.messageActivitysUsable.minCard}}</p>
@@ -126,7 +128,6 @@
         <p>maxPlayer: {{this.messageActivitysUsable.maxPlayer}}</p>
         <p>reason: {{this.messageActivitysUsable.reason}} </p>
     </div>
-    
     
     <!-- Ab hier ist ein biscchen komisch. wir machen hier  cardmovemessage. Normalerweise aber in update aber hier ka deshalb erstmal ein div wo es simuliert wird-->
     <div class="clickCardMoveMessage" @click="updateCardMoveMessage"> Click me</div>
@@ -145,10 +146,11 @@ export default {
             timerDelay:1000,// der delay für karten hover
             playerPicked:[], // ein Array das alle Spieler die ausgewählt wurde enthält
             tablePile:[], // der Stapel für die gerade ausgespielten Karten
-            discardPile:[], // der AblegeStapel
-            drawPile:[], // der Ziehstapel
+            discardPile:[1], // der AblegeStapel
+            drawPile:[1,0], // der Ziehstapel
             username:'Minh', // hält der Spieler immer bei sich
             currentPlayer:'Minh', // bekommen wir von websocket
+            playerCards:[0,1,2,3],
             champion:{
                 name:'Nyx',
                 description:'Description of Nyx',
@@ -318,9 +320,9 @@ export default {
             },//Highlightmessage wird simuliert 
             cardMoveMessage:{
                 source:'Minh',
-                destination:'discardPile',
+                destination:'tablePile',
                 count:1,
-                cardsId:[0,1],
+                cardsId:[0],
             },// Cardmovemessage wird simuliert
             passiveEffects:[
               {
@@ -445,13 +447,10 @@ export default {
             let count=this.tablePile.length;
             console.log("useCard: "+id);
             if(this.containsId(id,searchArray) && count <this.messageActivitysUsable.maxCard && !this.containsId(id,this.tablePile)){
-                for(let i=0;i<this.cards.length;i++){
-                    if(this.cards[i].id === id){
-                        console.log(this.cards[i].id);
+                for(let i=0;i<this.playerCards.length;i++){
+                    if(this.playerCards[i] === id){
                         this.cardUsed=true;
-                        this.cards[i].used =true;
-                        this.tablePile.push(this.cards[i].id);
-                        console.log("table pile: "+this.tablePile);
+                        this.tablePile.push(this.playerCards[i]);
                         break;
                     }
                 }
@@ -502,7 +501,7 @@ export default {
                     this.playerDaten[i].cardCount-=this.cardMoveMessage.count;
                     if(this.cardMoveMessage.source === this.username){
                         for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
-                            this.cards = this.cards.filter(card => card.id !== this.cardMoveMessage.cardsId[j]);
+                            this.playerCards = this.playerCards.filter(card => card !== this.cardMoveMessage.cardsId[j]);
                         }
                     }
                 }
@@ -528,18 +527,16 @@ export default {
                     this.playerDaten[i].cardCount+=this.cardMoveMessage.count;
                     if(this.cardMoveMessage.destination === this.username){
                         for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
-                            this.cards.push(this.cardMoveMessage.cardsId[j]);
+                            this.playerCards.push(this.cardMoveMessage.cardsId[j]);
                         }
                     }
                 }
             }
 
-            console.log("discardpile"+this.discardPile[this.discardPile.length-1]);
             
         },
         /*sucht die Karte mit der bestimmten id */
         getCard(id){
-            console.log("used id"+id);
             for(let i=0;i<this.cards.length;i++){
                 console.log("id:"+id+"    cardsID:"+this.cards[i].id)
                 if(this.cards[i].id === id)
@@ -654,7 +651,6 @@ export default {
   left:25vw;
   width: 50vw;
   height: 29vh;
-  border: solid green 5px;
 }
 .clickCardMoveMessage{
     position: absolute;
@@ -673,7 +669,7 @@ export default {
     border-radius: 1rem;
     width: 10vw;
     height: 29vh;
-    background-color: green;
+    background-image: url(../assets/card/pictures/shield.png);
 }
 .discardPile{
     position: absolute;
@@ -682,7 +678,7 @@ export default {
     border-radius: 1rem;
   width: 10vw;
   height: 29vh;
-    background-color: green;
+    background-color: pink;
 }
 
 .playerChampions{
@@ -816,17 +812,17 @@ transform: translateX(2rem);
 }
 
 .passiveSlot{
-    left: 0;
-    bottom:3vw;
     width: 18vw;
-    height: 5vw;
-    background-color: yellow;
+    height: 30vh;
     overflow:auto;
+    position: absolute;
+    bottom:16vh;
 }
 
 .passiveCircle{
-    position: absolute;
+    position: relative;
     background-color: purple;
+    top:20vh;
 }
 
 .passiveDescription{
@@ -872,13 +868,6 @@ transform: translateX(2rem);
       display:block;
 }
 
-.passivePosNegSlot{
-    position: absolute;
-    left:0;
-    bottom:0;
-    width: 18vw;
-    height: 13vw;
-}
 
 
 
