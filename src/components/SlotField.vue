@@ -3,62 +3,55 @@ import CommandField from "@/components/CommandField.vue";
 </script>
 
 <template>
- 
-  
   <v-container class="SeatCommandContainer">
-   <v-row class="d-flex justify-center">
-    <div  v-for="(slot,i) in slots.filter((slot,i)=>i<slots.length/2)" :key="i">
-      <!-- <slot-button :seat="this.slots[slot.id]" :currentplayer="this.currentPlayer" @update:Seat="updateSeats"/> --->
-      <v-col col="3">
-        <button
-          class="seatButton"
-        >
-          <p>{{ slot.username }}</p>
-        </button>
-      </v-col>
-    </div>
-  </v-row>
+    <v-row class="d-flex justify-center">
+      <div
+        v-for="(slot, id) in slots.filter((slot, id) => id < slots.length / 2)"
+        :key="id"
+      >
+        <v-col col="3">
+          <button class="seatButton" @click="changeSeat(id)">
+            <p>{{ slot.username }}</p>
+          </button>
+        </v-col>
+      </div>
+    </v-row>
 
-
-  <v-row class="ma-8">
-    <v-col cols="3"></v-col>
-    <v-col cols="2">
-      <div class="label">
-        <p class="labelText">Lobby ID: {{ this.lobbyId }}</p>
-        <p class="labelText">
-          Owner: {{ this.lobbyOwner }}
-        </p>
-        <p class="labelText">
-          Mode: {{this.gameModeName}}
-        </p></div>
-    </v-col>
-    <v-col  cols="4">
-        <div class="field">
-      <command-field 
-    :isLobbyOwner="this.isLobbyOwner"
-    @open:mode="toggleModeSelection"
-    @update:leave="leave"
-    @update:bot="addBot"
-    @open:game="start"
-    />
+    <v-row class="ma-8">
+      <v-col cols="3"></v-col>
+      <v-col cols="2">
+        <div class="label">
+          <p class="labelText">Lobby ID: {{ this.lobbyId }}</p>
+          <p class="labelText">Owner: {{ this.lobbyOwner }}</p>
+          <p class="labelText">Mode: {{ this.gameModeName }}</p>
         </div>
-    </v-col>
-  </v-row>
-
-  <v-row class="d-flex justify-center">
-    <div v-for="(slot,i) in slots.filter((slot,i)=>i>=slots.length/2)" :key="i">
-      <v-col col="3">
-        <button
-          class="seatButton"
-        >
-          <p>{{ slot.username }}</p>
-        </button>
       </v-col>
-    </div>
-  </v-row>
-</v-container>
+      <v-col cols="4">
+        <div class="field">
+          <command-field
+            :isLobbyOwner="this.isLobbyOwner"
+            @open:mode="toggleModeSelection"
+            @update:leave="leave"
+            @update:bot="addBot"
+            @open:game="start"
+          />
+        </div>
+      </v-col>
+    </v-row>
 
-
+    <v-row class="d-flex justify-center">
+      <div
+        v-for="(slot, id) in slots.filter((slot, id) => id >= slots.length / 2)"
+        :key="id"
+      >
+        <v-col col="3">
+          <button class="seatButton" @click="changeSeat(id + slots.length / 2)">
+            <p>{{ slot.username }}</p>
+          </button>
+        </v-col>
+      </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -70,57 +63,64 @@ export default {
     return {
       slots: this.slotsProp,
       lobbyID: this.lobbyId,
-      isModeShown: false
+      isModeShown: false,
     };
   },
   props: {
     lobbyId: Number,
-    lobbyOwner:String,
-    slotsProp:Array,
+    lobbyOwner: String,
+    slotsProp: Array,
     isLobbyOwner: Boolean,
-    gameModeName:String
+    gameModeName: String,
   },
   methods: {
     addBot() {
       this.$emit("update:bot");
     },
-    start(){
+    start() {
       this.$emit("open:game");
     },
     toggleModeSelection() {
       this.isModeShown = !this.isModeShown;
-      this.$emit('update:Mode',this.isModeShown);
+      this.$emit("update:Mode", this.isModeShown);
     },
-    leave(){
-        this.$emit('update:leave');
-    }
-  }
+    leave() {
+      this.$emit("update:leave");
+    },
+    changeSeat(newSeatId) {
+      console.log(newSeatId);
+      this.$emit("update:seat", newSeatId);
+    },
+  },
+  watch: {
+    slotsProp() {
+      this.slots = this.slotsProp;
+    },
+  },
 };
 </script>
 
 <style scoped>
-
-.labelText{
+.labelText {
   font-size: 165%;
-  color:black;
+  color: black;
   margin-top: 4vh;
   margin-bottom: 2vh;
   font-weight: bold;
   margin-left: 1vh;
-} 
+}
 
-
-.label{
-  background-color: rgba(255,255,255,0.3);
+.label {
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .SeatCommandContainer {
- position: relative;
-  top:10vh;
+  position: relative;
+  top: 10vh;
 }
 
 .field {
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .seatButton {

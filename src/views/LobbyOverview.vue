@@ -2,15 +2,17 @@
   <div class="d-flex justify-center">
     <v-col cols="3" id="left-bar" class="text-center">
       <img
-              :src="
-                '../src/assets/avatars/avatar' +
-                userStore.getUserData.avatarNumber +
-                '.png'
-              "
-            />
-            <v-divider inset></v-divider>
+        :src="
+          '../src/assets/avatars/avatar' +
+          userStore.getUserData.avatarNumber +
+          '.png'
+        "
+      />
+      <v-divider inset></v-divider>
       <div class="text-h4 pa-4">
-        <div class="pa-5"><v-btn class="button" @click="getLobbies">Refresh Lobby</v-btn></div>
+        <div class="pa-5">
+          <v-btn class="button" @click="getLobbies">Refresh Lobby</v-btn>
+        </div>
         <span id="text">Join lobby</span>
         <v-text-field
           class="text-field pt-5"
@@ -20,7 +22,9 @@
           clearable
         ></v-text-field>
         <v-btn class="button" @click="joinLobby">Join</v-btn>
-        <div class="pt-10"><v-btn class="button" @click="createLobby">Create Lobby</v-btn></div>
+        <div class="pt-10">
+          <v-btn class="button" @click="createLobby">Create Lobby</v-btn>
+        </div>
       </div>
     </v-col>
     <v-col cols="9" id="right-bar">
@@ -42,8 +46,12 @@
               <td>{{ lobby.id }}</td>
               <td>{{ lobby.owner }}</td>
               <td>{{ lobby.mode }}</td>
-              <td>{{ lobby.numberOfPlayers }}</td>
-              <td><v-btn variant="outlined" @click="joinLobbyById(lobby.id)">Join</v-btn></td>
+              <td>{{ lobby.numberPlayers }}/{{ lobby.maxPlayers }}</td>
+              <td>
+                <v-btn variant="outlined" @click="joinLobbyById(lobby.id)"
+                  >Join</v-btn
+                >
+              </td>
             </tr>
           </tbody>
         </v-table>
@@ -91,15 +99,18 @@ tr:hover {
 <script>
 import lobbyService from "@/services/lobbyService";
 import { useUserStore } from "@/stores/user";
+import { useLobbyStore } from "@/stores/lobby";
+
 export default {
   data: () => ({
     lobbies: [],
-    lobbyId: ""
+    lobbyId: "",
   }),
   setup() {
     const userStore = useUserStore();
+    const lobbyStore = useLobbyStore();
 
-    return { userStore };
+    return { lobbyStore, userStore };
   },
   methods: {
     async getLobbies() {
@@ -117,6 +128,7 @@ export default {
       console.log(this.lobbyId);
       await lobbyService.joinLobby(this.lobbyId).then(
         (response) => {
+          this.lobbyStore.setLobbyData(response.data);
           this.$router.push({ path: "./Lobby" });
           console.log(response);
         },
@@ -125,11 +137,12 @@ export default {
         }
       );
     },
-    async joinLobbyById(id){
+    async joinLobbyById(id) {
       console.log(id);
       await lobbyService.joinLobby(id).then(
         (response) => {
-          this.$router.push({ name: "./Lobby" });
+          this.lobbyStore.setLobbyData(response.data);
+          this.$router.push({ path: "./Lobby" });
           console.log(response);
         },
         (error) => {
@@ -140,15 +153,14 @@ export default {
     async createLobby() {
       await lobbyService.createLobby().then(
         (response) => {
-          console.log(response);
-          this.userStore.joinLobby(response.data.lobbyId);
-          this.$router.push({ path: "./Lobby"});
+          this.lobbyStore.setLobbyData(response.data);
+          this.$router.push({ path: "./Lobby" });
         },
         (error) => {
           console.log(error);
         }
       );
-    }
+    },
   },
   created() {
     this.getLobbies();

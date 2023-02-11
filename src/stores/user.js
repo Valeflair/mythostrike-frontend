@@ -4,7 +4,6 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     user: [],
     status: false,
-    currentLobbyId: null
   }),
   getters: {
     getUserData() {
@@ -19,14 +18,5 @@ export const useUserStore = defineStore("user", {
     getStatus() {
       return this.status;
     },
-    joinLobby(lobbyId){
-      this.currentLobbyId = lobbyId;
-    },
-    leaveLobby(){
-      this.currentLobbyId = null;
-    },
-    getLobbyId(){
-      return this.currentLobbyId;
-    }
   },
 });

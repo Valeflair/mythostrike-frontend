@@ -51,14 +51,14 @@
   </div>
 </template>
 <style scoped>
-.logo{
+.logo {
   width: 16vw;
   height: 16vw;
 }
 .bg-image {
   background: url("@/assets/backgrounds/start_background.png");
   height: 100vh;
-  background-size:cover;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
@@ -67,7 +67,7 @@
   min-height: 6vh;
   margin: 15px;
   color: white;
-  font-size:1vw;
+  font-size: 1vw;
   border-radius: 15px;
   background: url("@/assets/elements/button.png");
 }
@@ -77,7 +77,7 @@
 }
 
 #title {
-  font-size:5vw;
+  font-size: 5vw;
 }
 
 .text-h1 {
@@ -96,12 +96,12 @@
   width: 75vw;
 }
 
-#title-greek{
-  font-size:3.5vw;
+#title-greek {
+  font-size: 3.5vw;
 }
 
-#title-small{
-  font-size:2vw;
+#title-small {
+  font-size: 2vw;
 }
 </style>
 
@@ -132,7 +132,7 @@ export default {
             },
             (error) => {
               console.log(error);
-              this.showAlert(error.response.data);
+              this.showAlert(error.response.data.message);
             }
           );
       }
@@ -153,7 +153,7 @@ export default {
             },
             (error) => {
               console.log(error);
-              this.showAlert(error.response.data);
+              this.showAlert(error.response.data.message);
             }
           );
       }

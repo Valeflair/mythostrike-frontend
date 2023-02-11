@@ -99,7 +99,7 @@ export default {
 .bg-image {
   background: url("@/assets/backgrounds/home_background.png");
   height: 100vh;
-  background-size:cover;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 .button {
