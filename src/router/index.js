@@ -34,7 +34,7 @@ const router = createRouter({
       component: () => import("../views/game.vue")
     },
     {
-      path: "/asd",
+      path: "/card",
       name: "Card",
       component: () => import("../views/Card.vue")
     },
@@ -44,7 +44,7 @@ const router = createRouter({
       component: () => import("../views/Description.vue")
     },
     {
-      path: "/asdds",
+      path: "/championcard",
       name: "ChampionCard",
       component: () => import("../views/ChampionCard.vue")
     },
@@ -52,6 +52,11 @@ const router = createRouter({
       path: "/skill",
       name: "Skill",
       component: () => import("../views/Skill.vue")
+    },
+    {
+      path: "/playcard",
+      name: "Playcard",
+      component: () => import("../views/PlayCard.vue")
     }
   ],
 });

@@ -1,14 +1,25 @@
 <script setup>
+import ChampionCard from "../views/ChampionCard.vue";
+import PlayCard from "../views/PlayCard.vue";
+
 </script>
 <template>
-  <div class="championCard">
+  <div class="champion" v-if =/^([1-9]|[0-9][0-9]|[1-9][0-9][0-9]|1000)$/.test(this.id)>
+    <champion-card></champion-card>
+  </div>
+  
+  <div class="card" v-if =/^(?!1000)[1-9]\d{3,}$/.test(this.id)>
+    <play-card></play-card>
+  </div>
+  <!-- <div class="championCard">
+
     <img class="frame" src="../assets/card/frame/gold_card_frame_r.png" alt="" />
 
     <img class="avatar" src="../assets/card/pictures/Aphrodite.png" alt="" />
 
     <div class="name">
       <span>
-       <!--{{ this.name }} --> NAME
+        NAME
       </span>
     </div>
 
@@ -22,21 +33,21 @@
       </tr>
     </table>
 
-    <div v-if="game" class="handcard-num"> <!--{{ this.handcardNum }}--> 5 </div>
+    <div v-if="game" class="handcard-num">  5 </div>
     <div  v-if="game" class="identity">
-      <!-- {{ this.identity }}-->K
+      K
     </div>
 
 
     <div  v-if="game" class="equipments">
       <div id="e1" v-if="2>0" src="" alt="">
-        <!--{{ this.equip1 }} --> Spear of Ares
+        Spear of Ares
       </div>
       <div class="e1-description">
         asdasdasda
       </div>
       <div  v-if="2>1" id="e2" src="" alt="">
-         <!--{{ this.equip2 }} -->Shield of Athena
+        Shield of Athena
       </div>
       <div class="e2-description">
         asdsadsadasadasdsad
@@ -53,32 +64,33 @@
       </tr>
     </table>
 
-  </div>
+  </div> -->
 </template>
 
 
 <script>
 export default {
-    data(){
-        return{
-            health:3,
-            game:true,
-        }
-    },
+  components: { ChampionCard, PlayCard },
+  data() {
+    return {
+      id: "1",
+    };
+  },
 
-    props: {
-        isgame:Boolean,
-        name: "",
-        handcardNum: Number,
-        health:Number,
-        identity: "",
-        equipment:Array,
-        passiveEffect:Array,
-    },
+  props: {
+    isgame: Boolean,
+    name: "",
+    handcardNum: Number,
+    
+    identity: "",
+    equipment: Array,
+    passiveEffect: Array,
+  },
+  method: {},
 };
 </script>
 
-<style scoped>
+<!-- <style scoped>
 * {
   margin: 0;
   padding: 0;
@@ -116,7 +128,7 @@ export default {
 .name {
   width: 100%;
   position: absolute;
-  z-index: 4; 
+  z-index: 4;
   font-size: 2vh;
   font-style: italic;
   -webkit-text-stroke: 1px black;
@@ -136,7 +148,7 @@ export default {
   width: 1.5vw;
   position: absolute;
   z-index: 4;
-  top:1vh;
+  top: 1vh;
 }
 .handcard-num {
   width: 2.5vh;
@@ -188,48 +200,45 @@ export default {
 #e2 {
   bottom: 6vh;
 }
-.e1-description{
-    display: none;
-    width :10vw;
-    height: 15vh;
-    background-color: red;
-    position: absolute;
-    top:6vh;
-    z-index: 5;
-}
-
-.e2-description{
-    display: none;
-    width :10vw;
-    height: 15vh;
-    background-color: red;
-    position: absolute;
-    top:9.5vh;
-    z-index: 5;
-
-}
-
-.debuff-description{
+.e1-description {
   display: none;
-    width :10vw;
-    height: 15vh;
-    background-color: green;
-    position: absolute;
-    z-index: 5;
+  width: 10vw;
+  height: 15vh;
+  background-color: red;
+  position: absolute;
+  top: 6vh;
+  z-index: 5;
 }
 
-.debuff:hover + .debuff-description{
+.e2-description {
+  display: none;
+  width: 10vw;
+  height: 15vh;
+  background-color: red;
+  position: absolute;
+  top: 9.5vh;
+  z-index: 5;
+}
+
+.debuff-description {
+  display: none;
+  width: 10vw;
+  height: 15vh;
+  background-color: green;
+  position: absolute;
+  z-index: 5;
+}
+
+.debuff:hover + .debuff-description {
   display: block;
 }
-#e1:hover + .e1-description{
-    display: block;
+#e1:hover + .e1-description {
+  display: block;
 }
 
-#e2:hover + .e2-description{
-    display: block;
-
+#e2:hover + .e2-description {
+  display: block;
 }
-
 
 .debuff {
   width: 4vh;
@@ -238,4 +247,4 @@ export default {
   z-index: 4;
   bottom: 1.5vh;
 }
-</style>
+</style> -->
