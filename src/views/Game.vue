@@ -1,18 +1,3 @@
-<script setup>
-    import championCard from './ChampionCard.vue'
-    import equipmentComponent from '../components/blockWithDescription.vue'
-    import DelayedeffectComponent from '../components/DelayedeffectComponent.vue'
-    import playerCard from './PlayerChampionCard.vue'
-    import resultPage from '../components/Statement.vue'
-    import playCard from './PlayCard.vue'
-    import { useGameStore } from "@/stores/game";
-    import gameService from "@/services/gameService";
-    import SockJS from "sockjs-client";
-    import Stomp from "stompjs";
-    import { useLobbyStore } from "@/stores/lobby";
-
-</script>
-
 <template>
     <div class="bg-image">
         <!-----------------------------------------------DIE ANDEREN SPIELER--------------------------------------------------------->
@@ -173,16 +158,29 @@
 </template>
 
 <script>
+import championCard from './ChampionCard.vue'
+    import equipmentComponent from '../components/blockWithDescription.vue'
+    import DelayedeffectComponent from '../components/DelayedeffectComponent.vue'
+    import playerCard from './PlayerChampionCard.vue'
+    import resultPage from '../components/Statement.vue'
+    import playCard from './PlayCard.vue'
+    import { useGameStore } from "@/stores/game";
+    import gameService from "@/services/gameService";
+    import SockJS from "sockjs-client";
+    import Stomp from "stompjs";
+    import { useLobbyStore } from "@/stores/lobby";
+    import { useUserStore } from "@/stores/user";
 export default {
     setup(){
         const gameStore = useGameStore();
-        const userStore = useUserStore();
         const lobbyStore = useLobbyStore();
+        const userStore = useUserStore();
 
-        return {gameStore,userStore,lobbyStore};
+        return {gameStore,lobbyStore,userStore};
     },
     data(){
         return{
+            gameDetails:[],
             stompClient:null,
             paused:false,
             animation: null,
@@ -378,7 +376,7 @@ export default {
         championCard,equipmentComponent,DelayedeffectComponent,playerCard,resultPage,playCard
     },
     created(){
-        console.log("lobbyId "+this.lobbyStore.getLobby.id);
+        console.log("lobbyId "+ this.lobbyStore.getLobby.id);
         this.lobbyId=this.lobbyStore.getLobby.id;
         this.connect();
 
@@ -520,7 +518,7 @@ export default {
             this.stompClient.connect({}, (frame) => {
                 console.log("Connected to Game" + frame);
                 //der private connection
-                this.stompClient.subscribe("/games/" + this.lobbyId +"/"+ this.username, (response) => {
+                this.stompClient.subscribe("/games/" + this.lobbyId +"/"+ this.userStore.getUser.username, (response) => {
                     console.log(JSON.parse(response.body));
                     this.gameStore.setGameData(JSON.parse(response.body));
                     this.playerTurnSetup();
@@ -541,12 +539,12 @@ export default {
 
         //der setup für private Connection
         playerTurnSetup(){
-            if(this.gameStore.getGameData().messageType === 'HIGHLIGHT'){
-                this.messageActivitysUsable = this.gameStore.getGameData().payload;
+            if(this.gameStore.getGameData.messageType === 'HIGHLIGHT'){
+                this.messageActivitysUsable = this.gameStore.getGameData.payload;
                 this.showNotice=true;
                 this.notice = this.messageActivitysUsable.reason;
-            }else if(this.gameStore.getGameData().messageType === 'CARD_MOVE'){
-                this.cardMoveMessage = this.gameStore.getGameData().payload;
+            }else if(this.gameStore.getGameData.messageType === 'CARD_MOVE'){
+                this.cardMoveMessage = this.gameStore.getGameData.payload;
                 this.status = true;
             }
         },
@@ -557,14 +555,14 @@ export default {
                 this.status=false;
                 return;
             }
-            if(this.gameStore.getGameData().messageType === 'UPDATE_GAME'){
-                this.playerDaten = this.gameStore.getGameData().payload;
-            }else if(this.gameStore.getGameData().messageType === 'CARD_MOVE'){
-                this.cardMoveMessage = this.gameStore.getGameData().payload;
-            }else if(this.gameStore.getGameData().messageType === 'LOG'){
-                this.logText += this.logText + "\n"+ this.gameStore.getGameData().payload;
-            }else if(this.gameStore.getGameData().messageType === 'GAME_END'){
-                this.playerSummarize = this.gameStore.getGameData().payload;
+            if(this.gameStore.getGameData.messageType === 'UPDATE_GAME'){
+                this.playerDaten = this.gameStore.getGameData.payload;
+            }else if(this.gameStore.getGameData.messageType === 'CARD_MOVE'){
+                this.cardMoveMessage = this.gameStore.getGameData.payload;
+            }else if(this.gameStore.getGameData.messageType === 'LOG'){
+                this.logText += this.logText + "\n"+ this.gameStore.getGameData.payload;
+            }else if(this.gameStore.getGameData.messageType === 'GAME_END'){
+                this.playerSummarize = this.gameStore.getGameData.payload;
             }
         },
 
