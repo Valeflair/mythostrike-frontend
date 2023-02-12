@@ -6,31 +6,31 @@ import cardList from "../data/cards.json";
     <div class="card" @mouseover="hoverStart()" @mouseout="hoverEnd()">
       <img
         class="frame"
-        :src="'../src/assets/cards/frame/'+ this.findCard(1001).frame + '.png'"
+        :src="'../src/assets/cards/frame/'+ this.findCard(this.id).frame + '.png'"
         alt=""
       />
 
       <img
         class="avatar"
-        :src="'../src/assets/cards/pictures/' + this.findCard(1001).name + '.png'"
+        :src="'../src/assets/cards/pictures/' + this.findCard(this.id).name + '.png'"
         alt=""
       />
 
       <div class="name">
         <span>
-          {{ this.findCard(1001).cardName }}
+          {{ this.findCard(this.id).cardName }}
         </span>
       </div>
 
       <img
         class="suit"
-        :src="'../src/assets/cards/suit/' + this.findCard(1001).suit + '.png'"
+        :src="'../src/assets/cards/suit/' + this.findCard(this.id).suit + '.png'"
         alt=""
       />
 
       <img
         class="stone"
-        :src="'../src/assets/cards/frame/' + this.findCard(1001).stone + '.png'"
+        :src="'../src/assets/cards/frame/' + this.findCard(this.id).stone + '.png'"
         alt=""
       />
 
@@ -45,6 +45,7 @@ import cardList from "../data/cards.json";
 
 <script>
 export default {
+  emits: ['click'],
   data() {
     return {
       cards:cardList,

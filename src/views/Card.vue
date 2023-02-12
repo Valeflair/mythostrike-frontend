@@ -4,11 +4,11 @@ import PlayCard from "../views/PlayCard.vue";
 </script>
 <template>
   <div class="champion" v-if =/^([1-9]|[0-9][0-9]|[1-9][0-9][0-9]|1000)$/.test(this.id)>
-    <champion-card></champion-card>
+    <champion-card cardId="this.id"></champion-card>
   </div>
   
   <div class="card" v-if =/^(?!1000)[1-9]\d{3,}$/.test(this.id)>
-    <play-card></play-card>
+    <play-card cardId="this.id"></play-card>
   </div>
   <!-- <div class="championCard">
 
@@ -69,13 +69,16 @@ import PlayCard from "../views/PlayCard.vue";
 
 <script>
 export default {
+  emits: ['click'],
   components: { ChampionCard, PlayCard },
   data() {
     return {
-      id: "1",
+      
     };
   },
-
+props : {
+  id:""
+}
   // props: {
   //   isgame: Boolean,
   //   name: "",

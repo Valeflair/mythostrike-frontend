@@ -8,25 +8,25 @@ import cardList from "../data/cards.json";
     <div class="championCard" @mouseover="hoverStart()" @mouseout="hoverEnd()">
       <img
         class="frame"
-        :src="'../src/assets/cards/frame/' + this.findCard(1).frame + '.png'"
+        :src="'../src/assets/cards/frame/' + this.findCard(this.cardId).frame + '.png'"
         alt=""
       />
 
       <img
         class="avatar"
-        :src="'../src/assets/cards/pictures/' + this.findCard(1).name + '.png'"
+        :src="'../src/assets/cards/pictures/' + this.findCard(this.cardId).name + '.png'"
         alt=""
       />
 
       <div class="name">
         <span>
-          {{ this.findCard(1).cardName }}
+          {{ this.findCard(this.cardId).cardName }}
         </span>
       </div>
 
       <img
         class="stone"
-        :src="'../src/assets/cards/frame/' + this.findCard(1).stone + '.png'"
+        :src="'../src/assets/cards/frame/' + this.findCard(this.cardId).stone + '.png'"
         alt=""
       />
 
@@ -47,7 +47,7 @@ import cardList from "../data/cards.json";
           </tr>
         </div>
         <div v-else>
-          <tr v-for="i in this.findCard(1).health" :key="i">
+          <tr v-for="i in this.findCard(this.cardId).health" :key="i">
           <td>
             <img
               :class="{ heartSmall: this.game, heartBig: !this.game }"
@@ -114,6 +114,7 @@ import cardList from "../data/cards.json";
 
 <script>
 export default {
+  emits: ['click'],
   data() {
     return {
       cards: cardList,
@@ -154,6 +155,7 @@ export default {
   },
 
   props: {
+    cardId:"",
     isGame: Boolean,
     name: "",
     handcardNum: Number,

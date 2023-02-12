@@ -57,6 +57,11 @@ const router = createRouter({
       path: "/playcard",
       name: "Playcard",
       component: () => import("../views/PlayCard.vue")
+    },
+    {
+      path: "/library",
+      name: "Library",
+      component: () => import("../views/Library.vue")
     }
   ],
 });
