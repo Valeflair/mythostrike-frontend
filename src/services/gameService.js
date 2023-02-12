@@ -55,6 +55,17 @@ export default {
       headers: service.AUTH_HEADER,
     });
   },
+  selectChampion(lobbyId, selectedChampionId) {
+    return axios({
+      method: "POST",
+      url: service.SELECT_CHAMPION_URL,
+      data: {
+        lobbyId: lobbyId,
+        championId: selectedChampionId
+      },
+      headers: service.AUTH_HEADER,
+    });
+}
   
   
 };

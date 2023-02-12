@@ -4,7 +4,7 @@
       <img
         :src="
           '../src/assets/avatars/avatar' +
-          userStore.getUserData.avatarNumber +
+          userStore.getUser.avatarNumber +
           '.png'
         "
       />
@@ -41,12 +41,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="lobby in lobbies" :key="lobby.iD">
+            <tr v-for="lobby in lobbies" :key="lobby.id">
               <td>{{ lobby.status }}</td>
               <td>{{ lobby.id }}</td>
               <td>{{ lobby.owner }}</td>
               <td>{{ lobby.mode }}</td>
-              <td>{{ lobby.numberOfPlayers }}</td>
+              <td>{{ lobby.numberPlayers }}/{{ lobby.maxPlayers }}</td>
               <td>
                 <v-btn variant="outlined" @click="joinLobbyById(lobby.id)"
                   >Join</v-btn
@@ -99,6 +99,8 @@ tr:hover {
 <script>
 import lobbyService from "@/services/lobbyService";
 import { useUserStore } from "@/stores/user";
+import { useLobbyStore } from "@/stores/lobby";
+
 export default {
   data: () => ({
     lobbies: [],
@@ -106,8 +108,9 @@ export default {
   }),
   setup() {
     const userStore = useUserStore();
+    const lobbyStore = useLobbyStore();
 
-    return { userStore };
+    return { lobbyStore, userStore };
   },
   methods: {
     async getLobbies() {
@@ -125,6 +128,8 @@ export default {
       console.log(this.lobbyId);
       await lobbyService.joinLobby(this.lobbyId).then(
         (response) => {
+          this.lobbyStore.setLobby(response.data);
+          this.$router.push({ path: "./Lobby" });
           console.log(response);
         },
         (error) => {
@@ -136,6 +141,8 @@ export default {
       console.log(id);
       await lobbyService.joinLobby(id).then(
         (response) => {
+          this.lobbyStore.setLobby(response.data);
+          this.$router.push({ path: "./Lobby" });
           console.log(response);
         },
         (error) => {
@@ -146,7 +153,8 @@ export default {
     async createLobby() {
       await lobbyService.createLobby().then(
         (response) => {
-          console.log(response);
+          this.lobbyStore.setLobby(response.data);
+          this.$router.push({ path: "./Lobby" });
         },
         (error) => {
           console.log(error);

@@ -502,6 +502,7 @@ export default {
 
         //-------------------------------- WEBSOCKET ---------------------------------------------------
         connect() {
+            
             let socket = new SockJS("http://localhost:8080/updates");
             this.stompClient = Stomp.over(socket);
             this.stompClient.connect({}, (frame) => {

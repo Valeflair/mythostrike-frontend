@@ -28,7 +28,7 @@ const USE_SKILL_URL = PLAY_URL + "/skills";
 const SELECT_TARGETS_URL = PLAY_URL + "/targets";
 const END_TURN_URL = PLAY_URL + "/end";
 const CANCEL_URL = PLAY_URL +"/cancel";
-
+const SELECT_CHAMPION_URL = PLAY_URL + "/champion";
 
 const WS_URL = BASE_URL + "/updates";
 
@@ -45,10 +45,11 @@ export default {
   LEAVE_LOBBY_URL,
   MODES_URL,
   SEAT_LOBBY_URL,
+  WS_URL,
+  SELECT_CHAMPION_URL,
   USE_CARD_URL,
   USE_SKILL_URL,
   SELECT_TARGETS_URL,
   END_TURN_URL,
   CANCEL_URL,
-  WS_URL,
 };

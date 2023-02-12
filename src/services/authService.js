@@ -19,8 +19,7 @@ export default {
       data: {
         username: user.username,
         password: user.password,
-      },
-      headers: service.AUTH_HEADER,
+      }
     });
   },
   auth() {
