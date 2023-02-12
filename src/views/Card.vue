@@ -1,7 +1,6 @@
 <script setup>
 import ChampionCard from "../views/ChampionCard.vue";
 import PlayCard from "../views/PlayCard.vue";
-
 </script>
 <template>
   <div class="champion" v-if =/^([1-9]|[0-9][0-9]|[1-9][0-9][0-9]|1000)$/.test(this.id)>
@@ -77,16 +76,16 @@ export default {
     };
   },
 
-  props: {
-    isgame: Boolean,
-    name: "",
-    handcardNum: Number,
+  // props: {
+  //   isgame: Boolean,
+  //   name: "",
+  //   handcardNum: Number,
     
-    identity: "",
-    equipment: Array,
-    passiveEffect: Array,
-  },
-  method: {},
+  //   identity: "",
+  //   equipment: Array,
+  //   passiveEffect: Array,
+  // },
+  // method: {},
 };
 </script>
 

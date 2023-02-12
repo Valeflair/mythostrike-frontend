@@ -14,15 +14,13 @@ import cardList from "../data/cards.json";
 
       <img
         class="avatar"
-        :src="
-          '../src/assets/cards/pictures/' + this.findCard(1).name + '.png'
-        "
+        :src="'../src/assets/cards/pictures/' + this.findCard(1).name + '.png'"
         alt=""
       />
 
       <div class="name">
         <span>
-          {{ this.name }}
+          {{ this.findCard(1).cardName }}
         </span>
       </div>
 
@@ -33,7 +31,23 @@ import cardList from "../data/cards.json";
       />
 
       <table>
-        <tr v-for="i in this.findCard(1).health" :key="i">
+        <div v-if="game">
+          <tr v-for="i in this.health" :key="i">
+            <td>
+              <img
+                :class="{ heartSmall: this.game, heartBig: !this.game }"
+                :style="{
+                  top: 2 + (this.game ? 2 : 3) * i + 'vh',
+                  left: 2 + 'vh',
+                }"
+                src="../assets/cards/components/heart_Light.png"
+                alt=""
+              />
+            </td>
+          </tr>
+        </div>
+        <div v-else>
+          <tr v-for="i in this.findCard(1).health" :key="i">
           <td>
             <img
               :class="{ heartSmall: this.game, heartBig: !this.game }"
@@ -41,11 +55,12 @@ import cardList from "../data/cards.json";
                 top: 2 + (this.game ? 2 : 3) * i + 'vh',
                 left: 2 + 'vh',
               }"
-              src="../assets/card/smallParts/Health_Light.png"
+              src="../assets/cards/components/heart_Light.png"
               alt=""
             />
           </td>
         </tr>
+        </div>
       </table>
 
       <div v-if="game" class="handcard-num">{{ this.handcardNum }}</div>
@@ -101,7 +116,7 @@ import cardList from "../data/cards.json";
 export default {
   data() {
     return {
-      cards:cardList,
+      cards: cardList,
       health: 3,
       game: this.isGame,
       showDescription: false,
@@ -132,28 +147,22 @@ export default {
       clearTimeout(this.hoverTimer);
       this.showDescription = false;
     },
-    findCard (id) {
-     var card = this.cards.find(card => card.id == id);
-     return card;
-    }
+    findCard(id) {
+      var card = this.cards.find((card) => card.id == id);
+      return card;
+    },
   },
 
   props: {
     isGame: Boolean,
     name: "",
     handcardNum: Number,
-    health: Number,
+    // health: Number,
     identity: "",
     equipment: Array,
     passiveEffect: Array,
     description: "",
     usable: Boolean,
-  },
-  methods: {
-    findCard(id) {
-      var card = this.cards.find((card) => card.id == id);
-      return card;
-    },
   },
 };
 </script>
@@ -280,7 +289,7 @@ export default {
   position: absolute;
   z-index: 4;
   bottom: 0%;
-  left: 46.5%;
+  left: 45%;
 }
 .heartSmall {
   width: 1vw;

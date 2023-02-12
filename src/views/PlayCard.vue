@@ -23,13 +23,19 @@ import cardList from "../data/cards.json";
       </div>
 
       <img
+        class="suit"
+        :src="'../src/assets/cards/suit/' + this.findCard(1001).suit + '.png'"
+        alt=""
+      />
+
+      <img
         class="stone"
         :src="'../src/assets/cards/frame/' + this.findCard(1001).stone + '.png'"
         alt=""
       />
 
       <div class="description" v-if="this.showDescription">
-        {{ this.findCard(1110).description }}
+        {{ this.description }}
       </div>
     </div>
     <div v-if="this.usable === true" class="lightCard"></div>
@@ -183,12 +189,21 @@ export default {
   top: 1.8%;
   text-align: center;
 }
+
+.suit {
+  width: 3vh;
+  height: 3vh;
+  position: absolute;
+  z-index: 5;
+  bottom: 75%;
+  left: 7%;
+}
 .stone {
   width: 2vh;
   height: 2vh;
   position: absolute;
   z-index: 5;
   bottom: 0%;
-  left: 46.5%;
+  left: 45%;
 }
 </style>
