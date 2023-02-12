@@ -29,9 +29,26 @@ const router = createRouter({
       component: () => import("../views/Game.vue"),
     },
     {
-      path: "/championselection",
+      path: "/championSelection",
       name: "ChampionSelection",
       component: () => import("../views/ChampionSelection.vue"),
+    },
+    {
+      path: "/asd",
+      name: "ChampionCard",
+      component: () => import("../views/ChampionCard.vue"),
+    },
+    
+    {
+      path: "/as",
+      name: "PlayerChampionCard",
+      component: () => import("../views/PlayerChampionCard.vue"),
+    },
+    
+    {
+      path: "/Library",
+      name: "Library",
+      component: () => import("../views/Library.vue"),
     },
   ],
 });

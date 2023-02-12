@@ -67,7 +67,7 @@ export default {
     return {
       champions: [],
       currentChampionId: 0,
-      lobbyID: this.lobbyIDprop,
+      lobbyId: null
     };
   },
   setup() {
@@ -83,8 +83,9 @@ export default {
       this.currentChampionId = Math.floor(Math.random() * this.champions.length);
     },
     async confirmChampion() {
-      await gameService.selectChampion(this.lobbyId).then(
+      await gameService.selectChampion(this.lobbyId,this.currentChampionId).then(
         (response) => {
+          this.$router.push("/game");
           console.log(response);
         },
         (error) => {
@@ -94,7 +95,7 @@ export default {
     },
     initData(){
       this.champions = this.lobbyStore.getChampions();
-      this.lobbyID = this.lobbyStore.getLobby.id;
+      this.lobbyId = this.lobbyStore.getLobby.id;
       this.identity = this.lobbyStore.getIdentity();
     }
   },
