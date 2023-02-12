@@ -48,9 +48,11 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
         </td>
       </tr>
     </table>
-    
-  <div class="description"  v-if="this.showDescription">{{ this.description }}</div>
-  </div>
+  <transition name="fade-in">  
+    <div class="description"  v-if="this.showDescription"
+    >{{ this.description }}</div>
+  </transition>  
+</div>
   <div v-show="this.usable===true" class="lightCard"></div>
   
 </div>
@@ -64,7 +66,7 @@ export default {
             health:3,
             game:this.isGame,
             showDescription:false,
-            timerDelay:1000,
+            timerDelay:500,
             hoverComponents:false,
         }
     },
@@ -166,15 +168,44 @@ export default {
 }
 
 
+
+.fade-in-enter-from{
+  opacity: 0;
+  transform:translateY(5vh);
+}
+
+.fade-in-enter-to{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.fade-in-enter-active{
+  transition:all 0.5s ease;
+}
+
+.fade-in-leave-from{
+  opacity:1;
+  transform:translateY(0);
+}
+.fade-in-leave-to{
+  opacity:0;
+  transform:translateY(5vh);
+}
+.fade-in-leave-active{
+  transition:all 0.3s ease;
+}
+
 .description{
-  width: 20vw;
-  height: 22vh;
-  background-color: red;
-  left:10vw;
+  width: 9vw;
+  height: 20vh;
+  top:7.5vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  left:0.5vw;
   position: absolute;
-  top:0;
-  z-index: 9;
-  border:solid green 3px;
+  z-index: 8;
+  color:rgb(247, 247, 100);
+  padding:5px;
+  overflow-y: auto;
 }
 
 * {

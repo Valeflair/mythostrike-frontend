@@ -51,6 +51,7 @@
             <player-card :name="this.username" :health="this.findPlayer(this.username).health" :identity="this.findPlayer(this.username).identity"
             :messageActivitysUsable="this.messageActivitysUsable" :skillsProp="null" 
             :class="{'actualPlayer':this.username === this.currentPlayer}"
+            
             @skillUsed="useSkill"/>
         </div>
 
@@ -97,6 +98,9 @@
                     @click="useCard(card,this.messageActivitysUsable.cardsId)"
                     :name="getCard(card).name"
                     :description="getCard(card).description"
+                    :identity=null
+                    :symbol="getCard(card).symbol"
+                    :value="getCard(card).value"
                 />
             </div>
             </div>
@@ -106,19 +110,25 @@
 
         <div class="tablePileSlot" >
             <div class="tableContainer">
-            <div v-for="(card,i) in this.tablePile" :key="i" 
+            <div v-for="(entry,i) in this.tablePile" :key="i" 
                 :class="[{'not-first-card': i !==0}, 'not-last-card']" 
                 :style="{'margin-left': calculateMarginLeft(this.tablePile.length,i) }"
-                @mouseenter="hoverStart(getCard(card))"
-                @mouseleave="hoverEnd(getCard(card))">
-                <play-card class="playCard"  :name="getCard(card).name" :description="getCard(card).description"  />
+                @mouseenter="hoverStart(getCard(entry.cardId))"
+                @mouseleave="hoverEnd(getCard(entry.cardId))">
+                <play-card class="playCard"  
+                :name="getCard(entry.cardId).name" 
+                :description="getCard(entry.cardId).description" 
+                :usable="false"  
+                :identity="entry.playerName"
+                :symbol="getCard(entry.cardId).symbol"
+                :value="getCard(entry.cardId).value"/>
             </div>            
             </div>
 
             <div v-if="cardUsed" class="confirmB" @click="confirm()"  :class="{'usableClass':checkConfirmStatus(),'notUsableClass':!checkConfirmStatus()}">
                 <p>Confirm</p>
             </div>
-            <button v-if="cardUsed" class="cancelB" @click="cancel">Cancel</button>
+            <button v-if="cardUsed" class="cancelB" @click="cancel()">Cancel</button>
         </div>  
 
     <!-----------------------------------------------DER ZIEHSTAPEL--------------------------------------------------------->    
@@ -128,7 +138,11 @@
     <!-----------------------------------------------DER ABLEGESTAPEL--------------------------------------------------------->    
 
     <div class="discardPile" v-if="this.discardPile.length>0">
-        <play-card :name="getCard(this.discardPile[this.discardPile.length-1]).name" :description="getCard(this.discardPile[this.discardPile.length-1]).description" />
+        <play-card :name="getCard(this.discardPile[this.discardPile.length-1]).name" 
+        :description="getCard(this.discardPile[this.discardPile.length-1]).description" 
+        :identity="null"
+        :symbol="getCard(this.discardPile[this.discardPile.length-1]).symbol"
+        :value="getCard(this.discardPile[this.discardPile.length-1]).value" />
         <div class="discardPileOverlay"></div>
     </div>
 
@@ -136,6 +150,19 @@
 
     <button class="endTurn" @click="endTurn()" v-if="this.username===this.currentPlayer">End Turn</button>    
     
+    <!----------------------------------------Der Alarm der den Spieler einen tippt gibt was er machen soll----------------------------------------------->    
+
+    <transition name="notice-Animation">
+        <div class="notice-message" v-if="showNotice">{{ this.notice }} </div>
+    </transition>
+  
+    <!----------------------------------------DER TIMER----------------------------------------------->    
+
+    <div class="progress-container">
+      <progress ref="progress" value="100" max="100">75%</progress>
+    </div>
+    <button class="start-Progressbar" @click="startProgressbar">START</button>
+    <button class="interrupt-Progressbar" @click="pause">PAUSE/RESUME</button>
     <!-- Ab hier ist ein biscchen komisch. wir machen hier  cardmovemessage. Normalerweise aber in update aber hier ka deshalb erstmal ein div wo es simuliert wird-->
     <div class="clickCardMoveMessage" @click="updateCardMoveMessage"> Click me</div>
 
@@ -151,6 +178,10 @@ export default {
     },
     data(){
         return{
+            paused:false,
+            animation: null,
+            notice:'Please pick a Card or a Skill',
+            showNotice:false,
             status:false, //boolean um zu prüfen ob erst eine private websocket gesendet wurde falls ja wird es auf true gesetzt und der nächste public websocket wird ignoriert -> wird gebraucht für cardmovemessage
             cardUsed:false, // wird genutzt um confirm und cancel button anzuzeigen wenn eine Karte verwendet wurde
             lobbyId:5455,   //die LobbyId vom game wird mitgegeben
@@ -292,50 +323,70 @@ export default {
                 }
             ],// die Schnittstelle um die Daten aller Spieler zu aktualisieren
             cardMoveMessage:{
-                source:'Minh',
-                destination:'equipment-Minh',
+                source:'Till',
+                destination:'tablePile',
                 count:1,
                 cardsId:[0,2],
             },// die Schnittstelle um eine Karte zu bewegen
             cards:[
-        {
-          id:0,
-          name:'Attack',
-          showDescription:false,
-          description:'Description of Attack',
-          used: false,
-        },
-        {
-          id:1,
-          name:'Defense',
-          showDescription:false,
-          description:'Description of Defense',
-          used: false,
-          
-        },
-        {
-          id:2,
-          name:'Attack',
-          showDescription:false,
-          description:'Description of Attack',
-          used: false,
-        },
-        {
-          id:3,
-          name:'Golden Apple',
-          showDescription:false,
-          description:'Description of Golden Apple',
-          used: false,
-        }
+                {
+                id:0,
+                name:'Attack',
+                showDescription:false,
+                description:'Description of Attack',
+                used: false,
+                symbol:'diamond',
+                value:5,
+                },
+                {
+                id:1,
+                name:'Defense',
+                showDescription:false,
+                description:'Description of Defense',
+                used: false,
+                symbol:'heart',
+                value:2,
+                },
+                {
+                id:2,
+                name:'Attack',
+                showDescription:false,
+                description:'Description of Attack',
+                used: false,
+                symbol:'spade',
+                value:10,
+                },
+                {
+                id:3,
+                name:'Golden Apple',
+                showDescription:false,
+                description:'Description of Golden Apple',
+                used: false,
+                symbol:'club',
+                value:8,
+                }
             ]// Alle Karten
         }
     },
     components:{
         championCard,equipmentComponent,DelayedeffectComponent,playerCard,resultPage,playCard
     },
-    created(){
-    },
     methods: {
+        startProgressbar() {
+      this.animation = this.$refs.progress.animate([
+        { width: '100%' },
+        { width: '0%' }
+      ], {
+        duration: 3000,
+        easing: 'ease-in',
+        fill: 'forwards'
+      });
+      this.animation.onfinish = () => {
+        this.endTurn();
+      };
+      this.$refs.progress.style.animation = 'progress-animation 20s ease-in forwards';
+    },
+
         //--------------------------------- AXIOS ----------------------------------------------------
          //wenn der Spieler auf eine Karte drückt
          async useCard(id, searchArray){
@@ -418,8 +469,9 @@ export default {
         //wenn der confirm button gedrückt wird
         async confirm(){
             let count= this.cardsPicked.length;
+            
             if(count >= this.messageActivitysUsable.minCard && count <=this.messageActivityUsable.maxCard && this.messageActivitysUsable.needsConfirm){
-            await gameService.useCard(this.lobbyId,this.cardsPicked).then(
+                await gameService.useCard(this.lobbyId,this.cardsPicked).then(
                 (response)=>{
                     console.log(response);
                 },
@@ -427,6 +479,7 @@ export default {
                     console.log(error);
                 }
             )
+            this.messageActivitysUsable = null;
             }
         },
 
@@ -476,9 +529,11 @@ export default {
         //der setup für private Connection
         playerTurnSetup(){
             if(this.gameStore.getGameData().messageType === 'HIGHLIGHT'){
-                this.messageActivitysUsable = this.gameStore.getGameData().highlightMessage;
+                this.messageActivitysUsable = this.gameStore.getGameData().payload;
+                this.showNotice=true;
+                this.notice = this.messageActivitysUsable.reason;
             }else if(this.gameStore.getGameData().messageType === 'CARD_MOVE'){
-                this.cardMoveMessage = this.gameStore.getGameData().cardMoveMessage;
+                this.cardMoveMessage = this.gameStore.getGameData().payload;
                 this.status = true;
             }
         },
@@ -490,13 +545,13 @@ export default {
                 return;
             }
             if(this.gameStore.getGameData().messageType === 'UPDATE_GAME'){
-                this.playerDaten = this.gameStore.getGameData().players;
+                this.playerDaten = this.gameStore.getGameData().payload;
             }else if(this.gameStore.getGameData().messageType === 'CARD_MOVE'){
-                this.cardMoveMessage = this.gameStore.getGameData().cardMoveMessage;
+                this.cardMoveMessage = this.gameStore.getGameData().payload;
             }else if(this.gameStore.getGameData().messageType === 'LOG'){
-                this.logText += this.logText + "\n"+ this.gameStore.getGameData().message;
+                this.logText += this.logText + "\n"+ this.gameStore.getGameData().payload;
             }else if(this.gameStore.getGameData().messageType === 'GAME_END'){
-                this.playerSummarize = this.gameStore.getGameData().results;
+                this.playerSummarize = this.gameStore.getGameData().payload;
             }
         },
 
@@ -554,6 +609,7 @@ export default {
         
         //TODO: MUSS ÜBERARBEITET WERDEN
         updateCardMoveMessage(){
+            this.showNotice = !this.showNotice;
             //1. wir entfernen die Karten.
             //erst prüfen ob es eines der Stapeln ist
             //Wenn es auch nicht da ist prüfe ob es der Spieler seine equipment / passive ist
@@ -597,7 +653,13 @@ export default {
                     this.drawPile.push(this.cardMoveMessage.cardsId[i]);
             }else if(this.cardMoveMessage.destination === 'tablePile'){
                 for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
-                    this.tablePile.push(this.cardMoveMessage.cardsId[i]);
+                    this.tablePile.push({
+                        cardId:this.cardMoveMessage.cardsId[i],
+                        playerName:this.cardMoveMessage.source
+                    });
+                    for(let i=0;i<this.tablePile.length;i++){
+                        console.log("player: "+this.tablePile[i].playerName + "   played: "+this.tablePile[i].cardId);
+                    }
             }else if(this.cardMoveMessage.destination === ("equipment-"+this.username)){
                 for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
                     this.playerEquipment.push(this.cardMoveMessage.cardsId[j]);
@@ -627,6 +689,7 @@ export default {
                     return this.cards[i];
             }
         },
+
         //sucht den Spieler mit der bestimmten id
         findPlayer(id){
             for(let i=0;i<this.playerDaten.length;i++){
@@ -644,6 +707,112 @@ export default {
 </script>
 
 <style scoped>
+.start-Progressbar{
+    width:10vw;
+    height:5vh;
+    position: absolute;
+    background-color: red;
+    right:0;
+    top:40vh;
+}
+
+.interrupt-Progressbar{
+    width:10vw;
+    height:5vh;
+    position: absolute;
+    background-color: red;
+    right:0;
+    top:30vh;
+}
+
+.progress-container {
+  position: absolute;
+  bottom: 36.5vh;
+  right: 1vw;
+  display: inline-block;
+  background: #eee;
+  height: 20px;
+  width: 10vw;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: turquoise;
+  width: 0;
+}
+
+@keyframes progress-animation {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+.notice-Animation-enter-from{
+    opacity:0;
+    transform:translateY(-60px);
+  } 
+  .notice-Animation-enter-to{
+    opacity:1;
+    transform: translateY(0);
+  }
+  .notice-Animation-enter-active{
+    animation: wobble 0.5s ease ;
+  }
+  .notice-Animation-leave-from{
+    opacity:1;
+    transform: translateY(0);
+  }
+  .notice-Animation-leave-to{
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+  .notice-Animation-leave-active{
+    transition:all 1s ease-out;
+  } 
+
+  @keyframes wobble{
+    0%{
+      opacity:0;
+      transform: translateY(-60px) 
+    }
+    50%{
+      opacity: 1;
+      transform: translateY(0px) 
+    }
+    60%{
+      transform: translateX(8px);
+    }
+    70%{
+      transform: translateX(-8px);
+    }
+    80%{
+      transform: translateX(4px);
+    }
+    90%{
+      transform: translateX(-4px);
+    }
+    100%{
+      transform: translateX(0px);
+    }
+  }
+
+  .notice-message{
+    width: 15vw;
+    height: 10vh;
+    background-color: red;
+    position: absolute;
+    right:1vw;
+    bottom:46vh;
+  }
+
 
 .cardUsedStyle{
     transform:translateY(-3vh);
@@ -704,7 +873,7 @@ export default {
     width: 15vw;
     right: 0;
     top:5vh;
-    height: 40vh;
+    height: 38vh;
     background-color: blue;
     overflow-y: scroll;
     word-wrap: break-word;

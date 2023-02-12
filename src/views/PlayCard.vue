@@ -1,9 +1,9 @@
 <script setup>
 </script>
 <template>
-  <div class="container">
+  <div class="container" @mouseenter="hoverStart()" @mouseleave="hoverEnd()">
 
-  <div class="card" @mouseover="hoverStart()" @mouseout="hoverEnd()">
+  <div class="card" >
     <img class="frame" src="../assets/card/frame/gold_card_frame_r.png" alt="" />
 
     <img class="avatar" src="../assets/card/pictures/Aphrodite.png" alt="" />
@@ -16,8 +16,13 @@
     </div>
 
     <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
-
-    <div class="description"  v-if="this.showDescription">{{ this.description }}</div>
+    <transition name="fade-in">
+      <div class="description"  v-if="this.showDescription">{{ this.description }}</div>
+    </transition>
+    <div class="identity" v-if="this.identity!==null">{{ this.identity }} </div>
+    <div class="symbol" :style="{'background':'url('+this.getImagePath()+')', 'backgroundSize': 'cover' }" >
+      <p class="value">{{this.value}}</p>
+  </div>
   </div>
   <div v-if="this.usable===true" class="lightCard"></div>
 
@@ -31,16 +36,20 @@ export default {
         return{
             showDescription:false,
             timerDelay:1000,
+            basePathSymbol:"src/assets/card/smallParts/",
         }
     },
     methods:{
+      getImagePath(){
+        let path = this.basePathSymbol+this.symbol+'.png';
+        return path;
+      },
+
       hoverStart(){
-         this.hoverTimer = setTimeout(() => {
-                this.showDescription = true
-            }, this.timerDelay);
+        this.showDescription = true
+
       },
       hoverEnd(){
-        clearTimeout(this.hoverTimer);
         this.showDescription = false;
       }
     },
@@ -49,12 +58,93 @@ export default {
         name: "",
         description:'',
         usable:Boolean,
+        identity:'',
+        symbol:'',
+        value:Number,
     },
 };
 </script>
 
 <style scoped>
 
+.fade-in-enter-from{
+  opacity: 0;
+  transform:translateY(5vh);
+}
+
+.fade-in-enter-to{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.fade-in-enter-active{
+  transition:all 0.5s ease;
+}
+
+.fade-in-leave-from{
+  opacity:1;
+  transform:translateY(0);
+}
+.fade-in-leave-to{
+  opacity:0;
+  transform:translateY(5vh);
+}
+.fade-in-leave-active{
+  transition:all 0.3s ease;
+}
+
+.description{
+  width: 9vw;
+  height: 20vh;
+  top:7.5vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  left:0.5vw;
+  position: absolute;
+  z-index: 8;
+  color:rgb(247, 247, 100);
+  padding:5px;
+  overflow-y: auto;
+}
+
+.card {
+  width: 10vw;
+  height: 29vh;
+  position: relative;
+}
+
+.value {
+  text-align: center;
+  line-height: 3;
+}
+
+.symbol{
+  position:absolute;
+  z-index:8;
+  font-size: 1vh;
+  top:3vh;
+  left:0.5vw;
+  width:3.5vh;
+  height: 3.5vh;
+  font-weight: bold;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  color:yellow;
+  align-content: center;
+}
+
+.identity{
+  position:absolute;
+  width:2.5vw;
+  height:3vh;
+  background-color: red;
+  z-index:8;
+  font: 2vh;
+  color:black;
+
+  right:0.7vw;
+  top:3vh;
+}
 
 
 .lightCard {
@@ -117,15 +207,6 @@ export default {
   height: 29vh;
   position: relative;
 }
-.description{
-  width: 15vw;
-  height: 22vh;
-  background-color: red;
-  left:10vw;
-  position: absolute;
-  z-index: 8;
-  border:solid green 3px;
-}
 
 * {
   margin: 0;
@@ -143,11 +224,7 @@ export default {
   font-family: "Blackadder";
   src: url(../assets/fontStyle/Blackadder.ttf);
 }
-.card {
-  width: 10vw;
-  height: 29vh;
-  position: relative;
-}
+
 .frame {
   width: 100%;
   height: 100%;
