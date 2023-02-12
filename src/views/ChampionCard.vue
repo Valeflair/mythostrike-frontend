@@ -103,7 +103,7 @@ import cardList from "../data/cards.json";
         </tr>
       </table>
 
-      <div class="description" v-if="this.showDescription">
+      <div class="description" v-if="this.showDescription && this.game">
         {{ this.description }}
       </div>
     </div>
