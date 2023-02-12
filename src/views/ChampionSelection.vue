@@ -1,12 +1,7 @@
-<script setup>
-import axios from "axios";
-import championData from "../assets/champions.json";
-</script>
-
 <template>
   <div class="container">
     <div class="area-3-4">
-      <h1>{{ championSelection }}</h1>
+      <h1>Select your Champion</h1>
 
       <div class="championContainer">
         <v-row class="d-flex justify-center">
@@ -27,13 +22,13 @@ import championData from "../assets/champions.json";
     <div class="area-1-4 justify-center">
       <div class="descriptionChampion">
         <button @click="printPassiveSkill" class="championDisplay">
-          {{ this.champions[this.currentChampion].name }}
+          {{ this.champions[this.currentChampionId].name }}
         </button>
       </div>
 
       <div class="skillContainer">
         <div
-          v-for="pSkill in this.champions[this.currentChampion].passiveSkills"
+          v-for="pSkill in this.champions[this.currentChampionId].passiveSkills"
           :key="pSkill.name"
           class="justify-center"
         >
@@ -45,7 +40,7 @@ import championData from "../assets/champions.json";
           </div>
         </div>
         <div
-          v-for="aSkill in this.champions[this.currentChampion].activeSkills"
+          v-for="aSkill in this.champions[this.currentChampionId].activeSkills"
           :key="aSkill.name"
           class="justify-center"
         >
@@ -65,43 +60,46 @@ import championData from "../assets/champions.json";
 </template>
 
 <script>
+import gameService from "@/services/gameService";
+import { useLobbyStore } from "@/stores/lobby";
 export default {
   data() {
     return {
-      champions: championData, //alles was wir machen müssen ist ein get zu holen der alle champions
-      currentChampion: 0,
-      championSelection: "Select your Champion",
+      champions: [],
+      currentChampionId: 0,
       lobbyID: this.lobbyIDprop,
     };
   },
-  props: {
-    lobbyIDprop: Number,
+  setup() {
+    const lobbyStore = useLobbyStore();
+
+    return {lobbyStore};
   },
   methods: {
     changeChampion(newChampionID) {
-      this.currentChampion = newChampionID;
+      this.currentChampionId = newChampionID;
     },
     randomChampion() {
-      this.currentChampion = Math.floor(Math.random() * this.champions.length);
+      this.currentChampionId = Math.floor(Math.random() * this.champions.length);
     },
     async confirmChampion() {
-      await axios
-        .post("http://localhost:8080/games/play/champion", {
-          lobbyId: this.lobbyID,
-          selectedChampionId: this.currentChampion,
-        })
-        .then(
-          (response) => {
-            console.log("erfolgreich, champion ausgewählt");
-            console.log(response.status);
-            this.$router.push({ path: "./game" });
-          },
-          (error) => {
-            console.log("fehler, champion auswählen");
-            console.log(error);
-          }
-        );
+      await gameService.selectChampion(this.lobbyId).then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
     },
+    initData(){
+      this.champions = this.lobbyStore.getChampions();
+      this.lobbyID = this.lobbyStore.getLobby.id;
+      this.identity = this.lobbyStore.getIdentity();
+    }
+  },
+  created() {
+    this.initData();
   },
 };
 </script>

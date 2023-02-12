@@ -7,7 +7,7 @@
         color="white"
         prepend-icon="mdi-circle-multiple"
       >
-        Drachma: {{ userStore.getUserData.drachma }}
+        Drachma: {{ userStore.getUser.drachma }}
       </v-chip>
 
       <v-chip
@@ -16,7 +16,7 @@
         color="white"
         prepend-icon="mdi-creation"
       >
-        Rank Points: {{ userStore.getUserData.rankPoints }}
+        Rank Points: {{ userStore.getUser.rankPoints }}
       </v-chip>
     </div>
 
@@ -25,11 +25,11 @@
         <v-row justify="space-between">
           <v-card class="cardColor text-center">
             <v-card-title class="text-h4">Welcome</v-card-title>
-            <v-card-title>{{ userStore.getUserData.username }}</v-card-title>
+            <v-card-title>{{ userStore.getUser.username }}</v-card-title>
             <img
               :src="
                 '../src/assets/avatars/avatar' +
-                userStore.getUserData.avatarNumber +
+                userStore.getUser.avatarNumber +
                 '.png'
               "
             />

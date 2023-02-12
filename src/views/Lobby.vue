@@ -42,7 +42,7 @@ export default {
       slots: [],
       gameModes: [],
       currentModeName: "",
-      currentOwner: "Holder",
+      currentOwner: "",
       currentModeId: null,
       lobbyId: 0,
       isModeShown: false,
@@ -78,7 +78,6 @@ export default {
         (response) => {
           console.log(response);
           console.log("start");
-          this.$router.push({ path: "./championselection" });
         },
         (error) => {
           console.log(error);
@@ -86,7 +85,7 @@ export default {
       );
     },
     async changeMode(newMode) {
-      await lobbyService.changeMode(this.lobbyId, this.currentModeId).then(
+      await lobbyService.changeMode(this.lobbyId, newMode).then(
         (response) => {
           this.currentModeId = newMode;
           console.log(response);
@@ -135,41 +134,53 @@ export default {
       );
     },
     lobbySetup() {
-      this.lobbyId = this.lobbyStore.getLobbyData.id;
-      this.currentModeName = this.lobbyStore.getLobbyData.mode;
-      this.currentOwner = this.lobbyStore.getLobbyData.owner;
+      this.lobbyId = this.lobbyStore.getLobby.id;
+      console.log(this.lobbyStore.getLobby.id);
+      this.currentModeName = this.lobbyStore.getLobby.mode;
+      console.log(this.currentModeName);
+      this.currentOwner = this.lobbyStore.getLobby.owner;
       this.isLobbyOwner =
-        this.currentOwner == this.userStore.getUserData.username;
-      this.slots = this.lobbyStore.getLobbyData.seats;
+        this.currentOwner == this.userStore.getUser.username;
+      this.slots = this.lobbyStore.getLobby.seats;
     },
     connect() {
-      let socket = new SockJS("http://localhost:8080/updates");
-      this.stompClient = Stomp.over(socket);
       this.stompClient.connect({}, (frame) => {
         console.log("Connected to " + frame);
         this.stompClient.subscribe("/lobbies/" + this.lobbyId, (response) => {
-          console.log(JSON.parse(response.body));
-          this.lobbyStore.setLobbyData(JSON.parse(response.body));
+          let lobbyData = JSON.parse(response.body);
+          console.log(lobbyData);
+          this.lobbyStore.setLobby(lobbyData);
           this.lobbySetup();
+        });
+        this.stompClient.subscribe("/lobbies/" + + this.lobbyId + "/" +this.userStore.getUser.username, (response) => {
+          let readyPhaseData = JSON.parse(response.body);
+          console.log(readyPhaseData);
+          this.lobbyStore.setChampions(readyPhaseData.champions);
+          this.lobbyStore.setIdentity(readyPhaseData.identity);
+          this.$router.push({ path: "./championselection" });
         });
       });
     },
     disconnect() {
       this.stompClient.disconnect();
     },
+    initStompClient(){
+      let socket = new SockJS("http://localhost:8080/updates");
+      this.lobbyStore.setStompClient(Stomp.over(socket));
+      this.stompClient = this.lobbyStore.getStompClient();
+    }
   },
   created() {
     this.initModes();
+    this.initStompClient();
     this.lobbySetup();
   },
   mounted() {
     this.connect();
   },
-  unmounted() {
+  unmounted(){
     this.disconnect();
-
-    this.leave();
-  },
+  }
 };
 </script>
 

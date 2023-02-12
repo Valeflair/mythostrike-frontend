@@ -4,7 +4,7 @@
       <img
         :src="
           '../src/assets/avatars/avatar' +
-          userStore.getUserData.avatarNumber +
+          userStore.getUser.avatarNumber +
           '.png'
         "
       />
@@ -128,7 +128,7 @@ export default {
       console.log(this.lobbyId);
       await lobbyService.joinLobby(this.lobbyId).then(
         (response) => {
-          this.lobbyStore.setLobbyData(response.data);
+          this.lobbyStore.setLobby(response.data);
           this.$router.push({ path: "./Lobby" });
           console.log(response);
         },
@@ -141,7 +141,7 @@ export default {
       console.log(id);
       await lobbyService.joinLobby(id).then(
         (response) => {
-          this.lobbyStore.setLobbyData(response.data);
+          this.lobbyStore.setLobby(response.data);
           this.$router.push({ path: "./Lobby" });
           console.log(response);
         },
@@ -153,7 +153,7 @@ export default {
     async createLobby() {
       await lobbyService.createLobby().then(
         (response) => {
-          this.lobbyStore.setLobbyData(response.data);
+          this.lobbyStore.setLobby(response.data);
           this.$router.push({ path: "./Lobby" });
         },
         (error) => {

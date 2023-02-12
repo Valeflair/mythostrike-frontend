@@ -3,24 +3,24 @@
 <template>
   <v-row>
     <v-col cols="2" class="buttonMove">
-      <button class="seatButton" @click="selectMode">Select Mode</button>
-      <button class="seatButton">Invite</button>
-      <button class="seatButton" @click="start" :disabled="!this.isLobbyOwner">
+      <button class="commandButton" @click="selectMode">Select Mode</button>
+      <button class="commandButton" disabled>Invite</button>
+      <button class="commandButton" @click="start" :disabled="!this.isLobbyOwner">
         Start Game
       </button>
     </v-col>
     <v-col cols="2" class="buttonMove">
-      <button class="seatButton">Options</button>
+      <button class="commandButton" disabled>Options</button>
       <div class="dropdown">
         <button
-          class="seatButton"
+          class="commandButton"
           @click="addBot"
           :disabled="!this.isLobbyOwner"
         >
           Add Bot
         </button>
       </div>
-      <button class="seatButton" @click="leave">Leave</button>
+      <button class="commandButton" @click="leave">Leave</button>
     </v-col>
   </v-row>
 </template>
@@ -64,7 +64,7 @@ export default {
   margin-right: 13vh;
 }
 
-.seatButton {
+.commandButton {
   border: none;
   color: white;
   padding: 14px 40px;
@@ -81,7 +81,7 @@ export default {
   background-image: url("@/assets/elements/button.png");
 }
 
-.seatButton:hover {
+.commandButton:hover {
   color: #f9fd06;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);

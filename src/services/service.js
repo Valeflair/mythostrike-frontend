@@ -7,6 +7,7 @@ const BASE_URL = "http://localhost:8080";
 const LOBBY_URL = BASE_URL + "/lobbies";
 const RES_URL = BASE_URL + "/resources";
 const USER_URL = BASE_URL + "/users";
+const GAME_URL = BASE_URL + "/games/play";
 
 const LOGIN_URL = USER_URL + "/login";
 const REGISTER_URL = USER_URL + "/register";
@@ -20,6 +21,8 @@ const CHANGE_MODE_LOBBY_URL = LOBBY_URL + "/mode";
 const START_LOBBY_URL = LOBBY_URL + "/start";
 const LEAVE_LOBBY_URL = LOBBY_URL + "/leave";
 const SEAT_LOBBY_URL = LOBBY_URL + "/seats";
+
+const SELECT_CHAMPION_URL = GAME_URL + "/champion";
 
 const WS_URL = BASE_URL + "/updates";
 
@@ -37,4 +40,5 @@ export default {
   MODES_URL,
   SEAT_LOBBY_URL,
   WS_URL,
+  SELECT_CHAMPION_URL
 };
