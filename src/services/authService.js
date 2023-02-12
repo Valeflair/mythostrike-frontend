@@ -19,7 +19,7 @@ export default {
       data: {
         username: user.username,
         password: user.password,
-      }
+      },
     });
   },
   auth() {

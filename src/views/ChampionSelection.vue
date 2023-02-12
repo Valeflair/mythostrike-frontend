@@ -85,6 +85,7 @@ export default {
     async confirmChampion() {
       await gameService.selectChampion(this.lobbyId,this.currentChampionId).then(
         (response) => {
+          this.$router.push("/game");
           console.log(response);
         },
         (error) => {

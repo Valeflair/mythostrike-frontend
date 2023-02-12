@@ -6,7 +6,7 @@
     import resultPage from '../components/Statement.vue'
     import playCard from './PlayCard.vue'
     import { useGameStore } from "@/stores/game";
-    import gameService from "@/services/gameServices";
+    import gameService from "@/services/gameService";
 
 </script>
 

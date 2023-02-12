@@ -27,7 +27,7 @@ export default {
         await authService.auth().then(
           (response) => {
             console.log(response);
-            this.userStore.setUserData(response.data);
+            this.userStore.setUser(response.data);
             this.$router.push("/home");
           },
           (error) => {
@@ -37,6 +37,7 @@ export default {
         );
       }
     }
+    window.addEventListener('beforeunload', function(event) {})
   },
 };
 </script>

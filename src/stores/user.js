@@ -6,12 +6,12 @@ export const useUserStore = defineStore("user", {
     status: false,
   }),
   getters: {
-    getUserData() {
+    getUser() {
       return this.user;
     },
   },
   actions: {
-    setUserData(user) {
+    setUser(user) {
       this.user = user;
       this.status = true;
     },
