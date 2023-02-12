@@ -7,6 +7,9 @@
     import playCard from './PlayCard.vue'
     import { useGameStore } from "@/stores/game";
     import gameService from "@/services/gameService";
+    import SockJS from "sockjs-client";
+    import Stomp from "stompjs";
+    import { useLobbyStore } from "@/stores/lobby";
 
 </script>
 
@@ -174,17 +177,20 @@ export default {
     setup(){
         const gameStore = useGameStore();
         const userStore = useUserStore();
-        return {gameStore,userStore};
+        const lobbyStore = useLobbyStore();
+
+        return {gameStore,userStore,lobbyStore};
     },
     data(){
         return{
+            stompClient:null,
             paused:false,
             animation: null,
             notice:'Please pick a Card or a Skill',
             showNotice:false,
             status:false, //boolean um zu prüfen ob erst eine private websocket gesendet wurde falls ja wird es auf true gesetzt und der nächste public websocket wird ignoriert -> wird gebraucht für cardmovemessage
             cardUsed:false, // wird genutzt um confirm und cancel button anzuzeigen wenn eine Karte verwendet wurde
-            lobbyId:5455,   //die LobbyId vom game wird mitgegeben
+            lobbyId:Number,   //die LobbyId vom game wird mitgegeben
             logText:'Text', // der text für den log
             logOpen:false, // boolean der prüft ob der log geöffnet wurde oder nicht
             backgroundImage:'@/assets/backgrounds/game_background.png', // backgroundimage
@@ -371,6 +377,12 @@ export default {
     components:{
         championCard,equipmentComponent,DelayedeffectComponent,playerCard,resultPage,playCard
     },
+    created(){
+        console.log("lobbyId "+this.lobbyStore.getLobby.id);
+        this.lobbyId=this.lobbyStore.getLobby.id;
+        this.connect();
+
+    },
     methods: {
         startProgressbar() {
       this.animation = this.$refs.progress.animate([
@@ -506,7 +518,7 @@ export default {
             let socket = new SockJS("http://localhost:8080/updates");
             this.stompClient = Stomp.over(socket);
             this.stompClient.connect({}, (frame) => {
-                console.log("Connected to " + frame);
+                console.log("Connected to Game" + frame);
                 //der private connection
                 this.stompClient.subscribe("/games/" + this.lobbyId +"/"+ this.username, (response) => {
                     console.log(JSON.parse(response.body));
