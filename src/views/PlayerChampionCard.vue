@@ -10,7 +10,7 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
 
     <div class="name">
       <span>
-        <!--{{ this.name }}--> NAME
+        {{ this.name }}
         
       </span>
     </div>
@@ -26,7 +26,7 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
     </table>
 
     <div  v-if="game" class="identity">
-      <!-- {{ this.identity }}-->K
+       {{ this.identity }}
     </div>
     
     <table class="skillList" v-if="this.showSkills">
@@ -255,7 +255,7 @@ export default {
   z-index: 4;
   background-color: green;
   background-repeat: no-repeat;
-  font-size: 3vh;
+  font-size: 0.5vh;
   color: aliceblue;
   text-align: center;
   top: 5vh;

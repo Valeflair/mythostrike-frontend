@@ -1,6 +1,8 @@
 <script setup>
 </script>
 <template>
+  <div class="container">
+
   <div class="card" @mouseover="hoverStart()" @mouseout="hoverEnd()">
     <img class="frame" src="../assets/card/frame/gold_card_frame_r.png" alt="" />
 
@@ -16,6 +18,8 @@
     <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
 
     <div class="description"  v-if="this.showDescription">{{ this.description }}</div>
+  </div>
+  <div v-if="this.usable===true" class="lightCard"></div>
 
   </div>
 </template>
@@ -44,11 +48,75 @@ export default {
     props: {
         name: "",
         description:'',
+        usable:Boolean,
     },
 };
 </script>
 
 <style scoped>
+
+
+
+.lightCard {
+  background: #191c29;
+  width: 10vw;
+  height: 29vh;
+  position: relative;
+  top:-29vh;
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+} 
+
+.lightCard::before,
+.lightCard::after {
+  content: "";
+  width: 10.5vw;
+  height: 30vh;
+  border-radius: 8px;
+  background-image: linear-gradient(45deg, #ffff00, #c4ff02, #45fc5a);
+  background-size:400%;
+  position: absolute;
+  z-index: -1;
+
+  transition:1s opacity linear;
+  animation: spin 3s linear infinite;
+  
+}
+.lightCard::after{
+  filter:blur(20px);
+  opacity:.8;
+}
+
+
+@keyframes spin {
+  0% {
+    background-position:0 0;
+  }
+  25% {
+        background-position:75% 75%;
+  }
+
+  50% {
+        background-position:100% 100%;
+  }
+  
+  75% {
+        background-position:75% 75%;
+  }
+ 100% {
+       background-position:0 0;
+  }
+}
+
+.container{
+  
+  width: 10vw;
+  height: 29vh;
+  position: relative;
+}
 .description{
   width: 15vw;
   height: 22vh;
@@ -84,13 +152,13 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 1;
+  z-index: 3;
 }
 .avatar {
   width: 99%;
   height: 88%;
   position: absolute;
-  z-index: 0;
+  z-index: 2;
   bottom: 1%;
 }
 .name {

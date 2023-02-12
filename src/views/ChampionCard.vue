@@ -3,6 +3,7 @@ import equipmentComponent from '../components/blockWithDescription.vue'
 import delayComponent from '../components/DelayedeffectComponent.vue'
 </script>
 <template>
+  <div class="container">
   <div class="championCard" @mouseover="hoverStart()" @mouseout="hoverEnd()">
     <img class="frame" src="../assets/card/frame/gold_card_frame_r.png" alt="" />
 
@@ -27,7 +28,7 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
 
     <div v-if="game" class="handcard-num"> {{ this.handcardNum }} </div>
     <div  v-if="game" class="identity">
-      <!-- {{ this.identity }}-->K
+      {{ this.identity }}
     </div>
 
   <table>
@@ -47,10 +48,12 @@ import delayComponent from '../components/DelayedeffectComponent.vue'
         </td>
       </tr>
     </table>
-
-    <div class="description"  v-if="this.showDescription">{{ this.description }}</div>
-
+    
+  <div class="description"  v-if="this.showDescription">{{ this.description }}</div>
   </div>
+  <div v-show="this.usable===true" class="lightCard"></div>
+  
+</div>
 </template>
 
 
@@ -72,7 +75,7 @@ export default {
       showInnerComponents(item){
         this.hoverComponents=item;
         this.hoverEnd(); // oder nur showDescription = false;
-},
+      },
       hoverStart(){
         console.log("in hoverStart: "+this.hoverComponents);
 
@@ -93,23 +96,84 @@ export default {
         isGame:Boolean,
         name: "",
         handcardNum: Number,
-        health:Number,
+        health: Number,
         identity: "",
-        equipment:Array,
-        passiveEffect:Array,
+        equipment: Array,
+        passiveEffect: Array,
         description:'',
+        usable:Boolean,
     },
 };
 </script>
 
 <style scoped>
+
+
+
+.lightCard {
+  background: #191c29;
+  width: 10vw;
+  height: 29vh;
+  position: relative;
+  top:-29vh;
+  border-radius: 1px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  z-index:1;
+} 
+
+.lightCard::before,
+.lightCard::after {
+  content: "";
+  width: 10.5vw;
+  height: 30vh;
+  border-radius: 8px;
+  background-image: linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2);
+  background-size:400%;
+  position: absolute;
+  z-index: -1;
+
+  transition:1s opacity linear;
+  animation: spin 3s linear infinite;
+  
+}
+.lightCard::after{
+  filter:blur(20px);
+  opacity:.8;
+}
+
+
+@keyframes spin {
+  0% {
+    background-position:0 0;
+  }
+  25% {
+        background-position:75% 75%;
+  }
+
+  50% {
+        background-position:100% 100%;
+  }
+  
+  75% {
+        background-position:75% 75%;
+  }
+ 100% {
+       background-position:0 0;
+  }
+}
+
+
 .description{
   width: 20vw;
   height: 22vh;
   background-color: red;
   left:10vw;
   position: absolute;
-  z-index: 6;
+  top:0;
+  z-index: 9;
   border:solid green 3px;
 }
 
@@ -129,6 +193,13 @@ export default {
   font-family: "Blackadder";
   src: url(../assets/fontStyle/Blackadder.ttf);
 }
+
+.container{
+  
+  width: 10vw;
+  height: 29vh;
+  position: relative;
+}
 .championCard {
   width: 10vw;
   height: 29vh;
@@ -144,7 +215,7 @@ export default {
   width: 99%;
   height: 88%;
   position: absolute;
-  z-index: 0;
+  z-index: 2;
   bottom: 1%;
 }
 .name {
@@ -200,7 +271,7 @@ export default {
   z-index: 4;
   background-color: green;
   background-repeat: no-repeat;
-  font-size: 3vh;
+  font-size: 0.5vh;
   color: aliceblue;
   text-align: center;
   top: 4vh;

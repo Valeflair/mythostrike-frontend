@@ -5,18 +5,22 @@
     import playerCard from './PlayerChampionCard.vue'
     import resultPage from '../components/Statement.vue'
     import playCard from './PlayCard.vue'
+    import { useGameStore } from "@/stores/game";
+    import gameService from "@/services/gameServices";
+
 </script>
 
 <template>
     <div class="bg-image">
+        <!-----------------------------------------------DIE ANDEREN SPIELER--------------------------------------------------------->
         <header class="table-wrapper ">
             <table>
                 <tr>
                     <td v-for="player in playerDaten.filter(player => player.username !== this.username)" :key="player.username">
                        <championCard class="playerChampions"
                        @click="pickPlayer(player.username,this.messageActivitysUsable.players)"
-                        :class="{'usableClass':containsId(player.username,this.messageActivitysUsable.players)&&player.username!==this.currentPlayer
-                                , 'actualPlayer':player.username === this.currentPlayer}" 
+                        :class="{ 'actualPlayer':player.username === this.currentPlayer}" 
+                        :usable="containsId(player.username,this.messageActivitysUsable.players)"
                         :isGame="true"
                         :name="player.username"
                         :handcardNum="player.cardCount"
@@ -24,22 +28,25 @@
                         :equipment="player.equipment" 
                         :passiveEffect="player.passiveEffect"
                         />
-                       
-                       
-                        <div class="cardOverlay" v-if="containsId(player.username,this.playerPicked)"></div>
-                       
                     </td>
                 </tr>
             </table>
-        </header>
+        </header>       
+    
+    <!-----------------------------------------------DIE SPIELERGEBNISSE--------------------------------------------------------->
         
     <result-page v-if="this.playerSummarize.length!==0" :users = "this.playerSummarize" class="playerSummarizeStyle" />
 
+    
+    <!-----------------------------------------------DER LOGBUTTON--------------------------------------------------------->
+    
         <div class="logClass">
-            <button class="logBtn" @click="logOpen = !logOpen"> Log</button>
+            <button class="logBtn btn" @click="logOpen = !logOpen"><span>Log</span></button>
             <div class="logTextArea" v-if="this.logOpen">{{logText}} </div>
         </div>
-
+    
+    <!-----------------------------------------------DER SPIELER --------------------------------------------------------->
+    
         <div class="player">
             <player-card :name="this.username" :health="this.findPlayer(this.username).health" :identity="this.findPlayer(this.username).identity"
             :messageActivitysUsable="this.messageActivitysUsable" :skillsProp="null" 
@@ -47,13 +54,13 @@
             @skillUsed="useSkill"/>
         </div>
 
+    <!-----------------------------------------------DIE DELAYED EFFEKTE & EQUIPMENT--------------------------------------------------------->
+        
         <div class="passivePosNegSlot">
             <div class="passiveSlot">
                 <table>
                   <tr >
-                    <td v-for="(passive,j) in 3" :key="passive.id"
-                    @mouseenter="hoverStart(passive)"
-                    @mouseleave="hoverEnd(passive)"
+                    <td v-for="(passive,j) in playerDelayedEffect" :key="passive.id"
                     class="passiveCircle"
                      :style="{left: j*3.5 +'vw'}">
                       <delayedeffect-component :diameter="7" />
@@ -64,20 +71,20 @@
 
             <div class="equipmentSlot">
                 <table>
-                <tr v-for="(equip,i) in equipment" :key="equip.id"
-                @mouseenter="hoverStart(equip)"
-                @mouseleave="hoverEnd(equip)">
+                <tr v-for="(equip,i) in playerEquipment" :key="equip.id">
                 
                     <td>
                         <div class="equipment" :style="{bottom: 15-(i)*8+'vh'}">
-                            <equipment-component widthProp="18" heightProp="6.5" name="MYEQUIPMENT" description="DESCRIPTION_EQUIPMENT" fontProp="2"/>
+                            <equipment-component widthProp="18" heightProp="6.5" :name="getCard(equip).name" :description="getCard(equip).description" fontProp="2"/>
                         </div>
                     </td>
                 </tr>
                 </table>
             </div>
         </div>
-
+    
+    <!-----------------------------------------------DIE HANDKARTEN--------------------------------------------------------->
+    
         <div class="handCardSlot">
             <div class="cardContainer">
             <div v-for="(card,i) in this.playerCards" :key="i" 
@@ -85,9 +92,8 @@
                 :style="{'margin-left': calculateMarginLeft(this.playerCards.length,i) }"
                 @mouseenter="hoverStart(getCard(card))"
                 @mouseleave="hoverEnd(getCard(card))">
-                <play-card class="playCard"
-                :class="{'usableClass':containsId(card,this.messageActivitysUsable.cardsId),
-                        'notUsableClass':!containsId(card,this.messageActivitysUsable.cardsId)}"
+                <play-card class="playCard" :class="{'cardUsedStyle':containsId(card,this.cardsPicked)}"
+                :usable="containsId(card,this.messageActivitysUsable.cardsId)"
                     @click="useCard(card,this.messageActivitysUsable.cardsId)"
                     :name="getCard(card).name"
                     :description="getCard(card).description"
@@ -95,6 +101,8 @@
             </div>
             </div>
         </div>  
+    
+    <!-----------------DIE KARTEN AUF DEM TISCH UND DER CONFIRM/CANCEL BUTTON--------------------------------------------------------->
 
         <div class="tablePileSlot" >
             <div class="tableContainer">
@@ -103,32 +111,30 @@
                 :style="{'margin-left': calculateMarginLeft(this.tablePile.length,i) }"
                 @mouseenter="hoverStart(getCard(card))"
                 @mouseleave="hoverEnd(getCard(card))">
-                <play-card :name="getCard(card).name" :description="getCard(card).description"  />
+                <play-card class="playCard"  :name="getCard(card).name" :description="getCard(card).description"  />
             </div>            
             </div>
 
-            <div v-if="cardUsed" class="confirmB"  :class="{'usableClass':checkConfirmStatus(),'notUsableClass':!checkConfirmStatus()}">
+            <div v-if="cardUsed" class="confirmB" @click="confirm()"  :class="{'usableClass':checkConfirmStatus(),'notUsableClass':!checkConfirmStatus()}">
                 <p>Confirm</p>
             </div>
             <button v-if="cardUsed" class="cancelB" @click="cancel">Cancel</button>
         </div>  
 
-    <div class="drawPile" v-if="this.drawPile.length>0"> 
-        
-    </div>
+    <!-----------------------------------------------DER ZIEHSTAPEL--------------------------------------------------------->    
+
+    <div class="drawPile" v-if="this.drawPile.length>0" ></div>
+
+    <!-----------------------------------------------DER ABLEGESTAPEL--------------------------------------------------------->    
 
     <div class="discardPile" v-if="this.discardPile.length>0">
         <play-card :name="getCard(this.discardPile[this.discardPile.length-1]).name" :description="getCard(this.discardPile[this.discardPile.length-1]).description" />
         <div class="discardPileOverlay"></div>
     </div>
 
-    <div class="information">
-        <p>MinCard: {{this.messageActivitysUsable.minCard}}</p>
-        <p>MaxCard: {{this.messageActivitysUsable.maxCard}}</p>
-        <p>minPlayer: {{this.messageActivitysUsable.minPlayer}}</p>
-        <p>maxPlayer: {{this.messageActivitysUsable.maxPlayer}}</p>
-        <p>reason: {{this.messageActivitysUsable.reason}} </p>
-    </div>
+    <!----------------------------------------DER BUTTON DER DIE RUNDE BEENDET----------------------------------------------->    
+
+    <button class="endTurn" @click="endTurn()" v-if="this.username===this.currentPlayer">End Turn</button>    
     
     <!-- Ab hier ist ein biscchen komisch. wir machen hier  cardmovemessage. Normalerweise aber in update aber hier ka deshalb erstmal ein div wo es simuliert wird-->
     <div class="clickCardMoveMessage" @click="updateCardMoveMessage"> Click me</div>
@@ -138,52 +144,37 @@
 
 <script>
 export default {
+    setup(){
+        const gameStore = useGameStore();
+        const userStore = useUserStore();
+        return {gameStore,userStore};
+    },
     data(){
         return{
+            status:false, //boolean um zu prüfen ob erst eine private websocket gesendet wurde falls ja wird es auf true gesetzt und der nächste public websocket wird ignoriert -> wird gebraucht für cardmovemessage
+            cardUsed:false, // wird genutzt um confirm und cancel button anzuzeigen wenn eine Karte verwendet wurde
+            lobbyId:5455,   //die LobbyId vom game wird mitgegeben
             logText:'Text', // der text für den log
             logOpen:false, // boolean der prüft ob der log geöffnet wurde oder nicht
-            cardUsed:false, // wird genutzt um confirm und cancel button anzuzeigen wenn eine Karte verwendet wurde
             backgroundImage:'@/assets/backgrounds/game_background.png', // backgroundimage
             timerDelay:1000,// der delay für karten hover
+            //player Daten die fest sind
+            username:'Minh', // hält der Spieler immer bei sich
+            currentPlayer:'Minh', // bekommen wir von websocket
+            identity:'Godking', // die Identität vom Spieler wird von championSelect mitgegeben
+            champion:Object, // der Champion vom Spieler
+            //Informationen die sich ändern können vom Spieler. Karten auf der Hand/Equipment/DelayedEffekt
+            playerCards:[0,1,2,3], //die Karten vom Spieler
+            playerEquipment:[1],// das Equipment vom Spieler
+            playerDelayedEffect:[0,1], // die delayed Effekte vom Spieler
+             //auswahl der Karten / Players
+            cardsPicked:[], // die Karten die der Spieler ausgewählt hat
             playerPicked:[], // ein Array das alle Spieler die ausgewählt wurde enthält
+            //Stapel an Karten
             tablePile:[], // der Stapel für die gerade ausgespielten Karten
             discardPile:[1], // der AblegeStapel
             drawPile:[1,0], // der Ziehstapel
-            username:'Minh', // hält der Spieler immer bei sich
-            currentPlayer:'Minh', // bekommen wir von websocket
-            playerCards:[0,1,2,3],
-            champion:{
-                name:'Nyx',
-                description:'Description of Nyx',
-                passiveSkills:[
-                    {
-                        id:2,
-                        name:'night scent',
-                        description:'Description of night scent',
-                        showDescription:false,
-                    },
-                    {
-                        id:5,
-                        name:'night eyes',
-                        description:'Description of night eyes',
-                        showDescription:false,
-                    },
-                ],
-                activeSkills:[
-                    {
-                        id:1,
-                        name:'night howl',
-                        description:'Description of night howl',
-                        showDescription:false,
-                    },
-                    {
-                        id:3,
-                        name:'night attack',
-                        description:'Description of night attack',
-                        showDescription:false,
-                    },
-                ]
-            },// Der champion von diesem Spieler. Wird über REST mit dem Spieler bereits mitgegeben. muss hier geändert werden
+           //Schnittstellen websocket
             playerSummarize:[
                 // {
                 //     username:'Minh',
@@ -221,17 +212,18 @@ export default {
                 //     hasWon: true,
                 // },
 
-            ],
+            ],// die Schnittstelle für die Ergebnisse
             messageActivitysUsable:{
                 cardsId:[0,2,3],
-                players:[],
+                players:['Till','Jack'],
                 skillsID:[0,1],
                 minCard:2,
                 maxCard:2,
                 minPlayer:0,
                 maxPlayer:0,
+                needsConfirm:true,
                 reason: 'Alles was der Spieler einsetzen kann: hier nur die Karten und skills mit den Ids',
-            },// Highlightmessage wird simuliert 
+            },// die Schnittstelle für Highlightmessage
             playerDaten:[
                 {
                     username: 'Minh',
@@ -298,67 +290,13 @@ export default {
                     equipment: [],
                     passiveEffect:['nightmare','drought'],
                 }
-            ],// eine Liste aller Spieler mit ihren Infos. Wird verwendet um die Anzeige aller Spieler zu aktualisieren
-            messageAttackCard:{ //alle messages sollen immer ein szenario darstellen um es aber hier wirklich zu nutzen überschreibe messageActivityUsable hierein
-                cardsId:[],
-                players:['Jack','Till'],
-                skillsID:[],
-                minCard:0,
-                maxCard:0,
-                minPlayer:1,
-                maxPlayer:1,
-                reason: 'Der Spieler hat eine Angriffskarte ausgespielt und kann nun Jack oder Till angreifen ',
-            },// Highlightmessage wird simuliert
-            messageDefendCard:{ //alle messages sollen immer ein szenario darstellen um es aber hier wirklich zu nutzen überschreibe messageActivityUsable hierein
-                cardsId:[1],
-                players:[],
-                skillsID:[],
-                minCard:0,
-                maxCard:0,
-                minPlayer:0,
-                maxPlayer:0,
-                reason: 'Der Spieler spielt eine Verteidigungskarte aus ',
-            },//Highlightmessage wird simuliert 
+            ],// die Schnittstelle um die Daten aller Spieler zu aktualisieren
             cardMoveMessage:{
                 source:'Minh',
-                destination:'tablePile',
+                destination:'equipment-Minh',
                 count:1,
-                cardsId:[0],
-            },// Cardmovemessage wird simuliert
-            passiveEffects:[
-              {
-                id:0,
-                name:'Effekt 0',
-                showDescription:false,
-                description:"Description Effect 0",
-              },
-              {
-                id:1,
-                name:'Effekt 1',
-                showDescription:false,
-                description:"Description Effect 1",
-              },
-              {
-                id:2,
-                name:'Effekt 2',
-                showDescription:false,
-                description:"Description Effect 2",
-              }
-            ],// die passiven effects die der Spieler drunter leidet. Bekommen wir von playerDaten
-            equipment:[
-                {
-                    id:0,
-                    name:'Trident of Poseidon',
-                    showDescription:false,
-                    description:'Description of Trident of Poseidon',
-                },
-                {
-                    id:2,
-                    name:'Shield of Athena',
-                    showDescription:false,
-                    description:'Description of Shield of Athena',
-                },
-            ],// die equipments die der spieler hat. Bekommen wir von playerdaten.
+                cardsId:[0,2],
+            },// die Schnittstelle um eine Karte zu bewegen
             cards:[
         {
           id:0,
@@ -389,25 +327,194 @@ export default {
           description:'Description of Golden Apple',
           used: false,
         }
-            ]// DIe karten von diesen Spieler. Müssen gespeichert werden für jeden Spieler. Aber nur dessen id. Wir haben nnähmlich noch eine Liste bei der wir durch die Id die karte erhalten.
+            ]// Alle Karten
         }
     },
     components:{
         championCard,equipmentComponent,DelayedeffectComponent,playerCard,resultPage,playCard
     },
+    created(){
+    },
     methods: {
+        //--------------------------------- AXIOS ----------------------------------------------------
+         //wenn der Spieler auf eine Karte drückt
+         async useCard(id, searchArray){
+            let count=this.cardsPicked.length;
+            if(this.containsId(id,this.cardsPicked)){
+                this.cardsPicked = this.cardsPicked.filter(card=> card!==id);
+                if(this.cardsPicked.length<this.messageActivitysUsable.minCard)
+                    this.cardUsed=false;
+            }else if(this.containsId(id,searchArray) && count <this.messageActivitysUsable.maxCard && !this.containsId(id,this.cardsPicked)){
+                for(let i=0;i<this.playerCards.length;i++){
+                    if(this.playerCards[i] === id){
+                        this.cardsPicked.push(id);
+                        if(this.cardsPicked.length>=this.messageActivitysUsable.minCard)
+                            this.cardUsed = true;
+                        break;
+                    }
+                }
+            }
+            if(count >= this.messageActivitysUsable.minCard && count <=this.messageActivityUsable.maxCard && !this.messageActivitysUsable.needsConfirm){
+            await gameService.useCard(this.lobbyId,this.cardsPicked).then(
+                (response)=>{
+                    console.log(response);
+                },
+                (error)=>{
+                    console.log(error);
+                }
+            )
+            }
+        },
+        //wenn der Spieler auf einen Spieler drückt
+        async pickPlayer(name,searchArray){          
+            let count=this.playerPicked.length;
+            if(this.containsId(name,searchArray) && count < this.messageActivitysUsable.maxPlayer && !this.containsId(id,this.playerPicked)){
+                for(let i=0;i<searchArray.length;i++){
+                    if(name === searchArray[i]){
+                        this.playerPicked.push(name);
+                        break;
+                    }
+                }
+            }
+
+            if(count >= this.messageActivitysUsable.minPlayer && count <=this.messageActivityUsable.maxPlayer){
+            await gameService.pickPlayer(this.lobbyId,this.playerPicked).then(
+                (response)=>{
+                    console.log(response);
+                },
+                (error)=>{
+                    console.log(error);
+                }
+            )
+            }
+        },
+
+        //wenn der Spieler seine Runde beenden will muss noch geprüft werden, ob er genug karten / leben hat
+        async endTurn(){
+            await gameService.end(this.lobbyId).then(
+                (response)=>{
+                    console.log(response);
+                },
+                (error)=>{
+                    console.log(error);
+                }
+            )
+        },
         
-        //wenn maus über das item hovert
+        //wenn der Spieler einen Skill einsetzt
+        async useSkill(skillId){
+            if(this.containsId(skilldId, this.messageActivityUsable.skillsID)){
+                await gameService.useSkill(this.lobbyId,skillId).then(
+                    (response)=>{
+                        console.log(response);
+                    },
+                    (error)=>{
+                        console.log(error);
+                    }
+                )
+            }
+        },
+
+        //wenn der confirm button gedrückt wird
+        async confirm(){
+            let count= this.cardsPicked.length;
+            if(count >= this.messageActivitysUsable.minCard && count <=this.messageActivityUsable.maxCard && this.messageActivitysUsable.needsConfirm){
+            await gameService.useCard(this.lobbyId,this.cardsPicked).then(
+                (response)=>{
+                    console.log(response);
+                },
+                (error)=>{
+                    console.log(error);
+                }
+            )
+            }
+        },
+
+        //wenn der cancel button gedrückt wird
+        async cancel(){
+            this.cardUsed=false;
+            this.cardsPicked.splice(0,this.cardsPicked.length);
+            this.tablePile.splice(0, this.tablePile.length);
+            this.playerPicked.splice(0,this.playerPicked.length);
+            await gameService.cancel(this.lobbyId).then(
+                (response)=>{
+                    console.log(response);
+                },
+                (error)=>{
+                    console.log(error);
+                }
+            )
+        },
+
+
+        //-------------------------------- WEBSOCKET ---------------------------------------------------
+        connect() {
+            let socket = new SockJS("http://localhost:8080/updates");
+            this.stompClient = Stomp.over(socket);
+            this.stompClient.connect({}, (frame) => {
+                console.log("Connected to " + frame);
+                //der private connection
+                this.stompClient.subscribe("/games/" + this.lobbyId +"/"+ this.username, (response) => {
+                    console.log(JSON.parse(response.body));
+                    this.gameStore.setGameData(JSON.parse(response.body));
+                    this.playerTurnSetup();
+                });
+                //der public connection
+                this.stompClient.subscribe("/games/" + this.lobbyId, (response) => {
+                    console.log(JSON.parse(response.body));
+                    this.gameStore.setGameData(JSON.parse(response.body));
+                    this.gameSetup();
+                });      
+            });           
+        },
+        
+        //keine Ahnung ob man es braucht
+        disconnect() {
+            this.stompClient.disconnect();
+        },
+
+        //der setup für private Connection
+        playerTurnSetup(){
+            if(this.gameStore.getGameData().messageType === 'HIGHLIGHT'){
+                this.messageActivitysUsable = this.gameStore.getGameData().highlightMessage;
+            }else if(this.gameStore.getGameData().messageType === 'CARD_MOVE'){
+                this.cardMoveMessage = this.gameStore.getGameData().cardMoveMessage;
+                this.status = true;
+            }
+        },
+
+        //der setup für public connection
+        gameSetup(){
+            if(this.status){
+                this.status=false;
+                return;
+            }
+            if(this.gameStore.getGameData().messageType === 'UPDATE_GAME'){
+                this.playerDaten = this.gameStore.getGameData().players;
+            }else if(this.gameStore.getGameData().messageType === 'CARD_MOVE'){
+                this.cardMoveMessage = this.gameStore.getGameData().cardMoveMessage;
+            }else if(this.gameStore.getGameData().messageType === 'LOG'){
+                this.logText += this.logText + "\n"+ this.gameStore.getGameData().message;
+            }else if(this.gameStore.getGameData().messageType === 'GAME_END'){
+                this.playerSummarize = this.gameStore.getGameData().results;
+            }
+        },
+
+        //------------------------------ NORMAL --------------------------------------------------
+        
+        //wenn maus über das item hovert um 1s delay zu haben
         hoverStart(item) {
             this.hoverTimer = setTimeout(() => {
                 item.showDescription = true
             }, this.timerDelay)
         },
+
         //wenn maus nicht mehr das item hovert
         hoverEnd(item) {
             clearTimeout(this.hoverTimer)
             item.showDescription = false
         },
+
         //die Abstände der Karten auf der Hand. Je mehr Karten, desto näher werden diese
         calculateMarginLeft(length,i){
             if(i===0)
@@ -427,6 +534,7 @@ export default {
                 margin=0;
             return `-${margin}rem`;
         },
+
         //methode bekommt eine art id und ein array und prüft ob die id im array drinn ist
         //wird verwendet um strings und nummern zu prüfen
         containsId(id, searchArray){
@@ -435,57 +543,21 @@ export default {
             }
             return false;
         },
-        //wenn der cancel button gedrückt wird
-        cancel(){
-            this.cardUsed=false;
-
-            this.tablePile.splice(0, this.tablePile.length);
-            this.playerPicked.splice(0,this.playerPicked.length);
-
-        },
-        //wenn der Spieler auf eine Karte drückt
-        useCard(id, searchArray){
-            let count=this.tablePile.length;
-            console.log("useCard: "+id);
-            if(this.containsId(id,searchArray) && count <this.messageActivitysUsable.maxCard && !this.containsId(id,this.tablePile)){
-                for(let i=0;i<this.playerCards.length;i++){
-                    if(this.playerCards[i] === id){
-                        this.cardUsed=true;
-                        this.tablePile.push(this.playerCards[i]);
-                        break;
-                    }
-                }
-            }
-        },
-        useSkill(skillId){
-            console.log('erfolgreich skill eingesetzt '+skillId);
-        },
-        //wenn der Spieler auf einen Spieler drückt
-        pickPlayer(name,searchArray){          
-            let count=this.playerPicked.length;
-            if(this.containsId(name,searchArray) && count < this.messageActivitysUsable.maxPlayer && !this.containsId(id,this.playerPicked)){
-                for(let i=0;i<searchArray.length;i++){
-                    if(name === searchArray[i]){
-                        this.playerPicked.push(name);
-                        break;
-                    }
-                }
-            }
-        },
-        //prüft ob alle Bedingungen erreicht sind um den confirm button zu drücken.
-        //Z.B. ob mindestens ein Spieler ausgewählt wurde beim Angriff.
+       
+        //TODO: MUSS ÜBERARBEITET WERDEN
         checkConfirmStatus(){
             if(this.playerPicked.length<this.messageActivitysUsable.minPlayer || 
                 this.tablePile.length<this.messageActivitysUsable.minCard)
                 return false;
             return true;
         },
-        //Eine Methode die verwendet wird um das bewegen eine karte zu simulieren eigentlich in lifecyclehook update
-        //
+        
+        //TODO: MUSS ÜBERARBEITET WERDEN
         updateCardMoveMessage(){
             //1. wir entfernen die Karten.
-
             //erst prüfen ob es eines der Stapeln ist
+            //Wenn es auch nicht da ist prüfe ob es der Spieler seine equipment / passive ist
+
             if(this.cardMoveMessage.source === 'discardPile'){
                 for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
                     this.discardPile.pop();
@@ -495,9 +567,16 @@ export default {
             }else if(this.cardMoveMessage.source === 'tablePile'){
                 for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
                     this.tablePile.pop();
-            }
-            //wenn es ein Stapel ist kann es kein Mensch sein. sonst nehmen wir die karten vom Menschen weg
-            for(let i=0;i<this.playerDaten.length;i++){
+            }else if(this.cardMoveMessage.source === ("equipment-"+this.username)){
+                for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
+                    this.playerEquipment = this.playerEquipment.filter(card => card !== this.cardMoveMessage.cardsId[j]);
+                }     
+            }else if(this.cardMoveMessage.source === ("delayEffect-"+this.username)){
+                for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
+                    this.playerDelayedEffect = this.playerDelayedEffect.filter(card => card !== this.cardMoveMessage.cardsId[j]);
+                }     
+            }else {
+                for(let i=0;i<this.playerDaten.length;i++){
                 if(this.playerDaten[i].username === this.cardMoveMessage.source){
                     this.playerDaten[i].cardCount-=this.cardMoveMessage.count;
                     if(this.cardMoveMessage.source === this.username){
@@ -507,13 +586,11 @@ export default {
                     }
                 }
             }
-
-
+            }
             //2. wir fügen die Karte nun dahin wohin sie hingehört ein
             if(this.cardMoveMessage.destination === 'discardPile'){
                 for(let i=0;i<this.cardMoveMessage.cardsId.length;i++){
                     this.discardPile.push(this.cardMoveMessage.cardsId[i]);
-                    console.log(this.discardPile);
                 }
             }else if(this.cardMoveMessage.destination === 'drawPile'){
                 for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
@@ -521,9 +598,16 @@ export default {
             }else if(this.cardMoveMessage.destination === 'tablePile'){
                 for(let i=0;i<this.cardMoveMessage.cardsId.length;i++)
                     this.tablePile.push(this.cardMoveMessage.cardsId[i]);
-            }
-        	
-            for(let i=0;i<this.playerDaten.length;i++){
+            }else if(this.cardMoveMessage.destination === ("equipment-"+this.username)){
+                for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
+                    this.playerEquipment.push(this.cardMoveMessage.cardsId[j]);
+                }     
+            }else if(this.cardMoveMessage.destination === ("delayEffect-"+this.username)){
+                for(let j=0;j<this.cardMoveMessage.cardsId.length;j++){
+                    this.playerDelayedEffect.push(this.cardMoveMessage.cardsId[j]);
+                }     
+            }else{
+                for(let i=0;i<this.playerDaten.length;i++){
                 if(this.cardMoveMessage.destination === this.playerDaten[i].username){
                     this.playerDaten[i].cardCount+=this.cardMoveMessage.count;
                     if(this.cardMoveMessage.destination === this.username){
@@ -533,17 +617,17 @@ export default {
                     }
                 }
             }
-
-            
+            }
         },
+
         /*sucht die Karte mit der bestimmten id */
         getCard(id){
             for(let i=0;i<this.cards.length;i++){
-                console.log("id:"+id+"    cardsID:"+this.cards[i].id)
                 if(this.cards[i].id === id)
                     return this.cards[i];
             }
         },
+        //sucht den Spieler mit der bestimmten id
         findPlayer(id){
             for(let i=0;i<this.playerDaten.length;i++){
                 if(id===this.playerDaten[i].username)
@@ -561,9 +645,19 @@ export default {
 
 <style scoped>
 
-.playCard{
-    z-index: 3;
+.cardUsedStyle{
+    transform:translateY(-3vh);
 }
+
+.endTurn{
+    position: absolute;
+    right:1vw;
+    width:10vw;
+    height:5vh;
+    bottom:40vh;
+    background-color: blueviolet;
+}
+
 
 .playerSummarizeStyle{
     position: absolute;
@@ -583,11 +677,25 @@ export default {
 }
 
 .logBtn{
-    position: absolute;
-    right: 0;
-    width: 5vw;
-    height: 5vh;
-    background-color: green;
+    width: 7vw;
+  height: 5vh;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  font-size: 3vh;
+
+  right:0;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: absolute;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
     
 }
 
@@ -616,6 +724,8 @@ export default {
     display: flex;
     justify-content: center;
     width: 90vw;
+    top:10px;
+    position:relative;
 }
 
 .tablePile{
@@ -690,13 +800,14 @@ export default {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index:5;
 }
 
 .playerChampions{
   width: 10vw;
   height: 29vh;
-    margin-left: 1vh;
-    margin-right: 1vh;
+    margin-left: 2vh;
+    margin-right: 2vh;
 }
 
 .cardOverlay{
@@ -800,6 +911,7 @@ export default {
   border-radius: 1rem;
   box-shadow: 3px 3px 12px 2px rgba(black, 0.6);
   transition: 0.2s;
+  z-index: 3;
 }
 .not-first-card{
   margin-left: -3rem;
@@ -816,7 +928,7 @@ transform: translateX(2rem);
 .handCardSlot{
   position: absolute;
   display: flex;
-  bottom:0;
+  bottom:1px;
   left:22vw;
   width: 61vw;
   height: 29vh;
@@ -883,5 +995,81 @@ transform: translateX(2rem);
   background: url("@/assets/backgrounds/game_background.png");
   height:100%;
   width: 100%;
+  
 }
+
+
+.btn {
+background: linear-gradient(0deg, rgb(126, 82, 15) 0%, rgba(251,75,2,1) 100%);
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+.btn span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn:before,
+.btn:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  bottom: 0;
+  background: rgb(147, 12, 3);
+  box-shadow:
+   -7px -7px 20px 0px rgba(255,255,255,.9),
+   -4px -4px 5px 0px rgba(255,255,255,.9),
+   7px 7px 20px 0px rgba(0,0,0,.2),
+   4px 4px 5px 0px rgba(0,0,0,.3);
+  transition: all 0.3s ease;
+}
+.btn:before{
+   height: 0%;
+   width: 2px;
+}
+.btn:after {
+  width: 0%;
+  height: 2px;
+}
+.btn:hover{
+  color: rgba(251,75,2,1);
+  background: transparent;
+}
+.btn:hover:before {
+  height: 100%;
+}
+.btn:hover:after {
+  width: 100%;
+}
+.btn span:before,
+.btn span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  background: rgb(147, 12, 3);
+  box-shadow:
+   -7px -7px 20px 0px rgba(255,255,255,.9),
+   -4px -4px 5px 0px rgba(255,255,255,.9),
+   7px 7px 20px 0px rgba(0,0,0,.2),
+   4px 4px 5px 0px rgba(0,0,0,.3);
+  transition: all 0.3s ease;
+}
+.btn span:before {
+  width: 2px;
+  height: 0%;
+}
+.btn span:after {
+  height: 2px;
+  width: 0%;
+}
+.btn span:hover:before {
+  height: 100%;
+}
+.btn span:hover:after {
+  width: 100%;
+}
+
 </style>
