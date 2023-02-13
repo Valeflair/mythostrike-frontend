@@ -37,7 +37,7 @@ export default {
         );
       }
     }
-    window.addEventListener('beforeunload', function(event) {})
+    window.addEventListener("beforeunload", function (event) {});
   },
 };
 </script>

@@ -37,7 +37,9 @@
 
           <v-btn class="button"> Queue </v-btn>
 
-          <v-btn class="button" @click="toLobbyOverview"> LobbyOverView </v-btn>
+          <v-btn class="button1" @click="toLobbyOverview">
+            LobbyOverView
+          </v-btn>
         </v-row>
       </v-container>
     </div>
@@ -109,6 +111,18 @@ export default {
   border-radius: 15px;
   color: white;
   font-size: 20px;
+  background: url("@/assets/elements/button.png");
+}
+
+.button1 {
+  width: 197px;
+  min-height: 61px;
+  margin: 15px;
+  border-radius: 15px;
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  right: 40vw;
   background: url("@/assets/elements/button.png");
 }
 

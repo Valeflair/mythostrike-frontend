@@ -1,50 +1,61 @@
 <template>
-    <div class="equipment" :class="{'usableClass':usableProp,'notUsableClass':!usableProp}" 
-    :style="{width: widthProp+'vw', height:heightProp+'vh', 'font-size':fontProp+'vh'}" 
-    @click="emitSkillUsed()">
-        {{ this.name }} 
-      </div>
-      <div class="equipment-description" :style="{width: widthProp+'vw', height:3*heightProp+'vh', top:-3*heightProp+'vh'}">
-        {{this.description}}
-      </div>
-      
+  <div
+    class="equipment"
+    :class="{ usableClass: usableProp, notUsableClass: !usableProp }"
+    :style="{
+      width: widthProp + 'vw',
+      height: heightProp + 'vh',
+      'font-size': fontProp + 'vh',
+    }"
+    @click="emitSkillUsed()"
+  >
+    {{ this.name }}
+  </div>
+  <div
+    class="equipment-description"
+    :style="{
+      width: widthProp + 'vw',
+      height: 3 * heightProp + 'vh',
+      top: -3 * heightProp + 'vh',
+    }"
+  >
+    {{ this.description }}
+  </div>
 </template>
 
 <script>
 export default {
-    props:{
-        widthProp: Number,
-        heightProp:Number,
-        fontProp:Number,
-        usableProp:false,
-        name:'',
-        description:'',
-        id:Number,
+  props: {
+    widthProp: Number,
+    heightProp: Number,
+    fontProp: Number,
+    usableProp: false,
+    name: "",
+    description: "",
+    id: Number,
+  },
+  methods: {
+    emitSkillUsed() {
+      if (this.usableProp === true) this.$emit("skillUsed", this.id);
     },
-    methods:{
-        emitSkillUsed(){
-            if(this.usableProp===true)
-                this.$emit('skillUsed',this.id);
-        }
-    }
-}
+  },
+};
 </script>
 
-
 <style scoped>
-.usableClass{
-    border: solid yellow 2px;
-    cursor: pointer;
+.usableClass {
+  border: solid yellow 2px;
+  cursor: pointer;
 }
 
-.notUsableClass{
-    border: solid black 2px;
+.notUsableClass {
+  border: solid black 2px;
 }
 
-.equipment{
-    transition: 0.2s;
-    position: absolute;
-    background-image: url(../assets/card/frame/silver_top_frame-p.png);
+.equipment {
+  transition: 0.2s;
+  position: absolute;
+  background-image: url(../assets/card/frame/silver_top_frame-p.png);
   background-repeat: round;
   z-index: 4;
   font-size: 1.5vh;
@@ -54,17 +65,17 @@ export default {
   margin: 0 auto;
 }
 
-.equipment-description{
-    display: none;
-    width :10vw;
-    height: 15vh;
-    background-color: red;
-    position: absolute;
-    top:4vh;
-    z-index: 5;
-
+.equipment-description {
+  display: none;
+  width: 10vw;
+  height: 15vh;
+  background-color: red;
+  position: absolute;
+  top: 4vh;
+  z-index: 9;
+  overflow-y: auto;
 }
-.equipment:hover + .equipment-description{
-    display: block;
+.equipment:hover + .equipment-description {
+  display: block;
 }
 </style>

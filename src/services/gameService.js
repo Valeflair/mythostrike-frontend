@@ -8,7 +8,7 @@ export default {
       url: service.USE_CARD_URL,
       data: {
         lobbyId:lobby,
-        playedCards: cardsUsed,
+        cardIds: cardsUsed,
       },
       headers: service.AUTH_HEADER,
     });

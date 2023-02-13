@@ -1,130 +1,223 @@
 <script setup>
-import equipmentComponent from '../components/blockWithDescription.vue'
-import delayComponent from '../components/DelayedeffectComponent.vue'
+import equipmentComponent from "../components/blockWithDescription.vue";
+import delayComponent from "../components/DelayedeffectComponent.vue";
 </script>
 <template>
   <div class="container">
-  <div class="championCard" @mouseover="hoverStart()" @mouseout="hoverEnd()">
-    <img class="frame" src="../assets/card/frame/gold_card_frame_r.png" alt="" />
+    <div class="championCard" @mouseover="hoverStart()" @mouseout="hoverEnd()">
+      <img
+        class="frame"
+        src="../assets/card/frame/gold_card_frame_r.png"
+        alt=""
+      />
 
-    <img class="avatar" src="../assets/card/pictures/Aphrodite.png" alt="" />
+      <div
+        class="avatar"
+        :style="{
+          background: 'url(' + this.getImagePath() + ')',
+          backgroundSize: 'cover',
+        }"
+      ></div>
 
-    <div class="name">
-      <span>
-        {{ this.name }}
-        
-      </span>
+      <div class="name">
+        <span>
+          {{ this.getName() }}
+        </span>
+      </div>
+
+      <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
+
+      <table>
+        <tr v-for="i in this.health" :key="i">
+          <td>
+            <img
+              :class="{ heartSmall: this.game, heartBig: !this.game }"
+              :style="{
+                top: 2 + (this.game ? 2 : 3) * i + 'vh',
+                left: 2 + 'vh',
+              }"
+              src="../assets/card/smallParts/Health_Light.png"
+              alt=""
+            />
+          </td>
+        </tr>
+      </table>
+
+      <div v-if="game" class="handcard-num">{{ this.handcardNum }}</div>
+      <div v-if="game" class="identity">
+        {{ this.identity }}
+      </div>
+
+      <table>
+        <tr v-for="i in this.equipment.length" :key="i">
+          <td
+            v-if="game"
+            class="equip"
+            :style="{ bottom: 13 - (i - 1) * 3.5 + 'vh' }"
+            @mouseenter="showInnerComponents(true)"
+            @mouseleave="showInnerComponents(false)"
+          >
+            <equipment-component
+              widthProp="8.9"
+              heightProp="3.5"
+              name="NAME EQUIPMENT"
+              description="Description Equipment"
+              fontProp="1.5"
+              :usableProp="false"
+              :id="i"
+            />
+          </td>
+        </tr>
+      </table>
+
+      <table v-if="game">
+        <tr>
+          <td v-for="i in this.passiveEffect.length" :key="i">
+            <div
+              class="delayEffect"
+              :style="{ left: -2 + i * 4 + 'vh' }"
+              @mouseenter="showInnerComponents(true)"
+              @mouseleave="showInnerComponents(false)"
+            >
+              <delay-component :diameter="4" />
+            </div>
+          </td>
+        </tr>
+      </table>
+      <transition name="fade-in">
+        <div class="description" v-if="this.showDescription">
+          <p v-html="logTextWithLineBreaks"></p>
+        </div>
+      </transition>
     </div>
-
-    <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
-    
-    <table >
-      <tr  v-for="i in this.health" :key="i">
-        <td>
-          <img :class="{'heartSmall':this.game,'heartBig':!this.game }" :style="{ top: 2+(this.game?2:3) * i + 'vh', left:2 +'vh' }"  src="../assets/card/smallParts/Health_Light.png" alt="" /> 
-        </td>
-      </tr>
-    </table>
-
-    <div v-if="game" class="handcard-num"> {{ this.handcardNum }} </div>
-    <div  v-if="game" class="identity">
-      {{ this.identity }}
-    </div>
-
-  <table>
-    <tr v-for="i in 2" :key="i">
-      <td  v-if="game" class="equip" :style="{bottom: 13-(i-1)*3.5+ 'vh'}" @mouseenter="showInnerComponents(true)" @mouseleave="showInnerComponents(false)">
-            <equipment-component widthProp="8.9" heightProp="3.5" name="NAME EQUIPMENT" description="Description Equipment" fontProp="1.5" :usableProp="false" :id=i />
-      </td>
-    </tr>
-  </table>
-  
-    <table  v-if="game">
-      <tr>
-        <td  v-for="i in this.passiveEffect.length" :key="i" >
-          <div class="delayEffect" :style="{left:-2+ i*4 +'vh'}" @mouseenter="showInnerComponents(true)" @mouseleave="showInnerComponents(false)">
-          <delay-component :diameter="4"   />
-          </div>
-        </td>
-      </tr>
-    </table>
-  <transition name="fade-in">  
-    <div class="description"  v-if="this.showDescription"
-    >{{ this.description }}</div>
-  </transition>  
-</div>
-  <div v-show="this.usable===true" class="lightCard"></div>
-  
-</div>
+    <div v-show="this.usable === true" class="lightCard"></div>
+  </div>
 </template>
-
 
 <script>
 export default {
-    data(){
-        return{
-            health:3,
-            game:this.isGame,
-            showDescription:false,
-            timerDelay:500,
-            hoverComponents:false,
-        }
+  data() {
+    return {
+      game: this.isGame,
+      showDescription: false,
+      timerDelay: 500,
+      hoverComponents: false,
+      description: "",
+      basePathSymbol: "src/assets/cards/",
+    };
+  },
+  components: {
+    equipmentComponent,
+    delayComponent,
+  },
+  computed: {
+    logTextWithLineBreaks() {
+      return this.getDescription().replace(/\n/g, "<br>");
     },
-    components:{
-      equipmentComponent,delayComponent
+  },
+  props: {
+    isGame: Boolean,
+    name: "",
+    championName: "",
+    handcardNum: {
+      type: Number,
+      default: 0,
     },
-    methods:{
-      showInnerComponents(item){
-        this.hoverComponents=item;
-        this.hoverEnd(); // oder nur showDescription = false;
-      },
-      hoverStart(){
-        console.log("in hoverStart: "+this.hoverComponents);
+    health: {
+      type: Number,
+      default: 0,
+    },
+    identity: "",
+    equipment: {
+      type: Array,
+      default: [],
+    },
+    passiveEffect: {
+      type: Array,
+      default: [],
+    },
+    activeSkills: {
+      type: Array,
+      default: [],
+    },
+    passiveSkills: {
+      type: Array,
+      default: [],
+    },
+    usable: Boolean,
+  },
+  methods: {
+    getImagePath() {
+      let path = this.basePathSymbol + this.championName + ".png";
+      return path;
+    },
+    getName() {
+      console.log("handcard: " + this.handcardNum);
+      return this.championName + "(" + this.name + ")";
+    },
 
-        if(this.hoverComponents===false &&  !this.showDescription){
-         this.hoverTimer = setTimeout(() => {
-          if(this.hoverComponents===false&&  !this.showDescription)
-                this.showDescription = true
-            }, this.timerDelay)
+    getDescription() {
+      this.description += this.championName + "\n";
+      for (let i = 0; i < this.activeSkills.length; i++) {
+        if (i === 0) {
+          this.description += "ActiveSkills:" + "\n";
         }
-      },
-      hoverEnd(){
-        clearTimeout(this.hoverTimer);
-        this.showDescription = false;
+        this.description +=
+          this.activeSkills[i].name +
+          " : " +
+          this.activeSkills[i].description +
+          "\n";
+      }
+
+      for (let i = 0; i < this.passiveSkills.length; i++) {
+        if (i === 0) {
+          this.description += "PassiveSkills:" + "\n";
+        }
+        this.description +=
+          this.passiveSkills[i].name +
+          " : " +
+          this.passiveSkills[i].description +
+          "\n";
+      }
+      return this.description;
+    },
+
+    showInnerComponents(item) {
+      this.hoverComponents = item;
+      this.hoverEnd(); // oder nur showDescription = false;
+    },
+    hoverStart() {
+      console.log("in hoverStart: " + this.hoverComponents);
+
+      if (this.hoverComponents === false && !this.showDescription) {
+        this.hoverTimer = setTimeout(() => {
+          if (this.hoverComponents === false && !this.showDescription)
+            this.showDescription = true;
+        }, this.timerDelay);
       }
     },
-
-    props: {
-        isGame:Boolean,
-        name: "",
-        handcardNum: Number,
-        health: Number,
-        identity: "",
-        equipment: Array,
-        passiveEffect: Array,
-        description:'',
-        usable:Boolean,
+    hoverEnd() {
+      clearTimeout(this.hoverTimer);
+      this.showDescription = false;
     },
+  },
 };
 </script>
 
 <style scoped>
-
-
-
 .lightCard {
   background: #191c29;
   width: 10vw;
   height: 29vh;
   position: relative;
-  top:-29vh;
+  top: -29vh;
   border-radius: 1px;
   justify-content: center;
   align-items: center;
   display: flex;
   cursor: pointer;
-  z-index:1;
-} 
+  z-index: 1;
+}
 
 .lightCard::before,
 .lightCard::after {
@@ -133,78 +226,74 @@ export default {
   height: 30vh;
   border-radius: 8px;
   background-image: linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2);
-  background-size:400%;
+  background-size: 400%;
   position: absolute;
   z-index: -1;
 
-  transition:1s opacity linear;
+  transition: 1s opacity linear;
   animation: spin 3s linear infinite;
-  
 }
-.lightCard::after{
-  filter:blur(20px);
-  opacity:.8;
+.lightCard::after {
+  filter: blur(20px);
+  opacity: 0.8;
 }
-
 
 @keyframes spin {
   0% {
-    background-position:0 0;
+    background-position: 0 0;
   }
   25% {
-        background-position:75% 75%;
+    background-position: 75% 75%;
   }
 
   50% {
-        background-position:100% 100%;
+    background-position: 100% 100%;
   }
-  
+
   75% {
-        background-position:75% 75%;
+    background-position: 75% 75%;
   }
- 100% {
-       background-position:0 0;
+  100% {
+    background-position: 0 0;
   }
 }
 
-
-
-.fade-in-enter-from{
+.fade-in-enter-from {
   opacity: 0;
-  transform:translateY(5vh);
+  transform: translateY(5vh);
 }
 
-.fade-in-enter-to{
-  opacity:1;
-  transform:translateY(0);
+.fade-in-enter-to {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.fade-in-enter-active{
-  transition:all 0.5s ease;
+.fade-in-enter-active {
+  transition: all 0.5s ease;
 }
 
-.fade-in-leave-from{
-  opacity:1;
-  transform:translateY(0);
+.fade-in-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
-.fade-in-leave-to{
-  opacity:0;
-  transform:translateY(5vh);
+.fade-in-leave-to {
+  opacity: 0;
+  transform: translateY(5vh);
 }
-.fade-in-leave-active{
-  transition:all 0.3s ease;
+.fade-in-leave-active {
+  transition: all 0.3s ease;
 }
 
-.description{
+.description {
   width: 9vw;
   height: 20vh;
-  top:7.5vh;
+  top: 7.5vh;
   background-color: rgba(0, 0, 0, 0.5);
-  left:0.5vw;
+  left: 0.5vw;
   position: absolute;
   z-index: 8;
-  color:rgb(247, 247, 100);
-  padding:5px;
+  color: rgb(247, 247, 100);
+  padding: 5px;
   overflow-y: auto;
 }
 
@@ -225,8 +314,7 @@ export default {
   src: url(../assets/fontStyle/Blackadder.ttf);
 }
 
-.container{
-  
+.container {
   width: 10vw;
   height: 29vh;
   position: relative;
@@ -252,7 +340,7 @@ export default {
 .name {
   width: 100%;
   position: absolute;
-  z-index: 4; 
+  z-index: 4;
   font-size: 2vh;
   font-style: italic;
   -webkit-text-stroke: 1px black;
@@ -272,13 +360,13 @@ export default {
   width: 1vw;
   position: absolute;
   z-index: 4;
-  top:1vh;
+  top: 1vh;
 }
 .heartBig {
   width: 1.5vw;
   position: absolute;
   z-index: 4;
-  top:1vh;
+  top: 1vh;
 }
 .handcard-num {
   width: 2.5vh;
@@ -302,7 +390,7 @@ export default {
   z-index: 4;
   background-color: green;
   background-repeat: no-repeat;
-  font-size: 0.5vh;
+  font-size: 2vh;
   color: aliceblue;
   text-align: center;
   top: 4vh;
@@ -314,10 +402,8 @@ export default {
   line-height: 180%;
 }
 
-.delayEffect{
-  
+.delayEffect {
   position: absolute;
   bottom: 6vh;
 }
-
 </style>

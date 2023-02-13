@@ -14,6 +14,8 @@ const REGISTER_URL = USER_URL + "/register";
 const AUTH_URL = USER_URL + "/data";
 
 const MODES_URL = RES_URL + "/modes";
+const CARDS_URL = RES_URL + "/cards";
+const CHAMPIONS_URL = RES_URL + "/champions";
 
 const JOIN_LOBBY_URL = LOBBY_URL + "/join";
 const ADD_BOT_LOBBY_URL = LOBBY_URL + "/bot";
@@ -29,6 +31,7 @@ const SELECT_TARGETS_URL = PLAY_URL + "/targets";
 const END_TURN_URL = PLAY_URL + "/end";
 const CANCEL_URL = PLAY_URL +"/cancel";
 const SELECT_CHAMPION_URL = PLAY_URL + "/champion";
+
 
 const WS_URL = BASE_URL + "/updates";
 
@@ -52,4 +55,6 @@ export default {
   SELECT_TARGETS_URL,
   END_TURN_URL,
   CANCEL_URL,
+  CARDS_URL,
+  CHAMPIONS_URL
 };
