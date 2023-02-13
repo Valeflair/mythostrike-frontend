@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="area-3-4">
+    <div class="area-3-4 pa-5">
       <h1>Select your Champion</h1>
 
       <div class="championContainer">
@@ -10,8 +10,8 @@
               <button
                 class="championButton"
                 @click="changeChampion(champion.id)"
+                v-bind:style="{backgroundImage:'url('+'../src/assets/champions/'+champion.name+'.png'+')', backgroundSize:'100% 100%', backgroundRepeat: 'no-repeat'}"
               >
-                {{ champion.name }}
               </button>
             </v-col>
           </div>
@@ -21,8 +21,9 @@
 
     <div class="area-1-4 justify-center">
       <div class="descriptionChampion">
-        <button @click="printPassiveSkill" class="championDisplay">
-          {{ this.champions[this.currentChampionId].name }}
+        <button @click="printPassiveSkill" class="championDisplay" 
+          v-bind:style="{backgroundImage:'url('+'../src/assets/champions/'+this.champions[this.currentChampionId].name+'.png'+')', backgroundSize:'100% 100%', backgroundRepeat: 'no-repeat'}"
+          disabled>
         </button>
       </div>
 
@@ -94,6 +95,7 @@ export default {
     },
     initData(){
       this.champions = this.lobbyStore.getChampions();
+      console.log(this.champions);
       this.lobbyID = this.lobbyStore.getLobby.id;
       this.identity = this.lobbyStore.getIdentity();
     }
@@ -109,7 +111,7 @@ export default {
   position: relative;
   width: 10vw;
   height: 5vh;
-  background-color: forestgreen;
+  background-color: #39373c;
   top: 10vh;
   left: 13vw;
 
@@ -119,21 +121,17 @@ export default {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 1vw;
   border-radius: 12px;
   transition-duration: 0.4s;
 }
 
 .randomButton:hover {
-  background-color: red;
-  color: #4caf50;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 .confirmButton:hover {
-  background-color: red;
-  color: #4caf50;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
@@ -144,14 +142,14 @@ export default {
   height: 5vh;
   top: 15vh;
   left: 2vw;
-  background-color: forestgreen;
+  background-color: #39373c;
   border: none;
   color: white;
   padding: 14px 40px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 1vw;
   border-radius: 12px;
 }
 
@@ -201,12 +199,12 @@ export default {
   margin-left: 3vh;
   margin-right: 3vh;
   margin-top: 3vh;
-  border: 2px solid black;
+  border: 5px solid black;
   align-self: center;
 }
 
 .championContainer {
-  height: 70vh;
+  height: 80vh;
   overflow: auto;
   overflow-x: hidden;
   position: relative;
@@ -215,21 +213,24 @@ export default {
 }
 
 .championButton {
-  background-color: blanchedalmond;
   width: 12vw;
-  height: 15vw;
-  padding: 1vh;
-  margin-left: 3vh;
+  height: 17vw;
+  margin-left: 2vh;
   margin-right: 3vh;
   margin-top: 3vh;
-  border: 2px solid black;
+}
+
+.championButton:hover {
+  transform: scale(1.1);
+  transition: 0.5s;
 }
 
 .container {
   display: flex;
   background: url("@/assets/backgrounds/home_background.png");
-  width: 100%;
-  height: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .area-3-4 {

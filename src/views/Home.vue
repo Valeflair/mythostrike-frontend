@@ -45,16 +45,16 @@
     <div id="footer">
       <v-container>
         <v-row>
-          <div style="margin-right: 100px">
-            <v-btn class="button">Rank List</v-btn>
-          </div>
-
-          <div style="margin-right: 100px">
+          <div style="margin-right: 2vw">
             <v-btn class="button"> Library </v-btn>
           </div>
 
-          <div>
+          <div  style="margin-right: 2vw">
             <v-btn class="button"> Settings </v-btn>
+          </div>
+
+          <div>
+            <v-btn class="button" @click="logout">Logout</v-btn>
           </div>
         </v-row>
       </v-container>
@@ -75,6 +75,10 @@ export default {
     toLobbyOverview() {
       this.$router.push({ path: "./lobbyOverview" });
     },
+    logout(){
+      localStorage.removeItem("token")
+      this.$router.push({ path: "./" });
+    }
     /*
         toQueue() {
           this.$router.push({ path: "./Queue" });
