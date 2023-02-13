@@ -10,7 +10,7 @@
               <button
                 class="championButton"
                 @click="changeChampion(champion.id)"
-                v-bind:style="{backgroundImage:'url('+'../src/assets/champions/'+champion.name+'.png'+')', backgroundSize:'100% 100%', backgroundRepeat: 'no-repeat'}"
+                v-bind:style="{backgroundImage:'url('+'../src/assets/cards/'+champion.name+'.png'+')', backgroundSize:'100% 100%', backgroundRepeat: 'no-repeat'}"
               >
               </button>
             </v-col>
@@ -22,7 +22,7 @@
     <div class="area-1-4 justify-center">
       <div class="descriptionChampion">
         <button @click="printPassiveSkill" class="championDisplay" 
-          v-bind:style="{backgroundImage:'url('+'../src/assets/champions/'+this.champions[this.currentChampionId].name+'.png'+')', backgroundSize:'100% 100%', backgroundRepeat: 'no-repeat'}"
+          v-bind:style="{backgroundImage:'url('+'../src/assets/cards/'+this.champions[this.currentChampionId].name+'.png'+')', backgroundSize:'100% 100%', backgroundRepeat: 'no-repeat'}"
           disabled>
         </button>
       </div>

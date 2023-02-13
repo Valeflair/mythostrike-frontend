@@ -46,7 +46,7 @@
       <v-container>
         <v-row>
           <div style="margin-right: 2vw">
-            <v-btn class="button"> Library </v-btn>
+            <v-btn class="button" @click="toLibrary"> Library </v-btn>
           </div>
 
           <div  style="margin-right: 2vw">
@@ -74,6 +74,9 @@ export default {
   methods: {
     toLobbyOverview() {
       this.$router.push({ path: "./lobbyOverview" });
+    },
+    toLibrary() {
+      this.$router.push({ path: "./library" });
     },
     logout(){
       localStorage.removeItem("token")

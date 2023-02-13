@@ -14,6 +14,8 @@ const REGISTER_URL = USER_URL + "/register";
 const AUTH_URL = USER_URL + "/data";
 
 const MODES_URL = RES_URL + "/modes";
+const CARDS_URL = RES_URL + "/cards";
+const CHAMPIONS_URL = RES_URL + "/champions";
 
 const JOIN_LOBBY_URL = LOBBY_URL + "/join";
 const ADD_BOT_LOBBY_URL = LOBBY_URL + "/bot";
@@ -40,5 +42,7 @@ export default {
   MODES_URL,
   SEAT_LOBBY_URL,
   WS_URL,
-  SELECT_CHAMPION_URL
+  SELECT_CHAMPION_URL,
+  CARDS_URL,
+  CHAMPIONS_URL
 };
