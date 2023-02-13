@@ -395,6 +395,14 @@ export default {
         "___________________________________KARTEN VON PLAYER___________________________________"
       );
       console.log(this.playerCards);
+      console.log(
+        "___________________________________AUSGEWÄHLTE SPIELER___________________________________"
+      );
+      console.log(this.playerPicked);
+      console.log(
+        "___________________________________AUSGEWÄHLTE KARTEN___________________________________"
+      );
+      console.log(this.cardsPicked);
     },
 
     //--------------------------------- AXIOS ----------------------------------------------------
@@ -447,6 +455,7 @@ export default {
       if (this.containsId(id, this.cardsPicked)) {
         //prüft ob karte bereits ausgewählt wurde falls ja wird es nicht mehr ausgewählt
         this.cardsPicked = this.cardsPicked.filter((card) => card !== id);
+        this.cancel();
         if (this.cardsPicked.length < this.messageActivitysUsable.minCard)
           this.cardUsed = false;
       } else if (
@@ -501,30 +510,45 @@ export default {
       console.log("name: " + name);
       console.log("searchArray: ");
       console.log(searchArray);
-      console.log("playerPicked: ");
-      console.log(this.playerPicked);
       console.log("messageActivitysUsable: ");
       console.log(this.messageActivitysUsable);
 
       if (searchArray === null) searchArray = [];
+
+      if (this.containsId(name, this.playerPicked)) {
+        this.playerPicked = this.playerPicked.filter(
+          (player) => player !== name
+        );
+        console.log(this.playerPicked.length);
+      }
+
+      console.log("playerPicked: ");
+      console.log(this.playerPicked);
       let count = this.playerPicked.length;
+      console.log("count: " + count);
       if (
         this.containsId(name, searchArray) &&
         count < this.messageActivitysUsable.maxPlayer &&
-        !this.containsId(id, this.playerPicked)
+        !this.containsId(name, this.playerPicked)
       ) {
+        console.log("es wird geadded");
+        console.log("searchArraylength: " + searchArray.length);
         for (let i = 0; i < searchArray.length; i++) {
           if (name === searchArray[i]) {
+            console.log("found: " + name);
             this.playerPicked.push(name);
             break;
           }
         }
       }
+      count = this.playerPicked.length;
+      console.log("count after: " + count);
       if (
         count >= this.messageActivitysUsable.minPlayer &&
         count <= this.messageActivitysUsable.maxPlayer &&
         count > 0
       ) {
+        console.log("REST pick player");
         this.messageActivitysUsable = {
           cardsId: [],
           players: [],
@@ -581,6 +605,7 @@ export default {
       console.log("messageActivitysUsable: ");
       console.log(this.messageActivitysUsable);
       console.log("useSkill:   id-" + skillId);
+
       if (this.containsId(skilldId, this.messageActivitysUsable.skillsID)) {
         this.messageActivitysUsable = {
           cardsId: [],

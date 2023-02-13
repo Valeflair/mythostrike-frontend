@@ -13,13 +13,13 @@ export default {
       headers: service.AUTH_HEADER,
     });
   },
-  playerPicked(lobby,players) {
+  pickPlayer(lobby,players) {
     return axios({
       method: "POST",
       url: service.SELECT_TARGETS_URL,
       data: {
         lobbyId:lobby,
-        selectedTargets: players,
+        targets: players,
       },
       headers: service.AUTH_HEADER,
     });
@@ -40,7 +40,7 @@ export default {
       url: service.USE_CARD_URL,
       data: {
         lobbyId:lobby,
-        activeSkillId: skillID,
+        skillId: skillID,
       },
       headers: service.AUTH_HEADER,
     });

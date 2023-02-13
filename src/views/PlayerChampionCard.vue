@@ -84,7 +84,7 @@ export default {
       messageActivitysUsable: {
         cardsId: [],
         players: [],
-        skillsID: [0],
+        skillsID: [],
         minCard: 0,
         maxCard: 0,
         minPlayer: 0,
