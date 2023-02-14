@@ -128,7 +128,7 @@
             :identity="null"
             :name="getCard(card).name"
             :symbol="getCard(card).symbol"
-            :usable="containsId(card, this.messageActivitysUsable.cardIds)"
+            :usable="containsId(card, this.cardConditions.cardIds)"
             :value="getCard(card).point"
             class="playCard"
             @click="useCard(i, card)"
@@ -165,18 +165,10 @@
         </div>
       </div>
 
-      <button
-        v-if="this.messageActivitysUsable.activateConfirm"
-        class="confirmB"
-        @click="confirm()"
-      >
+      <button v-if="this.activateConfirm" class="confirmB" @click="confirm()">
         Confirm
       </button>
-      <button
-        v-if="this.messageActivitysUsable.activateCancel"
-        class="cancelB"
-        @click="cancel()"
-      >
+      <button v-if="this.activateCancel" class="cancelB" @click="cancel()">
         Cancel
       </button>
     </div>
@@ -415,10 +407,11 @@ export default {
     updateConditions() {
       //wenn Karte ausgewählt keine Skill auswählbar machen
       if (this.cardsPicked.length > 0) {
+        this.activateCancel = true;
         this.skillConditions.skillId = [];
 
         this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
-        this.cardConditions.count = [...this.messageActivitysUsable.count];
+        this.cardConditions.count = [...this.count];
 
         console.log(
           "CARDPLAYERCONDITION COUNT: " +
@@ -428,14 +421,26 @@ export default {
         //wenn eine Karte ausgewählt ist, Gegner auswählbar machen
         if (this.cardsPicked.length === 1) {
           if (this.cardsPicked[0].cardId === -1) return;
-          var id = this.cardsPicked[0].cardId;
+
+          var id = this.cardsPicked[0].index;
+          console.log("HIGHLIGHT: in updateGameConditions");
+          console.log(this.messageActivitysUsable);
+          console.log("ID: " + id);
+          console.log(this.messageActivitysUsable.cardPlayerConditions.length);
           let players =
             this.messageActivitysUsable.cardPlayerConditions[id].players;
           let count =
             this.messageActivitysUsable.cardPlayerConditions[id].count;
+          console.log(players);
 
           this.playerConditions.players = [...players];
-          this.playerConditions.count = [...count];
+          this.playerConditions.players = players.filter(
+            (player) => !this.containsId(player, this.playersPicked)
+          );
+          this.playerConditions.count = [...this.count];
+          this.cardConditions.cardIds = [];
+          console.log("ID: " + this.cardConditions.cardIds);
+          this.cardConditions.count = [];
           //sonst nicht
         } else {
           this.playerConditions.players = [];
@@ -443,6 +448,8 @@ export default {
         }
         //wenn ein Skill ausgewählt wurde keine Karten auswählbar machen
       } else if (this.skillPicked.index !== -1) {
+        this.activateCancel = true;
+
         //keine Karte auswählbar
         this.cardConditions.cardIds = [];
         this.cardConditions.count = [];
@@ -460,6 +467,7 @@ export default {
         this.playerConditions.count = [...count];
         //wenn weder skill noch karte ausgwählt ist, mach nur skill oder karte auswählbar
       } else {
+        this.activateCancel = false;
         this.skillConditions.skillIds = [
           ...this.messageActivitysUsable.skillIds,
         ];
@@ -486,10 +494,14 @@ export default {
           break;
         }
       }
-      if (this.skillPicked.index !== -1 && this.cardsPicked.length === 0)
+      if (this.skillPicked.index !== -1 && this.cardsPicked.length === 0) {
         skillConfirm = true;
+      }
 
-      return playerConfirm && cardConfirm && skillConfirm;
+      this.activateConfirm = playerConfirm || cardConfirm || skillConfirm;
+      console.log("PLAYERPICKED");
+      console.log(this.playersPicked);
+      console.log("confirm button activated: " + this.activateConfirm);
     },
 
     resetHighlightMessage() {
@@ -581,7 +593,21 @@ export default {
       );
       if (this.containsId(id, this.messageActivitysUsable.cardIds)) {
         console.log("karte kann genutzt werden");
-        this.cardsPicked.push({ cardId: id, index: index });
+        var playerIndexCount = 0;
+        for (let i = 0; i < this.playerCards; i++) {
+          if (i === index) {
+            break;
+          }
+          if (
+            this.containsId(
+              this.playerCards[i],
+              this.messageActivitysUsable.cardIds
+            )
+          ) {
+            playerIndexCount++;
+          }
+        }
+        this.cardsPicked.push({ cardId: id, index: playerIndexCount });
         this.updateConditions();
       }
 
@@ -608,7 +634,11 @@ export default {
     },
     //wenn der Spieler auf einen Spieler drückt
     async pickPlayer(name) {
+      console.log("-----------------PICK PLAYER------------------");
+      console.log("this.containsId(name, this.playerConditions.players)");
+      console.log(this.containsId(name, this.playerConditions.players));
       if (this.containsId(name, this.playerConditions.players)) {
+        console.log("funkt spieler gepusht");
         this.playersPicked.push(name);
         this.updateConditions();
       }
@@ -839,19 +869,18 @@ export default {
       console.log("PRIVATE MESSAGE");
       if (this.gameStore.getGameData.messageType === "HIGHLIGHT") {
         this.messageActivitysUsable = this.gameStore.getGameData.payload;
-        this.cardPlayerConditions =
-          this.messageActivitysUsable.cardPlayerConditions;
+        this.cardConditions = this.messageActivitysUsable.cardIds;
         this.skillIds = this.messageActivitysUsable.skillIds;
         this.skillPlayerConditions =
           this.messageActivitysUsable.skillPlayerConditions;
+        this.count = this.messageActivitysUsable.cardCount;
+        console.log("HIGHLIGHT CARDCOUNT: ");
+        console.log(this.messageActivitysUsable.cardCount);
 
         this.showNotice = true;
         this.notice = this.messageActivitysUsable.reason;
         this.startProgressbar();
-        console.log("PLAYCONDITIONS: ");
-        console.log(this.playerConditions);
-        console.log(" PRIVATE HIGHLIGHT aktiviert");
-        console.log(this.messageActivitysUsable);
+        this.updateConditions();
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
         this.status = true;
