@@ -3,72 +3,82 @@ import equipmentComponent from "../components/blockWithDescription.vue";
 import delayComponent from "../components/DelayedeffectComponent.vue";
 </script>
 <template>
-  <div
-    class="championCard"
-    @mouseenter="this.showSkills = true"
-    @mouseleave="this.showSkills = false"
-    @click="print"
-  >
-    <img
-      class="frame"
-      src="../assets/card/frame/gold_card_frame_r.png"
-      alt=""
-    />
+  <div class="container">
+    <div
+      class="championCard"
+      @mouseenter="this.showSkills = true"
+      @mouseleave="this.showSkills = false"
+      @click="print"
+    >
+      <img
+        class="frame"
+        src="../assets/card/frame/gold_card_frame_r.png"
+        alt=""
+      />
+
+      <div
+        class="avatar"
+        :style="{
+          background: 'url(' + this.getImagePath() + ')',
+          backgroundSize: 'cover',
+        }"
+      ></div>
+
+      <div class="name">
+        <span>
+          {{ this.getName() }}
+        </span>
+      </div>
+
+      <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
+
+      <table>
+        <tr v-for="i in this.health" :key="i">
+          <td>
+            <img
+              class="heartBig"
+              :style="{ top: 2 + 3 * i + 'vh', left: 2 + 'vh' }"
+              src="../assets/card/smallParts/Health_Light.png"
+              alt=""
+            />
+          </td>
+        </tr>
+      </table>
+
+      <div v-if="game" class="identity">
+        {{ this.identity }}
+      </div>
+
+      <table class="skillList" v-if="this.showSkills">
+        <tr
+          v-for="(skill, i) in this.activeSkills.concat(this.passiveSkills)"
+          :key="skill.name"
+        >
+          <td class="skill" :style="{ bottom: 5 * i + 'vh' }">
+            <equipment-component
+              widthProp="10.2"
+              heightProp="5"
+              :name="skill.name"
+              :description="skill.description"
+              fontProp="1.5"
+              :usableProp="
+                containsId(skill.id, this.messageActivitysUsable.skillsID)
+              "
+              :id="skill.id"
+              @click="useSkill(i, skill.id)"
+            />
+          </td>
+        </tr>
+      </table>
+    </div>
 
     <div
-      class="avatar"
-      :style="{
-        background: 'url(' + this.getImagePath() + ')',
-        backgroundSize: 'cover',
+      v-show="this.usable === true || this.currentPlayer"
+      :class="{
+        lightCard2: this.currentPlayer,
+        lightCard: !this.currentPlayer,
       }"
     ></div>
-
-    <div class="name">
-      <span>
-        {{ this.getName() }}
-      </span>
-    </div>
-
-    <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
-
-    <table>
-      <tr v-for="i in this.health" :key="i">
-        <td>
-          <img
-            class="heartBig"
-            :style="{ top: 2 + 3 * i + 'vh', left: 2 + 'vh' }"
-            src="../assets/card/smallParts/Health_Light.png"
-            alt=""
-          />
-        </td>
-      </tr>
-    </table>
-
-    <div v-if="game" class="identity">
-      {{ this.identity }}
-    </div>
-
-    <table class="skillList" v-if="this.showSkills">
-      <tr
-        v-for="(skill, i) in this.activeSkills.concat(this.passiveSkills)"
-        :key="skill.name"
-      >
-        <td class="skill" :style="{ bottom: 5 * i + 'vh' }">
-          <equipment-component
-            widthProp="10.2"
-            heightProp="5"
-            :name="skill.name"
-            :description="skill.description"
-            fontProp="1.5"
-            :usableProp="
-              containsId(skill.id, this.messageActivitysUsable.skillsID)
-            "
-            :id="skill.id"
-            @skillUsed="useSkill"
-          />
-        </td>
-      </tr>
-    </table>
   </div>
 </template>
 
@@ -97,38 +107,6 @@ export default {
     equipmentComponent,
     delayComponent,
   },
-  methods: {
-    getImagePath() {
-      let path = this.basePathSymbol + this.championName + ".png";
-      return path;
-    },
-    getName() {
-      return this.championName + "(" + this.name + ")";
-    },
-    print() {
-      console.log(this.activeSkills);
-      console.log("skills: " + this.activeSkills + this.passiveSkills);
-    },
-    useSkill(skillId) {
-      this.$emit("skillUsed", skillId);
-    },
-    containsId(id, array) {
-      for (let i = 0; i < array.length; i++) {
-        if (id === array[i]) return true;
-      }
-      return false;
-    },
-    hoverStart(skill) {
-      this.hoverTimer = setTimeout(() => {
-        skill.showSkills = true;
-      }, this.timerDelay);
-    },
-    hoverEnd(skill) {
-      clearTimeout(this.hoverTimer);
-      skill.showSkills = false;
-    },
-  },
-
   props: {
     name: "",
     championName: "",
@@ -146,11 +124,147 @@ export default {
       type: Array,
       default: [],
     },
+    currentPlayer: Boolean,
+  },
+  methods: {
+    getCardStyle() {
+      console.log(
+        "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+      );
+      console.log(
+        "currentPlayer: " +
+          this.name +
+          "  " +
+          this.currentPlayer +
+          " usable:" +
+          this.usable
+      );
+      if (!this.currentPlayer)
+        return "linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2)";
+      else return "linear-gradient(45deg, #ea3838, #d14481, #f11212)";
+    },
+    getImagePath() {
+      let path = this.basePathSymbol + this.championName + ".png";
+      return path;
+    },
+    getName() {
+      return this.championName + "(" + this.name + ")";
+    },
+    print() {
+      console.log(this.activeSkills);
+      console.log("skills: " + this.activeSkills + this.passiveSkills);
+    },
+    useSkill(i, skillId) {
+      if (containsId(skillId, this.messageActivitysUsable.skillsID)) {
+        this.$emit("skillUsed", i, skillId);
+      }
+    },
+    containsId(id, array) {
+      for (let i = 0; i < array.length; i++) {
+        if (id === array[i]) return true;
+      }
+      return false;
+    },
+    hoverStart(skill) {
+      this.hoverTimer = setTimeout(() => {
+        skill.showSkills = true;
+      }, this.timerDelay);
+    },
+    hoverEnd(skill) {
+      clearTimeout(this.hoverTimer);
+      skill.showSkills = false;
+    },
   },
 };
 </script>
 
 <style scoped>
+.lightCard {
+  background: #191c29;
+  width: 11.5vw;
+  height: 35vh;
+  position: relative;
+  top: -35vh;
+  border-radius: 1px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.lightCard::before,
+.lightCard::after {
+  content: "";
+  width: 12.5vw;
+  height: 37vh;
+  border-radius: 8px;
+  background-image: linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2);
+  background-size: 400%;
+  position: absolute;
+  z-index: -1;
+
+  transition: 1s opacity linear;
+  animation: spin 3s linear infinite;
+}
+.lightCard::after {
+  filter: blur(20px);
+  opacity: 0.8;
+}
+
+.lightCard2 {
+  background: #191c29;
+  width: 11.5vw;
+  height: 35vh;
+  position: relative;
+  top: -35vh;
+  border-radius: 1px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.lightCard2::before,
+.lightCard2::after {
+  content: "";
+  width: 12.5vw;
+  height: 37vh;
+  border-radius: 8px;
+  background-image: linear-gradient(45deg, #ea3838, #d14481, #f11212);
+  background-size: 400%;
+  position: absolute;
+  z-index: -1;
+
+  transition: 1s opacity linear;
+  animation: spin 3s linear infinite;
+}
+.lightCard2::after {
+  filter: blur(20px);
+  opacity: 0.8;
+}
+
+@keyframes spin {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: 75% 75%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  75% {
+    background-position: 75% 75%;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
 .usableClass {
   border: solid yellow 10px;
   cursor: pointer;
@@ -213,6 +327,11 @@ export default {
   height: 35vh;
   position: relative;
 }
+.container {
+  width: 11.5vw;
+  height: 35vh;
+  position: relative;
+}
 
 .frame {
   width: 100%;
@@ -224,7 +343,7 @@ export default {
   width: 99%;
   height: 88%;
   position: absolute;
-  z-index: 0;
+  z-index: 2;
   bottom: 1%;
 }
 .name {

@@ -2,24 +2,14 @@ import axios from "axios";
 import service from "@/services/service.js";
 
 export default {
-  useCard(lobby,cardsUsed) {
+  useCard(lobby,cardsUsed,playersPicked) {
     return axios({
       method: "POST",
       url: service.USE_CARD_URL,
       data: {
         lobbyId:lobby,
         cardIds: cardsUsed,
-      },
-      headers: service.AUTH_HEADER,
-    });
-  },
-  pickPlayer(lobby,players) {
-    return axios({
-      method: "POST",
-      url: service.SELECT_TARGETS_URL,
-      data: {
-        lobbyId:lobby,
-        targets: players,
+        targets:playersPicked,
       },
       headers: service.AUTH_HEADER,
     });
@@ -34,13 +24,14 @@ export default {
       headers: service.AUTH_HEADER,
     });
   },
-  useSkill(lobby,skillID) {
+  useSkill(lobbyId,skillId,playersPicked) {
     return axios({
       method: "POST",
       url: service.USE_CARD_URL,
       data: {
-        lobbyId:lobby,
-        skillId: skillID,
+        lobbyId:lobbyId,
+        skillId: skillId,
+        targets:playersPicked,
       },
       headers: service.AUTH_HEADER,
     });

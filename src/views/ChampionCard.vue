@@ -90,7 +90,15 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
         </div>
       </transition>
     </div>
-    <div v-show="this.usable === true" class="lightCard"></div>
+    <div
+      v-show="this.usable === true || this.currentPlayer || this.picked"
+      class="lightCard"
+      :class="{
+        lightCard3:this.picked,
+        lightCard2: this.currentPlayer,
+        lightCard: this.usable,
+      }"
+    ></div>
   </div>
 </template>
 
@@ -145,6 +153,8 @@ export default {
       default: [],
     },
     usable: Boolean,
+    currentPlayer: Boolean,
+    picked: Boolean,
   },
   methods: {
     getImagePath() {
@@ -225,15 +235,82 @@ export default {
   width: 10.5vw;
   height: 30vh;
   border-radius: 8px;
-  background-image: linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2);
   background-size: 400%;
   position: absolute;
   z-index: -1;
-
+  background-image: linear-gradient(45deg, #d5bc72, #e7c14f, #f1d312);
   transition: 1s opacity linear;
   animation: spin 3s linear infinite;
 }
+
 .lightCard::after {
+  filter: blur(20px);
+  opacity: 0.8;
+}
+
+
+.lightCard2 {
+  background: #191c29;
+  width: 10vw;
+  height: 29vh;
+  position: relative;
+  top: -29vh;
+  border-radius: 1px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.lightCard2::before,
+.lightCard2::after {
+  content: "";
+  width: 10.5vw;
+  height: 30vh;
+  border-radius: 8px;
+  background-size: 400%;
+  position: absolute;
+  z-index: -1;
+  background-image: linear-gradient(45deg, #ea3838, #d14481, #f11212);
+  transition: 1s opacity linear;
+  animation: spin 3s linear infinite;
+}
+
+.lightCard2::after {
+  filter: blur(20px);
+  opacity: 0.8;
+}
+
+.lightCard3 {
+  background: #191c29;
+  width: 10vw;
+  height: 29vh;
+  position: relative;
+  top: -29vh;
+  border-radius: 1px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.lightCard3::before,
+.lightCard3::after {
+  content: "";
+  width: 10.5vw;
+  height: 30vh;
+  border-radius: 8px;
+  background-size: 400%;
+  position: absolute;
+  z-index: -1;;
+  background-image: linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2);
+  transition: 1s opacity linear;
+  animation: spin 3s linear infinite;
+}
+
+.lightCard3::after {
   filter: blur(20px);
   opacity: 0.8;
 }
@@ -276,10 +353,12 @@ export default {
   opacity: 1;
   transform: translateY(0);
 }
+
 .fade-in-leave-to {
   opacity: 0;
   transform: translateY(5vh);
 }
+
 .fade-in-leave-active {
   transition: all 0.3s ease;
 }
@@ -301,14 +380,17 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 @font-face {
   font-family: "Greek";
   src: url(../assets/fontStyle/Greek.ttf);
 }
+
 @font-face {
   font-family: "Rhianne";
   src: url(../assets/fontStyle/Rhianne.ttf);
 }
+
 @font-face {
   font-family: "Blackadder";
   src: url(../assets/fontStyle/Blackadder.ttf);
@@ -319,17 +401,20 @@ export default {
   height: 29vh;
   position: relative;
 }
+
 .championCard {
   width: 10vw;
   height: 29vh;
   position: relative;
 }
+
 .frame {
   width: 100%;
   height: 100%;
   position: absolute;
   z-index: 3;
 }
+
 .avatar {
   width: 99%;
   height: 88%;
@@ -337,6 +422,7 @@ export default {
   z-index: 2;
   bottom: 1%;
 }
+
 .name {
   width: 100%;
   position: absolute;
@@ -348,6 +434,7 @@ export default {
   top: 1.8%;
   text-align: center;
 }
+
 .stone {
   width: 2vh;
   height: 2vh;
@@ -356,18 +443,21 @@ export default {
   bottom: 0%;
   left: 46.5%;
 }
+
 .heartSmall {
   width: 1vw;
   position: absolute;
   z-index: 4;
   top: 1vh;
 }
+
 .heartBig {
   width: 1.5vw;
   position: absolute;
   z-index: 4;
   top: 1vh;
 }
+
 .handcard-num {
   width: 2.5vh;
   height: 2.5vh;
@@ -382,6 +472,7 @@ export default {
   top: 0.2vw;
   left: 8vw;
 }
+
 .identity {
   width: 4vh;
   height: 4vh;
@@ -396,6 +487,7 @@ export default {
   top: 4vh;
   left: 7vw;
 }
+
 .equip {
   left: 5%;
   position: absolute;
