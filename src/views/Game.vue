@@ -494,19 +494,24 @@ export default {
     resetHighlightMessage() {
       this.messageActivitysUsable = {
         cardIds: [],
-        skillsID: [],
-        minCard: 0,
-        maxCard: 0,
-        playerCondition: [
+        count: [],
+        cardPlayerConditions: [
           {
             players: [],
-            minPlayer: 0,
-            maxPlayer: 0,
+            count: [],
+          },
+        ],
+        skillIds: [],
+        skillPlayerConditions: [
+          {
+            players: [],
+            count: [],
           },
         ],
         activateEndTurn: false,
         reason: "",
       };
+      this.updateConditions();
     },
 
     containsCardId(id) {
@@ -572,11 +577,9 @@ export default {
       console.log(
           "---------------------------------- USE CARD -----------------------------------"
       );
-      if (searchArray === null) console.log("search array ist null");
-      let count = this.cardsPicked.length;
-
       if (this.containsCardId(id)) {
         this.cardsPicked.push({cardId: id, index: index});
+        this.updateConditions();
       }
 
       // if (this.containsCardId(id,this.cardsPicked)) {
@@ -604,6 +607,7 @@ export default {
     async pickPlayer(name) {
       if (this.containsId(name, this.playerConditions.players)) {
         this.playersPicked.push(name);
+        this.updateConditions()
       }
     },
     // console.log(
@@ -690,6 +694,7 @@ export default {
     async useSkill(i, skillId) {
       if (this.containsId(skillId, this.skillConditions.skillIds)) {
         this.skillPicked = {skillId: skillId, index: i};
+        this.updateConditions();
       }
 
       // console.log(
@@ -733,16 +738,12 @@ export default {
       ) {
         this.resetHighlightMessage();
         if (this.axiosUseCard) {
-          await gameService.useCard(this.lobbyId, this.cardsPicked).then(
-              (response) => {
-                console.log(response);
-              },
-              (error) => {
-                console.log(error);
-              }
-          );
-        } else if (this.axiosPickPlayer) {
-          await gameService.pickPlayer(this.lobbyId, this.playerPicked).then(
+          //array mit Karten Index erstellen
+          let cardIndexArray;
+          for (let card in this.cardsPicked) {
+            cardIndexArray.push(card.cardId);
+          }
+          await gameService.useCard(this.lobbyId, cardIndexArray, this.playersPicked).then(
               (response) => {
                 console.log(response);
               },
@@ -751,7 +752,7 @@ export default {
               }
           );
         } else if (this.axiosSelectSkill) {
-          await gameService.useSkill(this.lobbyId, skillId).then(
+          await gameService.useSkill(this.lobbyId, this.skillPicked.skillId, this.playersPicked).then(
               (response) => {
                 console.log(response);
               },
