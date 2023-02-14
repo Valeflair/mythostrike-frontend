@@ -253,7 +253,7 @@ export default {
       playerSummarize: [], // die Schnittstelle für die Ergebnisse
       messageActivitysUsable: {
         cardIds: [],
-        count: [],
+        countCount: [],
         cardPlayerConditions: [
           {
             players: [],
@@ -411,7 +411,7 @@ export default {
         this.skillConditions.skillId = [];
 
         this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
-        this.cardConditions.count = [...this.count];
+        this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
 
         console.log(
           "CARDPLAYERCONDITION COUNT: " +
@@ -437,7 +437,7 @@ export default {
           this.playerConditions.players = players.filter(
             (player) => !this.containsId(player, this.playersPicked)
           );
-          this.playerConditions.count = [...this.count];
+          this.playerConditions.count = [...count];
           this.cardConditions.cardIds = [];
           console.log("ID: " + this.cardConditions.cardIds);
           this.cardConditions.count = [];
@@ -472,7 +472,7 @@ export default {
           ...this.messageActivitysUsable.skillIds,
         ];
         this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
-        this.cardConditions.count = [...this.messageActivitysUsable.count];
+        this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
 
         this.playerConditions.players = [];
         this.playerConditions.count = [];
@@ -873,7 +873,6 @@ export default {
         this.skillIds = this.messageActivitysUsable.skillIds;
         this.skillPlayerConditions =
           this.messageActivitysUsable.skillPlayerConditions;
-        this.count = this.messageActivitysUsable.cardCount;
         console.log("HIGHLIGHT CARDCOUNT: ");
         console.log(this.messageActivitysUsable.cardCount);
 
