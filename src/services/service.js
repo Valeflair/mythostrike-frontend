@@ -9,6 +9,8 @@ const RES_URL = BASE_URL + "/resources";
 const USER_URL = BASE_URL + "/users";
 const GAME_URL = BASE_URL + "/games/play";
 
+const CHANGE_AVATAR_URL = USER_URL + "/avatar";
+
 const LOGIN_URL = USER_URL + "/login";
 const REGISTER_URL = USER_URL + "/register";
 const AUTH_URL = USER_URL + "/data";
@@ -44,5 +46,6 @@ export default {
   WS_URL,
   SELECT_CHAMPION_URL,
   CARDS_URL,
-  CHAMPIONS_URL
+  CHAMPIONS_URL,
+  CHANGE_AVATAR_URL
 };

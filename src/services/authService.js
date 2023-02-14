@@ -29,4 +29,14 @@ export default {
       headers: service.AUTH_HEADER,
     });
   },
+  changeAvatar(newAvatarId) {
+    return axios({
+      method: "POST",
+      url: service.CHANGE_AVATAR_URL,
+      data: {
+        avatarNumber: newAvatarId
+      },
+      headers: service.AUTH_HEADER,
+    });
+  },
 };

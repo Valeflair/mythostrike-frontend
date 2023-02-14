@@ -111,15 +111,12 @@ export default {
             }
               return acc
             }, [])
-          console.log(this.cards);
           this.currentCard = this.cards[0];
         },
         (error) => {
           console.log(error);
         }
       )
-    },
-    async initChampions(){
       await resourceService.getChampions().then(
         (response) => {
           let champions = response.data;
@@ -133,7 +130,6 @@ export default {
   },
   created(){
     this.initCards();
-    this.initChampions();
   }
 };
 </script>

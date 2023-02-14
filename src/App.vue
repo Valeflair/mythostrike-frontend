@@ -19,25 +19,14 @@ export default {
     const userStore = useUserStore();
     return { userStore };
   },
-  async beforeCreate() {
+  beforeCreate() {
     if (this.userStore.getStatus() == false) {
       if (localStorage.getItem("token") == null) {
         this.$router.push("/");
       } else {
-        await authService.auth().then(
-          (response) => {
-            console.log(response);
-            this.userStore.setUser(response.data);
-            this.$router.push("/home");
-          },
-          (error) => {
-            console.log(error);
-            this.$router.push("/");
-          }
-        );
+        this.$router.push("/home");
       }
     }
-    window.addEventListener('beforeunload', function(event) {})
   },
 };
 </script>

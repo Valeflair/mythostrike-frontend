@@ -15,8 +15,14 @@ export const useUserStore = defineStore("user", {
       this.user = user;
       this.status = true;
     },
+    changeAvatar(newAvatarId){
+      this.user.avatarNumber = newAvatarId;
+    },
     getStatus() {
       return this.status;
     },
+    reset(){
+      this.user = [];
+    }
   },
 });
