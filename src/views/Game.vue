@@ -30,6 +30,7 @@
               :passiveEffect="player.passiveEffect"
               :activeSkills="player.champion.activeSkills"
               :passiveSkills="player.champion.passiveSkills"
+              :currentPlayer="player.isCurrentPlayer"
             />
           </td>
         </tr>
@@ -67,6 +68,7 @@
         :activeSkills="this.findPlayer(this.username).champion.activeSkills"
         :passiveSkills="this.findPlayer(this.username).champion.passiveSkills"
         :class="{ actualPlayer: this.username === this.currentPlayer }"
+        :currentPlayer="this.findPlayer(this.username).isCurrentPlayer"
         @skillUsed="useSkill"
       />
     </div>
@@ -165,18 +167,20 @@
         </div>
       </div>
 
-      <div
-        v-if="cardUsed"
-        class="confirmB"
+      <button
         @click="confirm()"
-        :class="{
-          usableClass: checkConfirmStatus(),
-          notUsableClass: !checkConfirmStatus(),
-        }"
+        v-if="this.messageActivitysUsable.activateConfirm"
+        class="confirmB"
       >
-        <p>Confirm</p>
-      </div>
-      <button v-if="cardUsed" class="cancelB" @click="cancel()">Cancel</button>
+        Confirm
+      </button>
+      <button
+        v-if="this.messageActivitysUsable.activateCancel"
+        class="cancelB"
+        @click="cancel()"
+      >
+        Cancel
+      </button>
     </div>
 
     <!-----------------------------------------------DER ZIEHSTAPEL--------------------------------------------------------->
@@ -198,11 +202,17 @@
       <div class="discardPileOverlay"></div>
     </div>
 
-    <!----------------------------------------DER BUTTON DER DIE RUNDE BEENDET----------------------------------------------->
+    <!----------------------------------------DER ENDBUTTON----------------------------------------------->
 
-    <button class="endTurn" @click="endTurn()">End Turn</button>
+    <button
+      class="endTurn"
+      v-if="this.messageActivitysUsable.activateEndTurn"
+      @click="endTurn()"
+    >
+      End Turn
+    </button>
 
-    <!----------------------------------------Der Alarm der den Spieler einen tippt gibt was er machen soll----------------------------------------------->
+    <!-------------------------------NOTICE----------------------------------------------->
 
     <transition name="notice-Animation">
       <div class="notice-message" v-if="showNotice">{{ this.notice }}</div>
@@ -259,7 +269,9 @@ export default {
         maxCard: 0,
         minPlayer: 0,
         maxPlayer: 0,
-        needsConfirm: true,
+        activateCancel: false,
+        activateConfirm: false,
+        activateEndTurn: true,
         reason:
           "Alles was der Spieler einsetzen kann: hier nur die Karten und skills mit den Ids",
       }, // die Schnittstelle für Highlightmessage
@@ -297,8 +309,11 @@ export default {
       notice: "",
       showNotice: false,
 
-      /*---------- CONFIRM BUTTON ----------*/
+      /*---------- BUTTONS ----------*/
       cardUsed: false, // wird genutzt um confirm und cancel button anzuzeigen wenn eine Karte verwendet wurde
+      activateCancel: false,
+      activateConfirm: false,
+      activateEndTurn: true,
 
       /*---------- ALLGEMEINE DATEN FÜR GAME ----------*/
       lobbyId: Number, //die LobbyId vom game wird mitgegeben
@@ -306,7 +321,7 @@ export default {
       timerDelay: 1000, // der delay für karten hover
       currentPlayer: "", // bekommen wir von websocket
       cards: [],
-      gameDuration: 3000000,
+      gameDuration: 1000000,
 
       /*---------- LOG ----------*/
       logText: "", // der text für den log
@@ -334,6 +349,11 @@ export default {
       tablePile: [], // der Stapel für die gerade ausgespielten Karten
       discardPile: [], // der AblegeStapel
       drawPile: [], // der Ziehstapel
+
+      /*---------- AXIOS SEND PER CONFIRM ----------*/
+      axiosUseCard: false,
+      axiosPickPlayer: false,
+      axiosSelectSkill: false,
 
       /*---------- DEFAULT PLAYER DAMIT NICHT ALLES KAPUTT GEHT ----------*/
       defaultPlayer: {
@@ -370,8 +390,20 @@ export default {
     this.connect();
   },
   methods: {
-    getHealth(username) {
-      return this.findPlayer(username).currentHp;
+    resetHighlightMessage() {
+      this.messageActivitysUsable = {
+        cardsId: [],
+        players: [],
+        skillsID: [],
+        minCard: 0,
+        maxCard: 0,
+        minPlayer: 0,
+        maxPlayer: 0,
+        activateCancel: false,
+        activateConfirm: false,
+        activateEndTurn: false,
+        reason: "",
+      };
     },
 
     printSchnittstellen() {
@@ -412,17 +444,7 @@ export default {
       console.log(
         "----------------------------------- INIT DATA --------------------------------"
       );
-      this.messageActivitysUsable = {
-        cardsId: [],
-        players: [],
-        skillsID: [],
-        minCard: 0,
-        maxCard: 0,
-        minPlayer: 0,
-        maxPlayer: 0,
-        needsConfirm: true,
-        reason: "",
-      };
+      this.resetHighlightMessage();
       await resourceService.getCards().then(
         (response) => {
           this.cards = response.data;
@@ -478,28 +500,22 @@ export default {
       if (
         count >= this.messageActivitysUsable.minCard &&
         count <= this.messageActivitysUsable.maxCard &&
-        !this.messageActivitysUsable.needsConfirm
+        !this.messageActivitysUsable.activateConfirm
       ) {
         console.log("axios call wird aufgerufen useCard");
-        this.messageActivitysUsable = {
-          cardsId: [],
-          players: [],
-          skillsID: [],
-          minCard: 0,
-          maxCard: 0,
-          minPlayer: 0,
-          maxPlayer: 0,
-          needsConfirm: true,
-          reason: "",
-        };
-        await gameService.useCard(this.lobbyId, this.cardsPicked).then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        this.resetHighlightMessage();
+        this.axiosUseCard = true;
+        if (!this.messageActivitysUsable.activateConfirm) {
+          this.axiosUseCard = false;
+          await gameService.useCard(this.lobbyId, this.cardsPicked).then(
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        }
       }
     },
     //wenn der Spieler auf einen Spieler drückt
@@ -549,25 +565,23 @@ export default {
         count > 0
       ) {
         console.log("REST pick player");
-        this.messageActivitysUsable = {
-          cardsId: [],
-          players: [],
-          skillsID: [],
-          minCard: 0,
-          maxCard: 0,
-          minPlayer: 0,
-          maxPlayer: 0,
-          needsConfirm: true,
-          reason: "",
-        };
-        await gameService.pickPlayer(this.lobbyId, this.playerPicked).then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        this.resetHighlightMessage();
+        this.axiosPickPlayer = true;
+        if (!this.messageActivitysUsable.activateConfirm) {
+          this.axiosPickPlayer = false;
+          console.log(
+            "activateConfirm: " + this.messageActivitysUsable.activateConfirm
+          );
+          console.log("axios schicken pickplayer");
+          await gameService.pickPlayer(this.lobbyId, this.playerPicked).then(
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        }
       }
     },
 
@@ -576,17 +590,7 @@ export default {
       console.log(
         "------------------------------------------ END TURN --------------------------------------------------"
       );
-      this.messageActivitysUsable = {
-        cardsId: [],
-        players: [],
-        skillsID: [],
-        minCard: 0,
-        maxCard: 0,
-        minPlayer: 0,
-        maxPlayer: 0,
-        needsConfirm: true,
-        reason: "",
-      };
+      this.resetHighlightMessage();
       await gameService.end(this.lobbyId).then(
         (response) => {
           console.log(response);
@@ -606,26 +610,20 @@ export default {
       console.log(this.messageActivitysUsable);
       console.log("useSkill:   id-" + skillId);
 
-      if (this.containsId(skilldId, this.messageActivitysUsable.skillsID)) {
-        this.messageActivitysUsable = {
-          cardsId: [],
-          players: [],
-          skillsID: [],
-          minCard: 0,
-          maxCard: 0,
-          minPlayer: 0,
-          maxPlayer: 0,
-          needsConfirm: true,
-          reason: "",
-        };
-        await gameService.useSkill(this.lobbyId, skillId).then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+      if (!this.containsId(skilldId, this.messageActivitysUsable.skillsID)) {
+        this.resetHighlightMessage();
+        this.axiosSelectSkill = true;
+        if (this.messageActivitysUsable.activateConfirm) {
+          this.axiosSelectSkill = false;
+          await gameService.useSkill(this.lobbyId, skillId).then(
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        }
       }
     },
 
@@ -640,32 +638,39 @@ export default {
       console.log(this.messageActivitysUsable);
 
       let count = this.cardsPicked.length;
-
       if (
         count >= this.messageActivitysUsable.minCard &&
-        count <= this.messageActivitysUsable.maxCard &&
-        this.messageActivitysUsable.needsConfirm
+        count <= this.messageActivitysUsable.maxCard
       ) {
-        this.messageActivitysUsable = {
-          cardsId: [],
-          players: [],
-          skillsID: [],
-          minCard: 0,
-          maxCard: 0,
-          minPlayer: 0,
-          maxPlayer: 0,
-          needsConfirm: true,
-          reason: "",
-        };
-        await gameService.useCard(this.lobbyId, this.cardsPicked).then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-        this.messageActivitysUsable = null;
+        this.resetHighlightMessage();
+        if (this.axiosUseCard) {
+          await gameService.useCard(this.lobbyId, this.cardsPicked).then(
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        } else if (this.axiosPickPlayer) {
+          await gameService.pickPlayer(this.lobbyId, this.playerPicked).then(
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        } else if (this.axiosSelectSkill) {
+          await gameService.useSkill(this.lobbyId, skillId).then(
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        }
       }
     },
 
@@ -684,6 +689,8 @@ export default {
       this.cardUsed = false;
       this.cardsPicked.splice(0, this.cardsPicked.length);
       this.playerPicked.splice(0, this.playerPicked.length);
+      this.resetHighlightMessage();
+
       await gameService.cancel(this.lobbyId).then(
         (response) => {
           console.log(response);
@@ -732,7 +739,6 @@ export default {
         this.messageActivitysUsable = this.gameStore.getGameData.payload;
         this.showNotice = true;
         this.notice = this.messageActivitysUsable.reason;
-        this.needsConfirm = this.messageActivitysUsable.needsConfirm;
         this.startProgressbar();
         console.log(" PRIVATE HIGHLIGHT aktiviert");
         console.log(this.messageActivitysUsable);
@@ -747,6 +753,7 @@ export default {
 
     //der setup für public connection
     gameSetup() {
+      console.log("status: " + this.status);
       if (this.status) {
         this.status = false;
         return;
@@ -760,6 +767,7 @@ export default {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
         console.log(" PUBLIC CARD_MOVE aktiviert");
         console.log(this.cardMoveMessage);
+        this.updateCardMoveMessage();
       } else if (this.gameStore.getGameData.messageType === "LOG") {
         console.log(" PUBLIC LOG aktiviert");
         this.logText += "\n" + this.gameStore.getGameData.payload.message;
@@ -939,6 +947,7 @@ export default {
       );
       this.animation.onfinish = () => {
         this.endTurn();
+        this.animation.onfinish = null;
       };
       this.$refs.progress.style.animation =
         "progress-animation 20s ease-in forwards";

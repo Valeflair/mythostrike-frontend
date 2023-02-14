@@ -90,7 +90,13 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
         </div>
       </transition>
     </div>
-    <div v-show="this.usable === true" class="lightCard"></div>
+    <div
+      v-show="this.usable === true || this.currentPlayer"
+      :class="{
+        lightCard2: this.currentPlayer,
+        lightCard: !this.currentPlayer,
+      }"
+    ></div>
   </div>
 </template>
 
@@ -145,6 +151,7 @@ export default {
       default: [],
     },
     usable: Boolean,
+    currentPlayer: Boolean,
   },
   methods: {
     getImagePath() {
@@ -225,7 +232,39 @@ export default {
   width: 10.5vw;
   height: 30vh;
   border-radius: 8px;
+  background-size: 400%;
+  position: absolute;
+  z-index: -1;
   background-image: linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2);
+  transition: 1s opacity linear;
+  animation: spin 3s linear infinite;
+}
+.lightCard::after {
+  filter: blur(20px);
+  opacity: 0.8;
+}
+
+.lightCard2 {
+  background: #191c29;
+  width: 11.5vw;
+  height: 35vh;
+  position: relative;
+  top: -35vh;
+  border-radius: 1px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.lightCard2::before,
+.lightCard2::after {
+  content: "";
+  width: 12.5vw;
+  height: 37vh;
+  border-radius: 8px;
+  background-image: linear-gradient(45deg, #ea3838, #d14481, #f11212);
   background-size: 400%;
   position: absolute;
   z-index: -1;
@@ -233,7 +272,7 @@ export default {
   transition: 1s opacity linear;
   animation: spin 3s linear infinite;
 }
-.lightCard::after {
+.lightCard2::after {
   filter: blur(20px);
   opacity: 0.8;
 }
