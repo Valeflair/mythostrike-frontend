@@ -65,7 +65,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
                 containsId(skill.id, this.messageActivitysUsable.skillsID)
               "
               :id="skill.id"
-              @skillUsed="useSkill"
+              @click="useSkill(i, skill.id)"
             />
           </td>
         </tr>
@@ -154,8 +154,10 @@ export default {
       console.log(this.activeSkills);
       console.log("skills: " + this.activeSkills + this.passiveSkills);
     },
-    useSkill(skillId) {
-      this.$emit("skillUsed", skillId);
+    useSkill(i, skillId) {
+      if (containsId(skillId, this.messageActivitysUsable.skillsID)) {
+        this.$emit("skillUsed", i, skillId);
+      }
     },
     containsId(id, array) {
       for (let i = 0; i < array.length; i++) {

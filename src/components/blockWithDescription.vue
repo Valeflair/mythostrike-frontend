@@ -34,11 +34,6 @@ export default {
     description: "",
     id: Number,
   },
-  methods: {
-    emitSkillUsed() {
-      if (this.usableProp === true) this.$emit("skillUsed", this.id);
-    },
-  },
 };
 </script>
 
