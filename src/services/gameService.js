@@ -10,7 +10,7 @@ export default {
             lobbyId: lobbyId,
             selectedChampionId: selectedChampionId
           },
-          headers: service.AUTH_HEADER,
+          headers: {Authorization: "Bearer " + localStorage.getItem("token")}
         });
     },
 }

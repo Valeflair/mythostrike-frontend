@@ -132,6 +132,9 @@ export default {
             localStorage.removeItem("token");
             this.userStore.reset();
             this.$router.push({ path: "./" });
+        },
+        reRender(){
+          this.$forceUpdate();
         }
         /*
             toQueue() {
@@ -154,8 +157,9 @@ export default {
           },
           (error) => {
             console.log(error);
-            this.$router.push("/");
+            this.$router.push("/home");
           })
+
     },
     components: { AvatarSelection }
 };

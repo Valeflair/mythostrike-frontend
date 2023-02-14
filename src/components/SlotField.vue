@@ -19,7 +19,7 @@ import CommandField from "@/components/CommandField.vue";
 
     <v-row class="ma-8">
       <v-col cols="3"></v-col>
-      <v-col cols="2">
+      <v-col cols="3">
         <div class="label">
           <p class="labelText">Lobby ID: {{ this.lobbyId }}</p>
           <p class="labelText">Owner: {{ this.lobbyOwner }}</p>

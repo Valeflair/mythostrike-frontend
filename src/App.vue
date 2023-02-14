@@ -8,7 +8,7 @@
 
 <script>
 import { useUserStore } from "@/stores/user";
-import authService from "@/services/authService";
+import authService from "./services/authService";
 export default {
   name: "App",
 
@@ -19,12 +19,21 @@ export default {
     const userStore = useUserStore();
     return { userStore };
   },
-  beforeCreate() {
+  async beforeCreate() {
     if (this.userStore.getStatus() == false) {
       if (localStorage.getItem("token") == null) {
         this.$router.push("/");
       } else {
-        this.$router.push("/home");
+        await authService.auth().then(
+          (response) => {
+            console.log(response);
+            this.userStore.setUser(response.data);
+            this.$router.push("/home");
+          },
+          (error) => {
+            console.log(error);
+            this.$router.push("/");
+          })
       }
     }
   },

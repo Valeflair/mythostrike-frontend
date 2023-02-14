@@ -1,7 +1,3 @@
-const AUTH_TOKEN = localStorage.getItem("token");
-const AUTH_HEADER = {
-  Authorization: "Bearer " + AUTH_TOKEN,
-};
 const BASE_URL = "http://localhost:8080";
 
 const LOBBY_URL = BASE_URL + "/lobbies";
@@ -33,7 +29,6 @@ const WS_URL = BASE_URL + "/updates";
 export default {
   LOGIN_URL,
   REGISTER_URL,
-  AUTH_HEADER,
   AUTH_URL,
   LOBBY_URL,
   JOIN_LOBBY_URL,

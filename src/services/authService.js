@@ -26,7 +26,7 @@ export default {
     return axios({
       method: "POST",
       url: service.AUTH_URL,
-      headers: service.AUTH_HEADER,
+      headers: {Authorization: "Bearer " + localStorage.getItem("token")}
     });
   },
   changeAvatar(newAvatarId) {
@@ -36,7 +36,7 @@ export default {
       data: {
         avatarNumber: newAvatarId
       },
-      headers: service.AUTH_HEADER,
+      headers: {Authorization: "Bearer " + localStorage.getItem("token")}
     });
   },
 };
