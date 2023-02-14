@@ -40,7 +40,8 @@
         <p class="value">{{ this.value }}</p>
       </div>
     </div>
-    <div v-if="this.usable === true" class="lightCard"></div>
+    <div v-if="this.usable || this.picked"
+         :class="{'lightCard':this.usable&&!this.picked,'lightCard2':this.picked}"></div>
   </div>
 </template>
 
@@ -78,6 +79,7 @@ export default {
     usable: Boolean,
     identity: "",
     symbol: "",
+    picked: Boolean,
     value: Number,
   },
 };
@@ -102,10 +104,12 @@ export default {
   opacity: 1;
   transform: translateY(0);
 }
+
 .fade-in-leave-to {
   opacity: 0;
   transform: translateY(5vh);
 }
+
 .fade-in-leave-active {
   transition: all 0.3s ease;
 }
@@ -190,7 +194,42 @@ export default {
   transition: 1s opacity linear;
   animation: spin 3s linear infinite;
 }
+
 .lightCard::after {
+  filter: blur(20px);
+  opacity: 0.8;
+}
+
+
+.lightCard2 {
+  background: #191c29;
+  width: 10vw;
+  height: 29vh;
+  position: relative;
+  top: -29vh;
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+}
+
+.lightCard2::before,
+.lightCard2::after {
+  content: "";
+  width: 10.5vw;
+  height: 30vh;
+  border-radius: 8px;
+  background-image: linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2);
+  background-size: 400%;
+  position: absolute;
+  z-index: -1;
+
+  transition: 1s opacity linear;
+  animation: spin 3s linear infinite;
+}
+
+.lightCard2::after {
   filter: blur(20px);
   opacity: 0.8;
 }
@@ -225,14 +264,17 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 @font-face {
   font-family: "Greek";
   src: url(../assets/fontStyle/Greek.ttf);
 }
+
 @font-face {
   font-family: "Rhianne";
   src: url(../assets/fontStyle/Rhianne.ttf);
 }
+
 @font-face {
   font-family: "Blackadder";
   src: url(../assets/fontStyle/Blackadder.ttf);
@@ -244,6 +286,7 @@ export default {
   position: absolute;
   z-index: 3;
 }
+
 .avatar {
   width: 99%;
   height: 88%;
@@ -251,6 +294,7 @@ export default {
   z-index: 2;
   bottom: 1%;
 }
+
 .name {
   width: 100%;
   position: absolute;
@@ -262,6 +306,7 @@ export default {
   top: 1.8%;
   text-align: center;
 }
+
 .stone {
   width: 2vh;
   height: 2vh;

@@ -5,30 +5,29 @@
       <table>
         <tr>
           <td
-              v-for="player in playerDaten.filter(
+            v-for="player in playerDaten.filter(
               (player) => player.username !== this.username
             )"
-              :key="player.username"
+            :key="player.username"
           >
             <championCard
-                v-if="player.champion !== null"
-                :activeSkills="player.champion.activeSkills"
-                :championName="player.champion.name"
-                :class="{ actualPlayer: player.username === this.currentPlayer }"
-                :currentPlayer="player.isCurrentPlayer"
-                :equipment="player.equipment"
-                :handcardNum="player.cardCount"
-                :health="player.currentHp"
-                :identity="player.identity"
-                :isGame="true"
-                :name="player.username"
-                :passiveEffect="player.passiveEffect"
-                :passiveSkills="player.champion.passiveSkills"
-                :usable="
-                containsId(player.username, this.playerConditions.players)
-              "
-                class="playerChampions"
-                @click="pickPlayer(player.username)"
+              v-if="player.champion !== null"
+              :activeSkills="player.champion.activeSkills"
+              :championName="player.champion.name"
+              :class="{ actualPlayer: player.username === this.currentPlayer }"
+              :equipment="player.equipment"
+              :handcardNum="player.cardCount"
+              :health="player.currentHp"
+              :identity="player.identity"
+              :isGame="true"
+              :name="player.username"
+              :passiveEffect="player.passiveEffect"
+              :passiveSkills="player.champion.passiveSkills"
+              :usable="containsId(player.username, this.playerConditions.players)"
+              :currentPlayer="player.isCurrentPlayer"
+              :picked="containsId(player.username, this.playersPicked)"
+              class="playerChampions"
+              @click="pickPlayer(player.username)"
             />
           </td>
         </tr>
@@ -38,9 +37,9 @@
     <!-----------------------------------------------DIE SPIELERGEBNISSE--------------------------------------------------------->
 
     <result-page
-        v-if="this.playerSummarize.length !== 0"
-        :users="this.playerSummarize"
-        class="playerSummarizeStyle"
+      v-if="this.playerSummarize.length !== 0"
+      :users="this.playerSummarize"
+      class="playerSummarizeStyle"
     />
 
     <!-----------------------------------------------DER LOGBUTTON--------------------------------------------------------->
@@ -58,16 +57,16 @@
 
     <div class="player">
       <player-card
-          :activeSkills="this.findPlayer(this.username).champion.activeSkills"
-          :championName="this.findPlayer(this.username).champion.name"
-          :class="{ actualPlayer: this.username === this.currentPlayer }"
-          :currentPlayer="this.findPlayer(this.username).isCurrentPlayer"
-          :health="this.findPlayer(username).currentHp"
-          :identity="this.findPlayer(this.username).identity"
-          :messageActivitysUsable="this.messageActivitysUsable"
-          :name="this.username"
-          :passiveSkills="this.findPlayer(this.username).champion.passiveSkills"
-          @skillUsed="useSkill"
+        :activeSkills="this.findPlayer(this.username).champion.activeSkills"
+        :championName="this.findPlayer(this.username).champion.name"
+        :class="{ actualPlayer: this.username === this.currentPlayer }"
+        :currentPlayer="this.findPlayer(this.username).isCurrentPlayer"
+        :health="this.findPlayer(username).currentHp"
+        :identity="this.findPlayer(this.username).identity"
+        :messageActivitysUsable="this.messageActivitysUsable"
+        :name="this.username"
+        :passiveSkills="this.findPlayer(this.username).champion.passiveSkills"
+        @skillUsed="useSkill"
       />
     </div>
 
@@ -78,12 +77,12 @@
         <table>
           <tr>
             <td
-                v-for="(passive, j) in playerDelayedEffect"
-                :key="passive.id"
-                :style="{ left: j * 3.5 + 'vw' }"
-                class="passiveCircle"
+              v-for="(passive, j) in playerDelayedEffect"
+              :key="passive.id"
+              :style="{ left: j * 3.5 + 'vw' }"
+              class="passiveCircle"
             >
-              <delayedeffect-component :diameter="7"/>
+              <delayedeffect-component :diameter="7" />
             </td>
           </tr>
         </table>
@@ -95,11 +94,11 @@
             <td>
               <div :style="{ bottom: 15 - i * 8 + 'vh' }" class="equipment">
                 <equipment-component
-                    :description="getCard(equip).description"
-                    :name="getCard(equip).name"
-                    fontProp="2"
-                    heightProp="6.5"
-                    widthProp="18"
+                  :description="getCard(equip).description"
+                  :name="getCard(equip).name"
+                  fontProp="2"
+                  heightProp="6.5"
+                  widthProp="18"
                 />
               </div>
             </td>
@@ -113,25 +112,26 @@
     <div class="handCardSlot">
       <div class="cardContainer">
         <div
-            v-for="(card, i) in this.playerCards"
-            :key="i"
-            :class="[{ 'not-first-card': i !== 0 }, 'not-last-card']"
-            :style="{
+          v-for="(card, i) in this.playerCards"
+          :key="i"
+          :class="[{ 'not-first-card': i !== 0 }, 'not-last-card']"
+          :style="{
             'margin-left': calculateMarginLeft(this.playerCards.length, i),
           }"
-            @mouseenter="hoverStart(getCard(card))"
-            @mouseleave="hoverEnd(getCard(card))"
+          @mouseenter="hoverStart(getCard(card))"
+          @mouseleave="hoverEnd(getCard(card))"
         >
           <play-card
-              :class="{ cardUsedStyle: checkCardPicked(card) }"
-              :description="getCard(card).description"
-              :identity="null"
-              :name="getCard(card).name"
-              :symbol="getCard(card).symbol"
-              :usable="containsId(card, this.cardConditions.cardIds)"
-              :value="getCard(card).point"
-              class="playCard"
-              @click="useCard(i, card)"
+            :class="{ cardUsedStyle: checkCardPicked(card) }"
+            :description="getCard(card).description"
+            :identity="null"
+            :name="getCard(card).name"
+            :symbol="getCard(card).symbol"
+            :usable="containsId(card, this.cardConditions.cardIds)"
+            :picked="checkCardPicked(card)"
+            :value="getCard(card).point"
+            class="playCard"
+            @click="useCard(i, card)"
           />
         </div>
       </div>
@@ -144,23 +144,23 @@
     <div class="tablePileSlot">
       <div class="tableContainer">
         <div
-            v-for="(entry, i) in this.tablePile"
-            :key="i"
-            :class="[{ 'not-first-card': i !== 0 }, 'not-last-card']"
-            :style="{
+          v-for="(entry, i) in this.tablePile"
+          :key="i"
+          :class="[{ 'not-first-card': i !== 0 }, 'not-last-card']"
+          :style="{
             'margin-left': calculateMarginLeft(this.tablePile.length, i),
           }"
-            @mouseenter="hoverStart(getCard(entry.cardId))"
-            @mouseleave="hoverEnd(getCard(entry.cardId))"
+          @mouseenter="hoverStart(getCard(entry.cardId))"
+          @mouseleave="hoverEnd(getCard(entry.cardId))"
         >
           <play-card
-              :description="getCard(entry.cardId).description"
-              :identity="entry.playerName"
-              :name="getCard(entry.cardId).name"
-              :symbol="getCard(entry.cardId).symbol"
-              :usable="false"
-              :value="getCard(entry.cardId).value"
-              class="playCard"
+            :description="getCard(entry.cardId).description"
+            :identity="entry.playerName"
+            :name="getCard(entry.cardId).name"
+            :symbol="getCard(entry.cardId).symbol"
+            :usable="false"
+            :value="getCard(entry.cardId).value"
+            class="playCard"
           />
         </div>
       </div>
@@ -181,13 +181,13 @@
 
     <div v-if="this.discardPile.length > 0" class="discardPile">
       <play-card
-          :description="
+        :description="
           getCard(this.discardPile[this.discardPile.length - 1]).description
         "
-          :identity="null"
-          :name="getCard(this.discardPile[this.discardPile.length - 1]).name"
-          :symbol="getCard(this.discardPile[this.discardPile.length - 1]).symbol"
-          :value="getCard(this.discardPile[this.discardPile.length - 1]).point"
+        :identity="null"
+        :name="getCard(this.discardPile[this.discardPile.length - 1]).name"
+        :symbol="getCard(this.discardPile[this.discardPile.length - 1]).symbol"
+        :value="getCard(this.discardPile[this.discardPile.length - 1]).point"
       />
       <div class="discardPileOverlay"></div>
     </div>
@@ -195,9 +195,9 @@
     <!----------------------------------------DER ENDBUTTON----------------------------------------------->
 
     <button
-        v-if="this.messageActivitysUsable.activateEndTurn"
-        class="endTurn"
-        @click="endTurn()"
+      v-if="this.messageActivitysUsable.activateEndTurn"
+      class="endTurn"
+      @click="endTurn()"
     >
       End Turn
     </button>
@@ -225,12 +225,12 @@ import DelayedeffectComponent from "../components/DelayedeffectComponent.vue";
 import playerCard from "./PlayerChampionCard.vue";
 import resultPage from "../components/Statement.vue";
 import playCard from "./PlayCard.vue";
-import {useGameStore} from "@/stores/game";
+import { useGameStore } from "@/stores/game";
 import gameService from "@/services/gameService";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import {useLobbyStore} from "@/stores/lobby";
-import {useUserStore} from "@/stores/user";
+import { useLobbyStore } from "@/stores/lobby";
+import { useUserStore } from "@/stores/user";
 import resourceService from "@/services/resourceService";
 
 export default {
@@ -238,7 +238,7 @@ export default {
     const gameStore = useGameStore();
     const lobbyStore = useLobbyStore();
     const userStore = useUserStore();
-    return {gameStore, lobbyStore, userStore};
+    return { gameStore, lobbyStore, userStore };
   },
   computed: {
     logTextWithLineBreaks() {
@@ -253,7 +253,7 @@ export default {
       playerSummarize: [], // die Schnittstelle für die Ergebnisse
       messageActivitysUsable: {
         cardIds: [],
-        countCount: [],
+        cardCount: [],
         cardPlayerConditions: [
           {
             players: [],
@@ -269,7 +269,7 @@ export default {
         ],
         activateEndTurn: false,
         reason:
-            "Alles was der Spieler einsetzen kann: hier nur die Karten und skills mit den Ids",
+          "Alles was der Spieler einsetzen kann: hier nur die Karten und skills mit den Ids",
       }, // die Schnittstelle für Highlightmessage
       playerDaten: [
         {
@@ -339,7 +339,12 @@ export default {
         /*0, 1*/
       ], // die delayed Effekte vom Spieler
 
-      cardsPicked: [], // die Karten die der Spieler ausgewählt hat
+      cardsPicked: [
+        /* { solche einträge sind da drinn
+            cardId: Number,
+            index: Number, //ab 0 indiziert die Handkarten
+          },*/
+      ], // die Karten die der Spieler ausgewählt hat
       skillPicked: {
         skillId: -1,
         index: -1,
@@ -409,27 +414,35 @@ export default {
       if (this.cardsPicked.length > 0) {
         this.activateCancel = true;
         this.skillConditions.skillId = [];
-        //this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
-        //this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
-        this.cardConditions.cardIds = this.messageActivitysUsable.cardIds;
-        this.cardConditions.count = this.messageActivitysUsable.cardCount;
+        this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
+        this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
 
-        //wenn eine Karte ausgewählt ist, Gegner auswählbar machen
-        if (this.cardsPicked.length === 1) {
-          if (this.cardsPicked[0].cardId === -1) return;
+        //wenn eine Karte ausgewählt ist und Gegner zur auswahl stehen, Gegner auswählbar machen
+        if (this.cardsPicked.length === 1 && Math.max(this.messageActivitysUsable.cardCount) === 1) {
 
-          var id = this.cardsPicked[0].index;
-          //spieler die man verwenden kann und dessen Anzahl holen
-          let players = this.messageActivitysUsable.cardPlayerConditions[id].players;
+          //spieler die man auswählen kann und dessen Anzahl holen
           console.log("----- AUSWÄHLBARE SPIELER -------");
-          console.log(players);
-          this.playerConditions.players = [...players];
-          console.log(this.playerConditions.players);
-          this.playerConditions.players = players.filter((player) => !this.containsId(player, this.playersPicked));
-          console.log(this.playerConditions.players);
+          var id = this.cardsPicked[0].index;
+          var players = this.messageActivitysUsable.cardPlayerConditions[id].players;
           this.playerConditions.count = this.messageActivitysUsable.cardPlayerConditions[id].count;
+
+          //check if not too manyp players are selected
+          if (this.playersPicked.length >= Math.max(this.playerConditions.count)) {
+            this.playerConditions.players = [];
+          } else {
+            //filtere schon ausgewählte spieler raus
+            this.playerConditions.players = players.filter(
+              (player) => !this.containsId(player, this.playersPicked),
+            );
+          }
+
+          console.log("CARDCONDITIONS: BEFORE " + this.cardConditions.cardIds.length + this.cardConditions.count.length);
+
           this.cardConditions.cardIds = [];
           this.cardConditions.count = [];
+
+          console.log("CARDCONDITIONS: AFTER " + this.cardConditions.cardIds.length + this.cardConditions.count.length);
+
           //sonst nicht
         } else {
           this.playerConditions.players = [];
@@ -448,8 +461,13 @@ export default {
 
         //player abhängig von Skill auswählbar
         let players =
-            this.messageActivitysUsable.skillPlayerConditions[this.skillPicked.index].players;
-        let count = this.messageActivitysUsable.skillPlayerConditions[this.skillPicked.index].count;
+          this.messageActivitysUsable.skillPlayerConditions[
+            this.skillPicked.index
+            ].players;
+        let count =
+          this.messageActivitysUsable.skillPlayerConditions[
+            this.skillPicked.index
+            ].count;
 
         this.playerConditions.players = [...players];
         this.playerConditions.count = [...count];
@@ -458,9 +476,11 @@ export default {
         //der CANCEL BUTTON PRAKTISCH
         console.log(this.messageActivitysUsable);
         this.activateCancel = false;
-        this.skillConditions.skillIds = [...this.messageActivitysUsable.skillIds,];
+        this.skillConditions.skillIds = [
+          ...this.messageActivitysUsable.skillIds,
+        ];
         this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
-        this.cardConditions.count = [...this.messageActivitysUsable.count];
+        this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
         this.playerConditions.players = [];
         this.playerConditions.count = [];
       }
@@ -468,31 +488,52 @@ export default {
       let playerConfirm = false;
       let cardConfirm = false;
       let skillConfirm = false;
-
+      console.log("------------------------------------------ CHECK -------------------------------------------------------------------------------");
+      console.log("playcondition: ");
+      console.log(this.playerConditions);
+      console.log("cardcondition: ");
+      console.log(this.cardConditions);
+      console.log("skillPicked");
+      console.log(this.skillPicked);
+      console.log("playerspicked");
+      console.log(this.playersPicked);
+      console.log("cardsPicked");
+      console.log(this.cardsPicked);
+      console.log("skillPicked");
+      console.log(this.skillPicked);
       for (let i = 0; i < this.playerConditions.count.length; i++) {
         if (this.playerConditions.count[i] === this.playersPicked.length) {
           playerConfirm = true;
+          this.axiosUseCard = true;
           break;
         }
       }
       for (let i = 0; i < this.cardConditions.count.length; i++) {
         if (this.cardConditions.count[i] === this.cardsPicked.length) {
           cardConfirm = true;
+          this.axiosUseCard = true;
+          this.axiosSelectSkill = false;
+          console.log("CARDCONFIRM");
           break;
         }
       }
       if (this.skillPicked.index !== -1 && this.cardsPicked.length === 0) {
         skillConfirm = true;
+        this.axiosUseCard = false;
+        this.axiosSelectSkill = true;
+        console.log("SKILLCONFIRM");
       }
 
       this.activateConfirm = playerConfirm || cardConfirm || skillConfirm;
+      console.log("CARDSCONDITION: ");
+      console.log(this.cardConditions);
 
     },
 
     resetHighlightMessage() {
       this.messageActivitysUsable = {
         cardIds: [],
-        count: [],
+        cardCount: [],
         cardPlayerConditions: [
           {
             players: [],
@@ -516,37 +557,36 @@ export default {
       for (let i = 0; i < this.cardsPicked.length; i++) {
         if (this.cardsPicked[i].cardId === id) return true;
       }
-
       return false;
     },
 
     printSchnittstellen() {
       console.log(
-          "___________________________________playerSummarize___________________________________"
+        "___________________________________playerSummarize___________________________________",
       );
       console.log(this.playerSummarize);
       console.log(
-          "___________________________________messageActivitysUsable___________________________________"
+        "___________________________________messageActivitysUsable___________________________________",
       );
       console.log(this.messageActivitysUsable);
       console.log(
-          "___________________________________playerDaten___________________________________"
+        "___________________________________playerDaten___________________________________",
       );
       console.log(this.playerDaten);
       console.log(
-          "___________________________________cardMoveMessage___________________________________"
+        "___________________________________cardMoveMessage___________________________________",
       );
       console.log(this.cardMoveMessage);
       console.log(
-          "___________________________________KARTEN VON PLAYER___________________________________"
+        "___________________________________KARTEN VON PLAYER___________________________________",
       );
       console.log(this.playerCards);
       console.log(
-          "___________________________________AUSGEWÄHLTE SPIELER___________________________________"
+        "___________________________________AUSGEWÄHLTE SPIELER___________________________________",
       );
       console.log(this.playersPicked);
       console.log(
-          "___________________________________AUSGEWÄHLTE KARTEN___________________________________"
+        "___________________________________AUSGEWÄHLTE KARTEN___________________________________",
       );
       console.log(this.cardsPicked);
     },
@@ -556,167 +596,92 @@ export default {
     //alle Karten holen initialisieren
     async initData() {
       console.log(
-          "----------------------------------- INIT DATA --------------------------------"
+        "----------------------------------- INIT DATA --------------------------------",
       );
       this.resetHighlightMessage();
       await resourceService.getCards().then(
-          (response) => {
-            this.cards = response.data;
-            console.log("ALLE KARTEN");
-            console.log(this.cards);
-          },
-          (error) => {
-            console.log(error);
-          }
+        (response) => {
+          this.cards = response.data;
+          console.log("ALLE KARTEN");
+          console.log(this.cards);
+        },
+        (error) => {
+          console.log(error);
+        },
       );
     },
 
     //wenn der Spieler auf eine Karte drückt
     async useCard(index, id) {
       console.log(
-          "---------------------------------- USE CARD -----------------------------------"
+        "---------------------------------- USE CARD -----------------------------------",
       );
       if (this.containsId(id, this.messageActivitysUsable.cardIds)) {
         if (this.checkCardPicked(id)) {
-          this.cardsPicked = this.cardsPicked.filter(card => card.cardId !== id);
-
-        } else {
+          this.cardsPicked = this.cardsPicked.filter(
+            (card) => card.cardId !== id,
+          );
+          //reset players Picked
+          this.playersPicked.splice(0, this.playersPicked.length);
+        } else if (this.containsId(id, this.cardConditions.cardIds)) {
           console.log("karte kann genutzt werden");
           var playerIndexCount = 0;
+          //get id of card and add it t
           for (let i = 0; i < this.playerCards; i++) {
             if (i === index) {
               break;
             }
             if (
-                this.containsId(
-                    this.playerCards[i],
-                    this.messageActivitysUsable.cardIds
-                )
+              this.containsId(
+                this.playerCards[i],
+                this.messageActivitysUsable.cardIds,
+              )
             ) {
               playerIndexCount++;
             }
           }
-          this.cardsPicked.push({cardId: id, index: playerIndexCount});
-          this.updateConditions();
-        }
-      }
 
-      // if (this.containsCardId(id,this.cardsPicked)) {
-      //   //prüft ob karte bereits ausgewählt wurde falls ja wird es nicht mehr ausgewählt
-      //   this.cardsPicked = this.cardsPicked.filter((card) => card.cardId !== id);
-      //   this.cancel();
-      //   if (this.cardsPicked.length < this.messageActivitysUsable.minCard)
-      //     this.cardUsed = false;
-      // } else if (
-      //   this.containsId(id, searchArray) &&
-      //   count < this.messageActivitysUsable.maxCard &&
-      //   !this.containsCardId(id, this.cardsPicked)
-      // ) {
-      //   for (let i = 0; i < this.playerCards.length; i++) {
-      //     if (this.playerCards[i] === id) {
-      //       this.cardsPicked.push({index,id});
-      //       if (this.cardsPicked.length >= this.messageActivitysUsable.minCard)
-      //         this.cardUsed = true;
-      //       break;
-      //     }
-      //   }
-      // }
+          this.cardsPicked.push({ cardId: id, index: playerIndexCount });
+        }
+        this.updateConditions();
+      }
     },
     //wenn der Spieler auf einen Spieler drückt
     async pickPlayer(name) {
       console.log("-----------------PICK PLAYER------------------");
-      console.log("this.containsId(name, this.playerConditions.players)");
-      console.log(this.containsId(name, this.playerConditions.players));
-      if (this.containsId(name, this.playerConditions.players)) {
-        console.log("funkt spieler gepusht");
-        this.playersPicked.push(name);
-        this.updateConditions();
+      if (this.containsId(name, this.playersPicked)) {
+        this.playersPicked = this.playersPicked.filter(
+          (player) => player !== name,
+        );
+      } else {
+        if (this.containsId(name, this.playerConditions.players)) {
+          this.playersPicked.push(name);
+        }
       }
+      this.updateConditions();
+
     },
-    // console.log(
-    //   "---------------------------------------------- PICK PLAYER----------------------------------"
-    // );
-    // console.log("name: " + name);
-    // console.log("searchArray: ");
-    // console.log(searchArray);
-    // console.log("messageActivitysUsable: ");
-    // console.log(this.messageActivitysUsable);
-
-    // if (searchArray === null) searchArray = [];
-
-    // if (this.containsId(name, this.playerPicked)) {
-    //   this.playerPicked = this.playerPicked.filter(
-    //     (player) => player !== name
-    //   );
-    //   console.log(this.playerPicked.length);
-    // }
-
-    // console.log("playerPicked: ");
-    // console.log(this.playerPicked);
-    // let count = this.playerPicked.length;
-    // console.log("count: " + count);
-    // if (
-    //   this.containsId(name, searchArray) &&
-    //   count < this.messageActivitysUsable.maxPlayer &&
-    //   !this.containsId(name, this.playerPicked)
-    // ) {
-    //   console.log("es wird geadded");
-    //   console.log("searchArraylength: " + searchArray.length);
-    //   for (let i = 0; i < searchArray.length; i++) {
-    //     if (name === searchArray[i]) {
-    //       console.log("found: " + name);
-    //       this.playerPicked.push(name);
-    //       break;
-    //     }
-    //   }
-    // }
-    // count = this.playerPicked.length;
-    // console.log("count after: " + count);
-    // if (
-    //   count >= this.messageActivitysUsable.minPlayer &&
-    //   count <= this.messageActivitysUsable.maxPlayer &&
-    //   count > 0
-    // ) {
-    //   console.log("REST pick player");
-    //   this.resetHighlightMessage();
-    //   this.axiosPickPlayer = true;
-    //   if (!this.messageActivitysUsable.activateConfirm) {
-    //     this.axiosPickPlayer = false;
-    //     console.log(
-    //       "activateConfirm: " + this.messageActivitysUsable.activateConfirm
-    //     );
-    //     console.log("axios schicken pickplayer");
-    //     await gameService.pickPlayer(this.lobbyId, this.playerPicked).then(
-    //       (response) => {
-    //         console.log(response);
-    //       },
-    //       (error) => {
-    //         console.log(error);
-    //       }
-    //     );
-    //   }
-    // }
 
     //wenn der Spieler seine Runde beenden will muss noch geprüft werden, ob er genug karten / leben hat
     async endTurn() {
       console.log(
-          "------------------------------------------ END TURN --------------------------------------------------"
+        "------------------------------------------ END TURN --------------------------------------------------",
       );
       this.resetHighlightMessage();
       await gameService.end(this.lobbyId).then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        },
       );
     },
 
     //wenn der Spieler einen Skill einsetzt
     async useSkill(i, skillId) {
       if (this.containsId(skillId, this.skillConditions.skillIds)) {
-        this.skillPicked = {skillId: skillId, index: i};
+        this.skillPicked = { skillId: skillId, index: i };
         this.updateConditions();
       }
 
@@ -747,79 +712,59 @@ export default {
     //wenn der confirm button gedrückt wird
     async confirm() {
       console.log(
-          "----------------------------------------------- CONFIRM --------------------------------------------"
+        "----------------------------------------------- CONFIRM --------------------------------------------",
       );
-      console.log("cardsPicked: ");
-      console.log(this.cardsPicked);
-      console.log("messageActivitysUsable: ");
-      console.log(this.messageActivitysUsable);
 
-      let count = this.cardsPicked.length;
-      if (
-          count >= this.messageActivitysUsable.minCard &&
-          count <= this.messageActivitysUsable.maxCard
-      ) {
-        this.resetHighlightMessage();
-        if (this.axiosUseCard) {
-          //array mit Karten Index erstellen
-          let cardIndexArray;
-          for (let card in this.cardsPicked) {
-            cardIndexArray.push(card.cardId);
-          }
-          await gameService
-              .useCard(this.lobbyId, cardIndexArray, this.playersPicked)
-              .then(
-                  (response) => {
-                    console.log(response);
-                  },
-                  (error) => {
-                    console.log(error);
-                  }
-              );
-        } else if (this.axiosSelectSkill) {
-          await gameService
-              .useSkill(
-                  this.lobbyId,
-                  this.skillPicked.skillId,
-                  this.playersPicked
-              )
-              .then(
-                  (response) => {
-                    console.log(response);
-                  },
-                  (error) => {
-                    console.log(error);
-                  }
-              );
+      if (this.axiosUseCard) {
+        //array mit Karten Index erstellen
+        let cardIndexArray = [];
+        for (let i = 0; i < this.cardsPicked.length; i++) {
+          cardIndexArray.push(this.cardsPicked[i].cardId);
         }
+        console.log("lobbyiD: " + this.lobbyId);
+        console.log("cardIndexArray: ");
+        console.log(cardIndexArray);
+        console.log("playersPicked: " + this.playersPicked);
+        await gameService
+          .useCard(this.lobbyId, cardIndexArray, this.playersPicked)
+          .then(
+            (response) => {
+              console.log("confirmed");
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            },
+          );
+      } else if (this.axiosSelectSkill) {
+        await gameService
+          .useSkill(this.lobbyId, this.skillPicked.skillId, this.playersPicked)
+          .then(
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.log(error);
+            },
+          );
       }
+
+      this.cardUsed = false;
+      this.cardsPicked.splice(0, this.cardsPicked.length);
+      this.playersPicked.splice(0, this.playersPicked.length);
+      this.resetHighlightMessage();
     },
 
     //wenn der cancel button gedrückt wird
     async cancel() {
       console.log(
-          "-------------------------------------------- CANCEL --------------------------------------------"
+        "-------------------------------------------- CANCEL --------------------------------------------",
       );
-      console.log("cardsPicked: ");
-      console.log(this.cardsPicked);
-      console.log("tablePile: ");
-      console.log(this.tablePile);
-      console.log("playerPicked: ");
-      console.log(this.playerPicked);
-
+      console.log("funktioniert");
       this.cardUsed = false;
       this.cardsPicked.splice(0, this.cardsPicked.length);
-      this.playerPicked.splice(0, this.playerPicked.length);
-      this.resetHighlightMessage();
-
-      await gameService.cancel(this.lobbyId).then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
-      );
+      this.playersPicked.splice(0, this.playersPicked.length);
+      this.updateConditions();
     },
 
     //-------------------------------- WEBSOCKET ---------------------------------------------------
@@ -832,12 +777,12 @@ export default {
 
         //der private connection
         this.stompClient.subscribe(
-            "/games/" + this.lobbyId + "/" + this.userStore.getUser.username,
-            (response) => {
-              console.log(JSON.parse(response.body));
-              this.gameStore.setGameData(JSON.parse(response.body));
-              this.playerTurnSetup();
-            }
+          "/games/" + this.lobbyId + "/" + this.userStore.getUser.username,
+          (response) => {
+            console.log(JSON.parse(response.body));
+            this.gameStore.setGameData(JSON.parse(response.body));
+            this.playerTurnSetup();
+          },
         );
 
         //der public connection
@@ -859,12 +804,9 @@ export default {
       console.log("PRIVATE MESSAGE");
       if (this.gameStore.getGameData.messageType === "HIGHLIGHT") {
         this.messageActivitysUsable = this.gameStore.getGameData.payload;
-        this.cardConditions = this.messageActivitysUsable.cardIds;
-        this.skillIds = this.messageActivitysUsable.skillIds;
-        this.skillPlayerConditions = this.messageActivitysUsable.skillPlayerConditions;
         this.showNotice = true;
         this.notice = this.messageActivitysUsable.reason;
-        this.startProgressbar();
+        //this.startProgressbar();
         this.updateConditions();
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
@@ -946,8 +888,8 @@ export default {
     checkConfirmStatus() {
       console.log("checkConfirm Status");
       return !(
-          this.playerPicked.length < this.messageActivitysUsable.minPlayer ||
-          this.tablePile.length < this.messageActivitysUsable.minCard
+        this.playerPicked.length < this.messageActivitysUsable.minPlayer ||
+        this.tablePile.length < this.messageActivitysUsable.minCard
       );
     },
 
@@ -970,16 +912,16 @@ export default {
       } else if (this.cardMoveMessage.source === "equipment-" + this.username) {
         for (let j = 0; j < this.cardMoveMessage.cardIds.length; j++) {
           this.playerEquipment = this.playerEquipment.filter(
-              (card) => card !== this.cardMoveMessage.cardIds[j]
+            (card) => card !== this.cardMoveMessage.cardIds[j],
           );
         }
       } else if (
-          this.cardMoveMessage.source ===
-          "delayedEffect-" + this.username
+        this.cardMoveMessage.source ===
+        "delayedEffect-" + this.username
       ) {
         for (let j = 0; j < this.cardMoveMessage.cardIds.length; j++) {
           this.playerDelayedEffect = this.playerDelayedEffect.filter(
-              (card) => card !== this.cardMoveMessage.cardIds[j]
+            (card) => card !== this.cardMoveMessage.cardIds[j],
           );
         }
       } else {
@@ -989,7 +931,7 @@ export default {
             if (this.cardMoveMessage.source === this.username) {
               for (let j = 0; j < this.cardMoveMessage.cardIds.length; j++) {
                 this.playerCards = this.playerCards.filter(
-                    (card) => card !== this.cardMoveMessage.cardIds[j]
+                  (card) => card !== this.cardMoveMessage.cardIds[j],
                 );
               }
             }
@@ -1011,15 +953,15 @@ export default {
             playerName: this.cardMoveMessage.source,
           });
       } else if (
-          this.cardMoveMessage.destination ===
-          "equipment-" + this.username
+        this.cardMoveMessage.destination ===
+        "equipment-" + this.username
       ) {
         for (let j = 0; j < this.cardMoveMessage.cardIds.length; j++) {
           this.playerEquipment.push(this.cardMoveMessage.cardIds[j]);
         }
       } else if (
-          this.cardMoveMessage.destination ===
-          "delayedEffect-" + this.username
+        this.cardMoveMessage.destination ===
+        "delayedEffect-" + this.username
       ) {
         for (let j = 0; j < this.cardMoveMessage.cardIds.length; j++) {
           this.playerDelayedEffect.push(this.cardMoveMessage.cardIds[j]);
@@ -1027,7 +969,7 @@ export default {
       } else {
         for (let i = 0; i < this.playerDaten.length; i++) {
           if (
-              this.cardMoveMessage.destination === this.playerDaten[i].username
+            this.cardMoveMessage.destination === this.playerDaten[i].username
           ) {
             this.playerDaten[i].cardCount += this.cardMoveMessage.count;
             if (this.cardMoveMessage.destination === this.username) {
@@ -1061,19 +1003,19 @@ export default {
     startProgressbar() {
       console.log("startProgress");
       this.animation = this.$refs.progress.animate(
-          [{width: "100%"}, {width: "0%"}],
-          {
-            duration: this.gameDuration,
-            easing: "ease-in",
-            fill: "forwards",
-          }
+        [{ width: "100%" }, { width: "0%" }],
+        {
+          duration: this.gameDuration,
+          easing: "ease-in",
+          fill: "forwards",
+        },
       );
       this.animation.onfinish = () => {
         this.endTurn();
         this.animation.onfinish = null;
       };
       this.$refs.progress.style.animation =
-          "progress-animation 20s ease-in forwards";
+        "progress-animation 20s ease-in forwards";
     },
   },
 };
@@ -1464,7 +1406,7 @@ export default {
 
 .playCard {
   border-radius: 1rem;
-  box-shadow: 3px 3px 12px 2px rgba(black, 0.6);
+  box-shadow: 3px 3px 12px 2px rgba(0, 0, 0, 0.6);
   transition: 0.2s;
   z-index: 3;
 }
@@ -1562,9 +1504,9 @@ export default {
 
 .btn {
   background: linear-gradient(
-      0deg,
-      rgb(126, 82, 15) 0%,
-      rgba(251, 75, 2, 1) 100%
+    0deg,
+    rgb(126, 82, 15) 0%,
+    rgba(251, 75, 2, 1) 100%
   );
   line-height: 42px;
   padding: 0;

@@ -9,6 +9,9 @@ module.exports = {
     "plugin:prettier/recommended",
     "@vue/eslint-config-prettier",
   ],
+  rules: {
+    "max-len": ["error", { "code": 120 }],
+  },
   parserOptions: {
     ecmaVersion: "latest",
   },
