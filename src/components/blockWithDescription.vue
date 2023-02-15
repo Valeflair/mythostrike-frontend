@@ -7,7 +7,7 @@
       height: heightProp + 'vh',
       'font-size': fontProp + 'vh',
     }"
-    @click="emitSkillUsed()"
+    @click="emitSkillUsed"
   >
     {{ this.name }}
   </div>
@@ -70,6 +70,7 @@ export default {
   z-index: 9;
   overflow-y: auto;
 }
+
 .equipment:hover + .equipment-description {
   display: block;
 }

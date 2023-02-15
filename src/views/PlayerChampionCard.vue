@@ -73,7 +73,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
     </div>
 
     <div
-      v-show="this.usable === true || this.currentPlayer"
+      v-if="this.usable === true || this.currentPlayer"
       :class="{
         lightCard2: this.currentPlayer,
         lightCard: !this.currentPlayer,
@@ -105,7 +105,6 @@ export default {
   },
   components: {
     equipmentComponent,
-    delayComponent,
   },
   props: {
     name: "",
@@ -127,22 +126,7 @@ export default {
     currentPlayer: Boolean,
   },
   methods: {
-    getCardStyle() {
-      console.log(
-        "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
-      );
-      console.log(
-        "currentPlayer: " +
-          this.name +
-          "  " +
-          this.currentPlayer +
-          " usable:" +
-          this.usable
-      );
-      if (!this.currentPlayer)
-        return "linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2)";
-      else return "linear-gradient(45deg, #ea3838, #d14481, #f11212)";
-    },
+
     getImagePath() {
       let path = this.basePathSymbol + this.championName + ".png";
       return path;
@@ -155,7 +139,7 @@ export default {
       console.log("skills: " + this.activeSkills + this.passiveSkills);
     },
     useSkill(i, skillId) {
-      if (containsId(skillId, this.messageActivitysUsable.skillsID)) {
+      if (this.containsId(skillId, this.messageActivitysUsable.skillsID)) {
         this.$emit("skillUsed", i, skillId);
       }
     },
@@ -207,6 +191,7 @@ export default {
   transition: 1s opacity linear;
   animation: spin 3s linear infinite;
 }
+
 .lightCard::after {
   filter: blur(20px);
   opacity: 0.8;
@@ -240,6 +225,7 @@ export default {
   transition: 1s opacity linear;
   animation: spin 3s linear infinite;
 }
+
 .lightCard2::after {
   filter: blur(20px);
   opacity: 0.8;
@@ -310,27 +296,34 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 @font-face {
   font-family: "Greek";
   src: url(../assets/fontStyle/Greek.ttf);
 }
+
 @font-face {
   font-family: "Rhianne";
   src: url(../assets/fontStyle/Rhianne.ttf);
 }
+
 @font-face {
   font-family: "Blackadder";
   src: url(../assets/fontStyle/Blackadder.ttf);
 }
+
 .championCard {
   width: 11.5vw;
   height: 35vh;
   position: relative;
+  background-color: red;
 }
+
 .container {
   width: 11.5vw;
   height: 35vh;
   position: relative;
+  background-color: red;
 }
 
 .frame {
@@ -339,6 +332,7 @@ export default {
   position: absolute;
   z-index: 3;
 }
+
 .avatar {
   width: 99%;
   height: 88%;
@@ -346,6 +340,7 @@ export default {
   z-index: 2;
   bottom: 1%;
 }
+
 .name {
   width: 100%;
   position: absolute;
@@ -357,6 +352,7 @@ export default {
   top: 1.8%;
   text-align: center;
 }
+
 .stone {
   width: 2vh;
   height: 2vh;
@@ -365,18 +361,21 @@ export default {
   bottom: 0%;
   left: 46.5%;
 }
+
 .heartSmall {
   width: 1vw;
   position: absolute;
   z-index: 4;
   top: 1vh;
 }
+
 .heartBig {
   width: 1.5vw;
   position: absolute;
   z-index: 4;
   top: 1vh;
 }
+
 .handcard-num {
   width: 2.5vh;
   height: 2.5vh;
@@ -391,6 +390,7 @@ export default {
   top: 0.5vw;
   left: 9.5vw;
 }
+
 .identity {
   width: 4vh;
   height: 4vh;

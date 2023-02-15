@@ -53,7 +53,6 @@
       <player-card
         :activeSkills="this.findPlayer(this.username).champion.activeSkills"
         :championName="this.findPlayer(this.username).champion.name"
-        :class="{ actualPlayer: this.username === this.currentPlayer }"
         :currentPlayer="this.findPlayer(this.username).isCurrentPlayer"
         :health="this.findPlayer(username).currentHp"
         :identity="this.findPlayer(this.username).identity"
@@ -195,8 +194,6 @@
     <div class="progress-container">
       <progress ref="progress" max="100" value="100">100%</progress>
     </div>
-    <button class="start-Progressbar" @click="startProgressbar">START</button>
-    <button class="interrupt-Progressbar" @click="pause">PAUSE/RESUME</button>
   </div>
 </template>
 
@@ -279,7 +276,6 @@ export default {
       }, // die Schnittstelle um eine Karte zu bewegen
 
       /*---------- ANIMATION PROGRESSBAR ----------*/
-      paused: false,
       animation: null,
 
       /*---------- NOTICE BOX ----------*/
@@ -399,12 +395,24 @@ export default {
         this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
 
         //wenn eine Karte ausgewählt ist und Gegner zur auswahl stehen, Gegner auswählbar machen
-        if (this.cardsPicked.length === 1 && Math.max(this.messageActivitysUsable.cardCount) === 1) {
+        if (this.cardsPicked.length === 1 && Math.max(this.messageActivitysUsable.cardCount) === 1 && this.messageActivitysUsable.cardPlayerConditions[this.cardsPicked[0].index] != null
+        ) {
           //spieler die man auswählen kann und dessen Anzahl holen
-          console.log("----- AUSWÄHLBARE SPIELER -------");
+          console.log("----- AUSWÄHLBAR SPIELER -------");
           let id = this.cardsPicked[0].index;
           let players = this.messageActivitysUsable.cardPlayerConditions[id].players;
           this.playerConditions.count = this.messageActivitysUsable.cardPlayerConditions[id].count;
+          console.log("CARDSPICKED");
+          console.log(this.cardsPicked);
+          console.log("INDEX:" + id);
+          console.log("HIGHLIGHT");
+          console.log(this.messageActivitysUsable);
+          console.log("PLAYEDRCONDITION");
+          console.log(this.playerConditions);
+          console.log("PLAYERS:");
+          console.log(players);
+          console.log("COUNT:");
+          console.log(this.playerConditions.count);
 
           //check if not too manyp players are selected
           if (this.playersPicked.length >= Math.max(this.playerConditions.count)) {
@@ -425,6 +433,7 @@ export default {
 
           //sonst nicht
         } else {
+          console.log("----- AUSWÄHLBAR SPIELER -------");
           this.playerConditions.players = [];
           this.playerConditions.count = [];
         }
@@ -503,6 +512,16 @@ export default {
       console.log(this.cardConditions);
     },
 
+
+    findMaxEntry(array) {
+      let max = -1;
+      for (let i = 0; i < array.length; i++) {
+        if (max < array[i])
+          max = array[i];
+      }
+      return max;
+    },
+
     resetHighlightMessage() {
       this.messageActivitysUsable = {
         cardIds: [],
@@ -571,6 +590,7 @@ export default {
     //wenn der Spieler auf eine Karte drückt
     async useCard(index, id) {
       console.log("---------------------------------- USE CARD -----------------------------------");
+      console.log("INDEX: " + index + "      id: " + id);
       if (this.containsId(id, this.messageActivitysUsable.cardIds)) {
         if (this.checkCardPicked(id)) {
           this.cardsPicked = this.cardsPicked.filter((card) => card.cardId !== id);
@@ -580,7 +600,7 @@ export default {
           console.log("karte kann genutzt werden");
           let playerIndexCount = 0;
           //get id of card and add it t
-          for (let i = 0; i < this.playerCards; i++) {
+          for (let i = 0; i < this.playerCards.length; i++) {
             if (i === index) {
               break;
             }
@@ -640,6 +660,7 @@ export default {
       if (this.axiosUseCard) {
         //array mit Karten Index erstellen
         let cardIndexArray = [];
+        this.showNotice = false;
         for (const element of this.cardsPicked) {
           cardIndexArray.push(element.cardId);
         }
@@ -657,6 +678,7 @@ export default {
           },
         );
       } else if (this.axiosSelectSkill) {
+        this.showNotice = false;
         await gameService.useSkill(this.lobbyId, this.skillPicked.skillId, this.playersPicked).then(
           (response) => {
             console.log(response);
@@ -808,7 +830,7 @@ export default {
 
     //TODO: MUSS ÜBERARBEITET WERDEN
     updateCardMoveMessage() {
-      this.showNotice = !this.showNotice;
+      this.showNotice = false;
       //1. wir entfernen die Karten.
       //erst prüfen ob es eines der Stapeln ist
       //Wenn es auch nicht da ist prüfe ob es der Spieler seine equipment / passive ist
@@ -1060,9 +1082,6 @@ export default {
   right: 5px;
 }
 
-.actualPlayer {
-  border: solid red 5px;
-}
 
 .logBtn {
   width: 7vw;
