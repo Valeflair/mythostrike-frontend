@@ -240,6 +240,7 @@ export default {
           },
         ],
         skillIds: [],
+        skillCount: [],
         skillPlayerConditions: [
           {
             players: [],
@@ -332,9 +333,9 @@ export default {
         players: [],
         count: [],
       },
-
       skillConditions: {
         skillIds: [],
+        count: [],
       },
       cardConditions: {
         cardIds: [],
@@ -391,12 +392,13 @@ export default {
       if (this.cardsPicked.length > 0) {
         this.activateCancel = true;
         this.skillConditions.skillId = [];
+        this.skillConditions.count = [];
         this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
         this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
 
         //wenn eine Karte ausgewählt ist und Gegner zur auswahl stehen, Gegner auswählbar machen
-        if (this.cardsPicked.length === 1 && Math.max(this.messageActivitysUsable.cardCount) === 1 && this.messageActivitysUsable.cardPlayerConditions[this.cardsPicked[0].index] != null
-        ) {
+        if (this.cardsPicked.length === 1 && Math.max(this.messageActivitysUsable.cardCount) === 1
+          && this.messageActivitysUsable.cardPlayerConditions[this.cardsPicked[0].index] != null) {
           //spieler die man auswählen kann und dessen Anzahl holen
           console.log("----- AUSWÄHLBAR SPIELER -------");
           let id = this.cardsPicked[0].index;
@@ -414,7 +416,7 @@ export default {
           console.log("COUNT:");
           console.log(this.playerConditions.count);
 
-          //check if not too manyp players are selected
+          //check if not too many players are selected
           if (this.playersPicked.length >= Math.max(this.playerConditions.count)) {
             this.playerConditions.players = [];
           } else {
@@ -447,6 +449,7 @@ export default {
 
         //keinen weiteren skill auswählbar
         this.skillConditions.skillIds = [];
+        this.skillConditions.count = [];
 
         //player abhängig von Skill auswählbar
         let players = this.messageActivitysUsable.skillPlayerConditions[this.skillPicked.index].players;
@@ -460,6 +463,7 @@ export default {
         console.log(this.messageActivitysUsable);
         this.activateCancel = false;
         this.skillConditions.skillIds = [...this.messageActivitysUsable.skillIds];
+        this.cardConditions.count = [...this.messageActivitysUsable.skillCount];
         this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
         this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
         this.playerConditions.players = [];
@@ -484,15 +488,15 @@ export default {
       console.log(this.cardsPicked);
       console.log("skillPicked");
       console.log(this.skillPicked);
-      for (const element of this.playerConditions.count) {
-        if (element === this.playersPicked.length) {
+      for (const length of this.playerConditions.count) {
+        if (length === this.playersPicked.length) {
           playerConfirm = true;
           this.axiosUseCard = true;
           break;
         }
       }
-      for (const element of this.cardConditions.count) {
-        if (element === this.cardsPicked.length) {
+      for (const length of this.cardConditions.count) {
+        if (length === this.cardsPicked.length) {
           cardConfirm = true;
           this.axiosUseCard = true;
           this.axiosSelectSkill = false;
@@ -500,11 +504,14 @@ export default {
           break;
         }
       }
-      if (this.skillPicked.index !== -1 && this.cardsPicked.length === 0) {
-        skillConfirm = true;
-        this.axiosUseCard = false;
-        this.axiosSelectSkill = true;
-        console.log("SKILLCONFIRM");
+      for (const length of this.skillConditions.count) {
+        if (length === this.cardsPicked.length) {
+          skillConfirm = true;
+          this.axiosUseCard = false;
+          this.axiosSelectSkill = true;
+          console.log("SKILLCONFIRM");
+          break;
+        }
       }
 
       this.activateConfirm = playerConfirm || cardConfirm || skillConfirm;
@@ -515,9 +522,9 @@ export default {
 
     findMaxEntry(array) {
       let max = -1;
-      for (let i = 0; i < array.length; i++) {
-        if (max < array[i])
-          max = array[i];
+      for (const element of array) {
+        if (max < element)
+          max = element;
       }
       return max;
     },
@@ -533,6 +540,7 @@ export default {
           },
         ],
         skillIds: [],
+        skillCount: [],
         skillPlayerConditions: [
           {
             players: [],
@@ -591,6 +599,8 @@ export default {
     async useCard(index, id) {
       console.log("---------------------------------- USE CARD -----------------------------------");
       console.log("INDEX: " + index + "      id: " + id);
+      console.log("MESSAGE ACTIVITY USABLE: ");
+      console.log(this.messageActivitysUsable);
       if (this.containsId(id, this.messageActivitysUsable.cardIds)) {
         if (this.checkCardPicked(id)) {
           this.cardsPicked = this.cardsPicked.filter((card) => card.cardId !== id);
@@ -668,7 +678,12 @@ export default {
         console.log("cardIndexArray: ");
         console.log(cardIndexArray);
         console.log("playersPicked: " + this.playersPicked);
-        await gameService.useCard(this.lobbyId, cardIndexArray, this.playersPicked).then(
+
+        console.log("RESET");
+        //has to be resetted before call, because response takes to long and then new highlightMessage is resetted
+        this.resetHighlightMessage();
+
+        gameService.useCard(this.lobbyId, cardIndexArray, this.playersPicked).then(
           (response) => {
             console.log("confirmed");
             console.log(response);
@@ -679,7 +694,12 @@ export default {
         );
       } else if (this.axiosSelectSkill) {
         this.showNotice = false;
-        await gameService.useSkill(this.lobbyId, this.skillPicked.skillId, this.playersPicked).then(
+
+        console.log("RESET");
+        //has to be resetted before call, because response takes to long and then new highlightMessage is resetted
+        this.resetHighlightMessage();
+
+        gameService.useSkill(this.lobbyId, this.skillPicked.skillId, this.playersPicked).then(
           (response) => {
             console.log(response);
           },
@@ -692,7 +712,7 @@ export default {
       this.cardUsed = false;
       this.cardsPicked.splice(0, this.cardsPicked.length);
       this.playersPicked.splice(0, this.playersPicked.length);
-      this.resetHighlightMessage();
+      this.activateCancel = false;
     },
 
     //wenn der cancel button gedrückt wird
@@ -764,6 +784,8 @@ export default {
         this.playerDaten = this.gameStore.getGameData.payload;
         console.log(" PUBLIC UPDATE_GAME aktiviert");
         console.log(this.playerDaten);
+        console.log("HIGHLIGHT");
+        console.log(this.messageActivitysUsable);
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
         console.log(" PUBLIC CARD_MOVE aktiviert");
@@ -773,7 +795,7 @@ export default {
         console.log(" PUBLIC LOG aktiviert");
         this.logText += "\n" + this.gameStore.getGameData.payload.message;
         console.log(this.gameStore.getGameData.payload);
-        console.log(this.logText);
+
       } else if (this.gameStore.getGameData.messageType === "GAME_END") {
         this.playerSummarize = this.gameStore.getGameData.payload;
         console.log(" PUBLIC GAME_END aktiviert");

@@ -10,48 +10,48 @@
     <div class="table">
       <v-table theme="dark" hover="true" tag="wattttt">
         <thead class="head1">
-          <tr>
-            <th class="text-left text-grey-darken-4">Team</th>
-            <th class="text-left text-grey-darken-4">User</th>
-            <th class="text-left text-grey-darken-4">User ID</th>
-            <th class="text-left text-grey-darken-4">Identity</th>
-            <th class="text-left text-grey-darken-4">Drachma</th>
-            <th class="text-left text-grey-darken-4">Rank Points</th>
-            <th class="text-left text-grey-darken-4">Win</th>
-          </tr>
+        <tr>
+          <th class="text-left text-grey-darken-4">Team</th>
+          <th class="text-left text-grey-darken-4">User</th>
+          <th class="text-left text-grey-darken-4">User ID</th>
+          <th class="text-left text-grey-darken-4">Identity</th>
+          <th class="text-left text-grey-darken-4">Drachma</th>
+          <th class="text-left text-grey-darken-4">Rank Points</th>
+          <th class="text-left text-grey-darken-4">Win</th>
+        </tr>
         </thead>
         <tbody id="body" v-for="user in this.users" :key="user.userId">
-          <tr v-if="user.hasWon == true">
-            <td>{{ user.team }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.identity }}</td>
-            <td>{{ user.drachma }}</td>
-            <td>{{ user.rankPoints }}</td>
-            <td>YEAHH!</td>
-          </tr>
+        <tr v-if="user.hasWon === true">
+          <td>{{ user.team }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.identity }}</td>
+          <td>{{ user.drachma }}</td>
+          <td>{{ user.rankPoints }}</td>
+          <td>YEAHH!</td>
+        </tr>
         </tbody>
       </v-table>
       <v-table theme="dark" hover="true" tag="wattttt">
         <thead class="head2">
-          <tr>
-            <th class="text-left text-grey-darken-4">Team</th>
-            <th class="text-left text-grey-darken-4">User</th>
-            <th class="text-left text-grey-darken-4">User ID</th>
-            <th class="text-left text-grey-darken-4">Identity</th>
-            <th class="text-left text-grey-darken-4">Drachma</th>
-            <th class="text-left text-grey-darken-4">Rank Points</th>
-            <th class="text-left text-grey-darken-4">Lose</th>
-          </tr>
+        <tr>
+          <th class="text-left text-grey-darken-4">Team</th>
+          <th class="text-left text-grey-darken-4">User</th>
+          <th class="text-left text-grey-darken-4">User ID</th>
+          <th class="text-left text-grey-darken-4">Identity</th>
+          <th class="text-left text-grey-darken-4">Drachma</th>
+          <th class="text-left text-grey-darken-4">Rank Points</th>
+          <th class="text-left text-grey-darken-4">Lose</th>
+        </tr>
         </thead>
         <tbody id="body" v-for="user in this.users" :key="user.userId">
-          <tr v-if="user.hasWon == false">
-            <td>{{ user.team }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.identity }}</td>
-            <td>{{ user.drachma }}</td>
-            <td>{{ user.rankPoints }}</td>
-            <td>NOOOOE!</td>
-          </tr>
+        <tr v-if="user.hasWon == false">
+          <td>{{ user.team }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.identity }}</td>
+          <td>{{ user.drachma }}</td>
+          <td>{{ user.rankPoints }}</td>
+          <td>NOOOOE!</td>
+        </tr>
         </tbody>
       </v-table>
     </div>
@@ -64,10 +64,12 @@
   margin: 0;
   padding: 0;
 }
+
 th {
   font-size: large;
   font-style: italic;
 }
+
 .statement {
   position: relative;
   width: 100%;
@@ -77,18 +79,22 @@ th {
   align-items: center;
   justify-content: center;
 }
+
 .bg-image {
   position: absolute;
   width: 80vw;
   background-repeat: round;
   opacity: 0.9;
 }
+
 .head1 {
   background-color: rgba(26, 98, 207, 0.699);
 }
+
 .head2 {
   background-color: rgba(104, 21, 21, 0.801);
 }
+
 .table {
   position: absolute;
   width: 68vw;
@@ -110,14 +116,15 @@ th {
 
 <script>
 export default {
-  data() {},
+  data() {
+  },
   methods: {
     quitGame() {
       this.$router.push({ path: "./home" });
     },
   },
-  props:{
-    users:Array
-  }
+  props: {
+    users: Array,
+  },
 };
 </script>

@@ -1,6 +1,5 @@
 <script setup>
 import equipmentComponent from "../components/blockWithDescription.vue";
-import delayComponent from "../components/DelayedeffectComponent.vue";
 </script>
 <template>
   <div class="container">
@@ -62,10 +61,10 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
               :description="skill.description"
               fontProp="1.5"
               :usableProp="
-                containsId(skill.id, this.messageActivitysUsable.skillsID)
+                containsId(skill.id, this.messageActivitysUsable.skillIds)
               "
               :id="skill.id"
-              @click="useSkill(i, skill.id)"
+              @click="print()"
             />
           </td>
         </tr>
@@ -91,16 +90,7 @@ export default {
       timerDelay: 1000,
       hoverComponents: false,
       basePathSymbol: "src/assets/cards/",
-      messageActivitysUsable: {
-        cardsId: [],
-        players: [],
-        skillsID: [],
-        minCard: 0,
-        maxCard: 0,
-        minPlayer: 0,
-        maxPlayer: 0,
-        reason: "",
-      },
+
     };
   },
   components: {
@@ -127,6 +117,7 @@ export default {
   },
   methods: {
 
+
     getImagePath() {
       let path = this.basePathSymbol + this.championName + ".png";
       return path;
@@ -135,17 +126,23 @@ export default {
       return this.championName + "(" + this.name + ")";
     },
     print() {
-      console.log(this.activeSkills);
-      console.log("skills: " + this.activeSkills + this.passiveSkills);
+      console.log("DER SKILL WURDE AUSGEFÜHRT");
+      console.log("id: ");
+      console.log("HIGHLIGHT");
+      console.log(this.messageActivitysUsable);
     },
     useSkill(i, skillId) {
-      if (this.containsId(skillId, this.messageActivitysUsable.skillsID)) {
+      console.log("DER SKILL WURDE AUSGEFÜHRT");
+      console.log("id: " + skillId);
+      console.log("HIGHLIGHT");
+      console.log(this.messageActivitysUsable);
+      if (this.containsId(skillId, this.messageActivitysUsable.skillsIds)) {
         this.$emit("skillUsed", i, skillId);
       }
     },
     containsId(id, array) {
-      for (let i = 0; i < array.length; i++) {
-        if (id === array[i]) return true;
+      for (const element of array) {
+        if (id === element) return true;
       }
       return false;
     },
