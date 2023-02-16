@@ -72,7 +72,7 @@ import equipmentComponent from "../components/blockWithDescription.vue";
     </div>
 
     <div
-      v-if="this.usable === true || this.currentPlayer"
+      v-if="this.usable || this.currentPlayer"
       :class="{
         lightCard2: this.currentPlayer,
         lightCard: !this.currentPlayer,
@@ -167,7 +167,6 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
-  cursor: pointer;
   z-index: 1;
 }
 

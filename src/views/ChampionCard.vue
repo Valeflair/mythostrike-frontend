@@ -3,7 +3,7 @@ import equipmentComponent from "../components/blockWithDescription.vue";
 import delayComponent from "../components/DelayedeffectComponent.vue";
 </script>
 <template>
-  <div class="container">
+  <div class="container" :class="{'usable':this.usable||this.picked}">
     <div class="championCard" @mouseover="hoverStart()" @mouseout="hoverEnd()">
       <img
         class="frame"
@@ -489,6 +489,10 @@ export default {
   left: 5%;
   position: absolute;
   line-height: 180%;
+}
+
+.usable {
+  cursor: pointer;
 }
 
 .delayEffect {

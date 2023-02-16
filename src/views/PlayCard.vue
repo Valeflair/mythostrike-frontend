@@ -1,6 +1,7 @@
 <script setup></script>
 <template>
-  <div class="container" @mouseenter="hoverStart()" @mouseleave="hoverEnd()">
+  <div class="container" @mouseenter="hoverStart()" @mouseleave="hoverEnd()"
+       :class="{'usable':this.usable||this.picked}">
     <div class="card">
       <img
         class="frame"
@@ -279,6 +280,10 @@ export default {
 @font-face {
   font-family: "Blackadder";
   src: url(../assets/fontStyle/Blackadder.ttf);
+}
+
+.usable {
+  cursor: pointer;
 }
 
 .frame {

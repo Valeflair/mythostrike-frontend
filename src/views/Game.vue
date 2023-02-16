@@ -132,7 +132,6 @@
       </div>
     </div>
 
-    <button class="testBtn" @click="printSchnittstellen()">TEST</button>
 
     <!-----------------DIE KARTEN AUF DEM TISCH UND DER CONFIRM/CANCEL BUTTON-------------------------------------->
 
