@@ -63,6 +63,7 @@ import equipmentComponent from "../components/blockWithDescription.vue";
               :usableProp="
                 containsId(skill.id, this.messageActivitysUsable.skillIds)
               "
+              :used="this.usedSkill.skillId === skill.id"
               :id="skill.id"
             />
           </td>
@@ -98,7 +99,7 @@ export default {
   props: {
     name: "",
     championName: "",
-    picked: Boolean,
+    usedSkill: Object,
     health: {
       type: Number,
       default: 0,

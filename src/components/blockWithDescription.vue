@@ -1,7 +1,7 @@
 <template>
   <div
     class="equipment"
-    :class="{ usableClass: usableProp, notUsableClass: !usableProp }"
+    :class="{ usableClass: usableProp && !used, notUsableClass: !usableProp, usedClass: used }"
     :style="{
       width: widthProp + 'vw',
       height: heightProp + 'vh',
@@ -30,6 +30,7 @@ export default {
     heightProp: Number,
     fontProp: Number,
     usableProp: false,
+    used: false,
     name: "",
     description: "",
     id: Number,
@@ -40,6 +41,11 @@ export default {
 <style scoped>
 .usableClass {
   border: solid yellow 2px;
+  cursor: pointer;
+}
+
+.usedClass {
+  border: solid red 2px;
   cursor: pointer;
 }
 

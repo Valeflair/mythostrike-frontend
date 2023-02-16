@@ -63,7 +63,6 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
               name="NAME EQUIPMENT"
               description="Description Equipment"
               fontProp="1.5"
-              :usableProp="false"
               :id="i"
             />
           </td>
@@ -72,14 +71,14 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
 
       <table v-if="game">
         <tr>
-          <td v-for="i in this.passiveEffect.length" :key="i">
+          <td v-for="(entry,i) in this.delayedEffects" :key="i">
             <div
               class="delayEffect"
               :style="{ left: -2 + i * 4 + 'vh' }"
               @mouseenter="showInnerComponents(true)"
               @mouseleave="showInnerComponents(false)"
             >
-              <delay-component :diameter="4" />
+              <delay-component :diameter="4" :name="entry.name" :description="entry.description" />
             </div>
           </td>
         </tr>
@@ -140,10 +139,7 @@ export default {
       type: Array,
       default: [],
     },
-    passiveEffect: {
-      type: Array,
-      default: [],
-    },
+    delayedEffects: [],
     activeSkills: {
       type: Array,
       default: [],
@@ -157,6 +153,7 @@ export default {
     picked: Boolean,
   },
   methods: {
+
     getImagePath() {
       let path = this.basePathSymbol + this.championName + ".png";
       return path;

@@ -11,17 +11,17 @@
             <championCard
               v-if="player.champion !== null"
               :activeSkills="player.champion.activeSkills"
+              :passiveSkills="player.champion.passiveSkills"
               :championName="player.champion.name"
               :class="{ actualPlayer: player.username === this.currentPlayer }"
               :currentPlayer="player.isCurrentPlayer"
-              :equipment="player.equipment"
               :handcardNum="player.cardCount"
               :health="player.currentHp"
               :identity="player.identity"
               :isGame="true"
               :name="player.username"
-              :passiveEffect="player.passiveEffect"
-              :passiveSkills="player.champion.passiveSkills"
+              :equipment="player.equipment"
+              :delayedEffects="getCardsFromArray(player.delayedEffects)"
               :picked="containsId(player.username, this.playersPicked)"
               :usable="containsId(player.username, this.playerConditions.players)"
               class="playerChampions"
@@ -59,6 +59,7 @@
         :messageActivitysUsable="this.messageActivitysUsable"
         :name="this.username"
         :passiveSkills="this.findPlayer(this.username).champion.passiveSkills"
+        :usedSkill="this.skillPicked"
         @skillUsed="useSkill"
       />
     </div>
@@ -75,7 +76,8 @@
               :style="{ left: j * 3.5 + 'vw' }"
               class="passiveCircle"
             >
-              <delayedeffect-component :diameter="7" />
+              <delayedeffect-component :diameter="7" :name="getCard(passive).name"
+                                       :description="getCard(passive).description" />
             </td>
           </tr>
         </table>
@@ -266,7 +268,7 @@ export default {
           currentHP: 0,
           identity: "-",
           equipment: [],
-          passiveEffect: [],
+          delayedEffects: [],
         },
       ], // die Schnittstelle um die Daten aller Spieler zu aktualisieren
       cardMoveMessage: {
@@ -368,7 +370,7 @@ export default {
         currentHP: 0,
         identity: "-",
         equipment: [],
-        passiveEffect: [],
+        delayedEffects: [],
       },
     };
   },
@@ -384,6 +386,8 @@ export default {
     this.lobbyId = this.lobbyStore.getLobby.id;
     this.username = this.userStore.getUser.username;
     this.initData();
+    console.log("ALL CARDS AVAILABLE");
+    console.log(this.cards);
     this.connect();
   },
   methods: {
@@ -575,6 +579,13 @@ export default {
       console.log(this.playersPicked);
       console.log("___________________________________AUSGEWÄHLTE KARTEN___________________________________");
       console.log(this.cardsPicked);
+      console.log("___________________________________CARD CONDITION___________________________________");
+      console.log(this.cardConditions);
+      console.log("___________________________________PLAYER CONDITION___________________________________");
+      console.log(this.playerConditions);
+      console.log("___________________________________SKILL CONDITION___________________________________");
+      console.log(this.skillConditions);
+
     },
 
     //--------------------------------- AXIOS ----------------------------------------------------
@@ -668,7 +679,13 @@ export default {
         console.log(this.skillPicked.skillId);
         console.log("skillPicked.index");
         console.log(this.skillPicked.index);
+        console.log("HIGHLIGHT");
+        console.log(this.messageActivitysUsable);
+        console.log("CARDCONDITIONS");
+        console.log(this.cardConditions);
         this.updateConditions();
+        console.log("CARDCONDITION AFTER");
+        console.log(this.cardConditions);
       }
     },
 
@@ -690,8 +707,8 @@ export default {
         console.log("cardIndexArray: ");
         console.log(cardIndexArray);
         let nameCardArray = [];
-        for (let i = 0; i < cardIndexArray.length; i++) {
-          nameCardArray.push({ id: cardIndexArray[i], name: this.getCard(cardIndexArray[i]).name });
+        for (const element of cardIndexArray) {
+          nameCardArray.push({ id: element, name: this.getCard(element).name });
         }
         console.log(nameCardArray);
         console.log("playersPicked: " + this.playersPicked);
@@ -733,6 +750,7 @@ export default {
       this.cardUsed = false;
       this.cardsPicked.splice(0, this.cardsPicked.length);
       this.playersPicked.splice(0, this.playersPicked.length);
+      this.skillPicked = { skillId: -1, index: -1 };
       this.activateCancel = false;
     },
 
@@ -743,6 +761,7 @@ export default {
       this.cardUsed = false;
       this.cardsPicked.splice(0, this.cardsPicked.length);
       this.playersPicked.splice(0, this.playersPicked.length);
+      this.skillPicked = { skillId: -1, index: -1 };
       this.updateConditions();
     },
 
@@ -941,6 +960,15 @@ export default {
           return element;
         }
       }
+    },
+
+
+    getCardsFromArray(array) {
+      let newArray = [];
+      for (let i = 0; i < array.length; i++) {
+        newArray.push(this.getCard(array[i]));
+      }
+      return newArray;
     },
 
     //sucht den Spieler mit der bestimmten id
