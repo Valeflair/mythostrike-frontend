@@ -1,37 +1,41 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
-    <v-row>
-      <v-col cols="2" class="buttonMove">
-        <button class="seatButton" @click="selectMode">Select Mode</button>
-        <button class="seatButton">Invite</button>
+  <v-row>
+    <v-col cols="2" class="buttonMove">
+      <button class="commandButton" @click="selectMode">Select Mode</button>
+      <button class="commandButton">Invite</button>
+      <button
+        class="commandButton"
+        @click="start"
+        :disabled="!this.isLobbyOwner"
+      >
+        Start Game
+      </button>
+    </v-col>
+    <v-col cols="2" class="buttonMove">
+      <button class="commandButton">Options</button>
+      <div class="dropdown">
         <button
-          class="seatButton"
-          @click="start"
+          class="commandButton"
+          @click="addBot"
           :disabled="!this.isLobbyOwner"
         >
-          Start Game
+          Add Bot
         </button>
-      </v-col>
-      <v-col cols="2" class="buttonMove">
-        <button class="seatButton">Options</button>
-        <div class="dropdown">
-          <button class="seatButton" @click="addBot" :disabled="!this.isLobbyOwner">Add Bot</button>
-        </div>
-        <button class="seatButton" @click="leave">Leave</button>
-      </v-col>
-    </v-row>
+      </div>
+      <button class="commandButton" @click="leave">Leave</button>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   props: {
-    isLobbyOwner: Boolean
+    isLobbyOwner: Boolean,
   },
   methods: {
     addBot() {
@@ -43,29 +47,28 @@ export default {
     selectMode() {
       this.$emit("open:mode");
     },
-    leave(){
+    leave() {
       this.$emit("update:leave");
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
-.labelclass{
+.labelclass {
   text-align: center;
   font-size: 150%;
-  color:yellow;
+  color: yellow;
   margin-top: 2vh;
   margin-bottom: 2vh;
-} 
+}
 
-
-.buttonMove{
+.buttonMove {
   margin-left: 3vh;
   margin-right: 13vh;
 }
 
-.seatButton {
+.commandButton {
   border: none;
   color: white;
   padding: 14px 40px;
@@ -82,12 +85,20 @@ export default {
   background-image: url("@/assets/elements/button.png");
 }
 
-.seatButton:hover {
-  color: #f9fd06;;
+.commandButton:hover {
+  color: white;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
-  font-size: 18px;
   font-weight: bold;
+  font-size: 20px;
 }
 
+.commandButton:disabled {
+  opacity: 0.4;
+}
+
+.commandButton:disabled:hover {
+  font-weight: normal;
+  font-size: 17px;
+}
 </style>

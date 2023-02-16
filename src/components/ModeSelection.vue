@@ -10,7 +10,7 @@
         {{ getMode().description }}
       </div>
       <button class="imageRight" @click="updatePointer(1)"></button>
-      <button class="imageLeft" @click="updatePointer(-1)"></button> 
+      <button class="imageLeft" @click="updatePointer(-1)"></button>
       <button
         class="confirmButton"
         :disabled="!this.isLobbyOwner"
@@ -18,11 +18,10 @@
       >
         CONFIRM
       </button>
-      <label class="minPlayerLabel">Minimum: {{getMode().minPlayer}} </label>
-      
-      <label class="maxPlayerLabel">Maximum: {{getMode().maxPlayer}} </label>
+      <label class="minPlayerLabel">Minimum: {{ getMode().minPlayer }} </label>
+
+      <label class="maxPlayerLabel">Maximum: {{ getMode().maxPlayer }} </label>
     </div>
-   
   </div>
 </template>
 
@@ -30,7 +29,7 @@
 export default {
   data() {
     return {
-      pointer: this.currentModeId
+      pointer: this.currentModeId,
     };
   },
 
@@ -52,79 +51,76 @@ export default {
       this.$emit("close:Mode");
     },
     confirm() {
-        this.$emit("confirm:Mode", this.pointer);
-        this.$emit("close:Mode");
-    }
-  }
+      this.$emit("confirm:Mode", this.pointer);
+      this.$emit("close:Mode");
+    },
+  },
 };
 </script>
 
 <style scoped>
-
-.minPlayerLabel{
-  width:200px;
+.minPlayerLabel {
+  width: 200px;
   font-size: 26px;
   position: relative;
   text-align: center;
-  left:15%;
+  left: 15%;
   bottom: 5%;
-  color:rgb(255, 255, 114);
+  color: rgb(255, 255, 114);
 }
 
-.maxPlayerLabel{
-  width:200px;
+.maxPlayerLabel {
+  width: 200px;
   font-size: 26px;
   position: relative;
   text-align: center;
-    left:68.5%;
+  left: 68.5%;
   bottom: 10.5%;
-  color:rgb(255, 255, 114);
+  color: rgb(255, 255, 114);
 }
 
-.close{
+.close {
   background-image: url("@/assets/elements/modeSelection/return.png");
   width: 94px;
   height: 64px;
-  background-size: cover; 
-  background-position: center; 
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   border-radius: 60%;
   margin-top: 7px;
   position: relative;
   left: 88%;
-  top:3%;
+  top: 3%;
 }
 
-.imageRight{
-  background-size: cover; 
-  background-position: center; 
+.imageRight {
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   background-image: url("@/assets/elements/modeSelection/arrow_Right.png");
-  width:110px;
+  width: 110px;
   height: 75px;
   position: relative;
-  left:95%;
-  bottom:16%;
+  left: 95%;
+  bottom: 16%;
 }
 
-
-
-.imageLeft{
-  background-size: cover; 
-  background-position: center; 
+.imageLeft {
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   background-image: url("@/assets/elements/modeSelection/arrow_Left.png");
-  width:110px;
+  width: 110px;
   height: 75px;
   position: relative;
-  right:5%;
-  bottom:24%;
+  right: 5%;
+  bottom: 24%;
 }
 
 .bg-image {
   background: url("@/assets/backgrounds/modeselect_background.png");
-  background-size: cover; 
-  background-position: center; 
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   width: 1260px;
   height: 750px;
@@ -136,29 +132,28 @@ export default {
   font-size: 32px;
   align-self: center;
   background-image: url("@/assets/elements/modeSelection/selectButton.png");
-  background-size: cover; 
-  background-position: center; 
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  top:5%;
-  color:blanchedalmond;
+  top: 5%;
+  color: blanchedalmond;
 }
-
 
 .textArea {
   position: relative;
-  top:10%;
+  top: 10%;
   width: 70%;
   height: 70%;
   overflow: auto;
-  color:blanchedalmond;
+  color: blanchedalmond;
   font-size: 25px;
   align-self: center;
   margin: auto;
   padding: 10px;
 }
 
-header h1{
+header h1 {
   text-align: center;
 }
 .overlay {
@@ -179,7 +174,6 @@ header h1{
   position: relative;
   display: flex;
   flex-direction: column;
-  
 }
 
 .model p {
@@ -188,10 +182,10 @@ header h1{
   display: flex;
 }
 
-header{
+header {
   position: relative;
-  top:90px;
+  top: 90px;
   font-size: 20px;
-  color:blanchedalmond;
+  color: blanchedalmond;
 }
 </style>

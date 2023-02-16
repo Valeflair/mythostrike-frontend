@@ -1,126 +1,205 @@
 <template>
   <div class="bg-image">
-    
-     <Mode-selection 
-    v-if="isModeShown"
-    @close:Mode="toggleModeSelection"
-    @confirm:Mode="confirmMode"
-    :isLobbyOwner= "this.isLobbyOwner"
-    :modes="this.gameModes"
-    :currentModeId="this.currentModeId"
-  />
-
-
-
-<div class="slotStyle">
-
-    <SlotView
-      :lobbyId="this.lobbyID"
-      :lobbyLeader="this.currentLeader"
-      :isLobbyOwner= "this.isLobbyOwner"
-      :slotsProp="this.slots"
-      :gameModeName="this.currentModeName"
-      @confirm:Mode="confirmMode"
-      @update:Mode="toggleModeSelection"
-      @update:leave="leave"
-      @open:game="start"
-      @update:bot="addBot"
+    <Mode-selection
+      v-if="isModeShown"
+      @close:Mode="toggleModeSelection"
+      @confirm:Mode="changeMode"
+      :isLobbyOwner="this.isLobbyOwner"
+      :modes="this.gameModes"
+      :currentModeId="this.currentModeId"
     />
+
+    <div class="slotStyle">
+      <SlotView
+        :lobbyId="this.lobbyId"
+        :lobbyOwner="this.currentOwner"
+        :isLobbyOwner="this.isLobbyOwner"
+        :slotsProp="this.slots"
+        :gameModeName="this.currentModeName"
+        @confirm:Mode="changeMode"
+        @update:Mode="toggleModeSelection"
+        @update:leave="leave"
+        @open:game="start"
+        @update:bot="addBot"
+        @update:seat="changeSeat"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import SlotView from "../components/SlotField.vue";
-import ModeSelection from "../components/ModeSelection.vue"
-import axios from "axios";
+import ModeSelection from "../components/ModeSelection.vue";
+import lobbyService from "@/services/lobbyService";
+import resourceService from "@/services/resourceService";
+import { useLobbyStore } from "@/stores/lobby";
+import { useUserStore } from "@/stores/user";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 export default {
   data() {
     return {
-      slots: [
-        { id: 0, username: "A1" },
-        { id: 1, username: "C2" },
-        { id: 2, username: "B3" },
-        { id: 3, username: "D4" },
-        { id: 4, username: "G5" },
-        { id: 5, username: "T6" },
-        { id: 6, username: "Y7" },
-        { id: 7, username: "R8" },
-      ],
-      gameModes:[],
-      currentModeName:"",
-      currentLeader: "Holder",
-      currentModeId: 0,
-      lobbyID: 5045,
+      slots: [],
+      gameModes: [],
+      currentModeName: "",
+      currentOwner: "",
+      currentModeId: null,
+      lobbyId: 0,
       isModeShown: false,
-      isLobbyOwner: true
+      isLobbyOwner: true,
+      stompClient: null,
+      lobbyData: [],
     };
+  },
+  setup() {
+    const lobbyStore = useLobbyStore();
+    const userStore = useUserStore();
+
+    return { lobbyStore, userStore };
   },
   components: {
     SlotView,
     ModeSelection,
   },
   methods: {
-    addBot() {
-      console.log("add Bot");
+    async addBot() {
+      await lobbyService.addBot(this.lobbyId).then(
+        (response) => {
+          console.log(response);
+          console.log("add Bot");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-    start(){
-      console.log("start");
+    async start() {
+      await lobbyService.start(this.lobbyId).then(
+        (response) => {
+          console.log(response);
+          console.log("start");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-    confirmMode(newMode) {
-      this.currentModeId = newMode;
-      console.log("newMode" + newMode);
+    async changeMode(newMode) {
+      await lobbyService.changeMode(this.lobbyId, newMode).then(
+        (response) => {
+          this.currentModeId = newMode;
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-    toggleModeSelection(){
-      this.isModeShown=!this.isModeShown;
+    toggleModeSelection() {
+      this.isModeShown = !this.isModeShown;
     },
-    leave(){
-        console.log("leave");
+    async leave() {
+      await lobbyService.leave(this.lobbyId).then(
+        (response) => {
+          this.$router.push({ path: "./lobbyoverview" });
+          console.log(response);
+          console.log("leave");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-    async initModes(){
-      await axios
-        .get("http://localhost:8080/resources/modes")
-        .then(
+    async changeSeat(newSeatId) {
+      await lobbyService.changeSeat(this.lobbyId, newSeatId).then(
+        (response) => {
+          console.log(response);
+          console.log("change to " + newSeatId);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async initModes() {
+      await resourceService.getModes().then(
+        (response) => {
+          this.gameModes = response.data;
+          this.currentModeId = 0;
+          console.log(response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    lobbySetup() {
+      this.lobbyId = this.lobbyStore.getLobby.id;
+      console.log(this.lobbyStore.getLobby.id);
+      this.currentModeName = this.lobbyStore.getLobby.mode;
+      console.log(this.currentModeName);
+      this.currentOwner = this.lobbyStore.getLobby.owner;
+      this.isLobbyOwner = this.currentOwner == this.userStore.getUser.username;
+      this.slots = this.lobbyStore.getLobby.seats;
+    },
+    connect() {
+      this.stompClient.connect({}, (frame) => {
+        console.log("Connected to " + frame);
+        this.stompClient.subscribe("/lobbies/" + this.lobbyId, (response) => {
+          let lobbyData = JSON.parse(response.body);
+          console.log(lobbyData);
+          this.lobbyStore.setLobby(lobbyData);
+          this.lobbySetup();
+        });
+        this.stompClient.subscribe(
+          "/lobbies/" + +this.lobbyId + "/" + this.userStore.getUser.username,
           (response) => {
-            console.log("erfolgreich, mode data initialisiert");
-            this.gameModes = response.data;
-            console.log(response.data); 
-            this.$nextTick(() => {
-              this.currentModeName = this.gameModes[this.currentModeId].name;
-            });
-          },
-          (error) => {
-            console.log("fehler, mode data initialisieren");
-            console.log(error);
+            let readyPhaseData = JSON.parse(response.body);
+            console.log(readyPhaseData);
+            this.lobbyStore.setChampions(readyPhaseData.champions);
+            this.lobbyStore.setIdentity(readyPhaseData.identity);
+            this.$router.push({ path: "./championselection" });
           }
-      )
-    }
+        );
+      });
+    },
+    disconnect() {
+      this.stompClient.disconnect();
+    },
+    initStompClient() {
+      let socket = new SockJS("http://localhost:8080/updates");
+      this.lobbyStore.setStompClient(Stomp.over(socket));
+      this.stompClient = this.lobbyStore.getStompClient();
+    },
   },
-  created(){
+  created() {
     this.initModes();
+    this.initStompClient();
+    this.lobbySetup();
   },
-  watch: {
-    currentModeId(){
-      this.currentModeName= this.gameModes[this.currentModeId].name;
-    }
-  }
+  mounted() {
+    this.connect();
+  },
+  unmounted() {
+    this.disconnect();
+  },
 };
 </script>
 
 <style scoped>
 .bg-image {
   background: url("@/assets/backgrounds/lobby_background.png");
-  height:100%;
-  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
-.slotStyle{
-  position: relative;   
-  height:100%;
+.slotStyle {
+  position: relative;
+  height: 100%;
   width: 100%;
 }
 
-header h1{
+header h1 {
   text-align: center;
-  
 }
 </style>

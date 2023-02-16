@@ -1,28 +1,33 @@
-<script setup>
-import championData from "../data/champions.json";
-</script>
 <template>
   <div class="library">
-    <h1>Library</h1>
+    <h1 class="pt-5">{{ this.currentCard.name }}</h1>
     <button class="back" @click="back"></button>
     <div class="cardContainer">
       <v-row class="d-flex justify-left">
-        <div v-for="champion in champions" :key="champion.id">
-          <v-col :key="champion.id">
-            <button class="cardButton" @click="details(champion.id)">
-              {{ champion.name }}
-            </button>
+        <div v-for="card in cards" :key="card.id">
+          <v-col :key="card.id">
+            <button
+              v-bind:style="{
+                backgroundImage:
+                  'url(' + '../src/assets/cards/' + card.name + '.png' + ')',
+                backgroundSize: '100% 100%',
+                backgroundRepeat: 'no-repeat',
+              }"
+              class="cardButton"
+              @click="selectView(card)"
+            ></button>
           </v-col>
         </div>
       </v-row>
     </div>
-    <div class="big-picture">{{ this.currentChampion.name }}</div>
+    <div class="big-picture">
+      <img
+        :src="'../src/assets/cards/' + this.currentCard.name + '.png'"
+        alt=""
+      />
+    </div>
     <div class="description">
-      <!-- <span>name: {{ this.currentChampion.name }} </span> <br />
-      <span>description: {{ this.currentChampion.description }}</span> <br />
-      <span>passsive skill: {{ this.currentChampion.passiveSkills }}</span> <br>
-      <span>aktive skill: {{ this.currentChampion.passiveSkills }}</span> -->
-      {{ this.currentChampion }}
+      {{ this.currentCard.description }}
     </div>
   </div>
 </template>
@@ -33,7 +38,7 @@ h1 {
 }
 .back {
   position: absolute;
-  background-image: url(../assets/elements/modeSelection/return.png);
+  background-image: url("@/assets/elements/return.png");
   width: 94px;
   height: 64px;
   background-size: cover;
@@ -44,7 +49,7 @@ h1 {
 }
 .library {
   position: relative;
-  background-image: url(../assets/backgrounds/home_background.png);
+  background-image: url("@/assets/backgrounds/lobby_background.png");
   width: 100%;
   height: 100%;
   background-attachment: fixed;
@@ -62,7 +67,7 @@ h1 {
 }
 .cardButton {
   background-color: rgb(60, 70, 85);
-  width: 8vw;
+  width: 7.3vw;
   height: 10vw;
   border: 2px solid rgb(87, 170, 247);
   color: aliceblue;
@@ -71,8 +76,8 @@ h1 {
   position: absolute;
   width: 30vw;
   height: 37.5vw;
-  background-color: rgb(60, 70, 85);
-  border: 2px solid rgb(87, 170, 247);
+  /* background-color: rgb(60, 70, 85);
+  border: 2px solid rgb(87, 170, 247); */
   top: 13vh;
   left: 30vw;
 }
@@ -80,34 +85,63 @@ h1 {
   position: absolute;
   max-width: 30vw;
   max-height: 30vw;
-  background-image: url(../assets/elements/text-background.png);
+  background-image: url("@/assets/elements/text-background.png");
   background-repeat: round;
-  /* background-color: rgb(60, 70, 85); */
-  border: 2px solid rgb(87, 170, 247);
   top: 30vh;
   left: 65vw;
   word-wrap: break-word;
   word-break: normal;
+  font-size: 1.5vw;
+  color: white;
 }
 </style>
 
 <script>
+import resourceService from "@/services/resourceService";
 export default {
   data() {
     return {
-      champions: championData, //alles was wir machen müssen ist ein get zu holen der alle champions
-      currentChampion: "",
-      lobbyID: this.lobbyIDprop,
+      cards: [],
+      champions: [],
+      currentCard: "",
     };
   },
   methods: {
-    details(championId) {
-      console.log(this.champions[championId]);
-      this.currentChampion = this.champions[championId];
+    selectView(card) {
+      this.currentCard = card;
     },
     back() {
       this.$router.push({ path: "./home" });
-    }
+    },
+    async initCards() {
+      await resourceService.getCards().then(
+        (response) => {
+          let cards = response.data;
+          this.cards = cards.reduce((acc, card) => {
+            if (!acc.find((u) => u.name === card.name)) {
+              acc.push(card);
+            }
+            return acc;
+          }, []);
+          this.currentCard = this.cards[0];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+      await resourceService.getChampions().then(
+        (response) => {
+          let champions = response.data;
+          this.cards = this.cards.concat(champions);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+  },
+  created() {
+    this.initCards();
   },
 };
 </script>
