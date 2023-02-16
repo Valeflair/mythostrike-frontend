@@ -105,7 +105,7 @@
     <!-------------------------------------------DIE HANDKARTEN---------------------------------------------->
 
     <div class="handCardSlot">
-      <div class="cardContainer">
+      <div class="card-Container">
         <div
           v-for="(card, i) in this.playerCards"
           :key="i"
@@ -1207,7 +1207,7 @@ export default {
   border: solid black 2px;
 }
 
-.cardContainer {
+.card-Container {
   position: absolute;
   display: flex;
   top: 50%;

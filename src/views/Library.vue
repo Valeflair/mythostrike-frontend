@@ -32,10 +32,11 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 h1 {
   text-align: center;
 }
+
 .back {
   position: absolute;
   background-image: url("@/assets/elements/return.png");
@@ -47,6 +48,7 @@ h1 {
   left: 90%;
   top: 2%;
 }
+
 .library {
   position: relative;
   background-image: url("@/assets/backgrounds/lobby_background.png");
@@ -65,6 +67,7 @@ h1 {
   top: 5vh;
   left: 3vw;
 }
+
 .cardButton {
   background-color: rgb(60, 70, 85);
   width: 7.3vw;
@@ -72,6 +75,7 @@ h1 {
   border: 2px solid rgb(87, 170, 247);
   color: aliceblue;
 }
+
 .big-picture {
   position: absolute;
   width: 30vw;
@@ -81,6 +85,7 @@ h1 {
   top: 13vh;
   left: 30vw;
 }
+
 .description {
   position: absolute;
   max-width: 30vw;
@@ -98,6 +103,7 @@ h1 {
 
 <script>
 import resourceService from "@/services/resourceService";
+
 export default {
   data() {
     return {
@@ -127,7 +133,7 @@ export default {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
       await resourceService.getChampions().then(
         (response) => {
@@ -136,7 +142,7 @@ export default {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
   },
