@@ -7,14 +7,10 @@
         <div v-for="id in 12" :key="id">
           <v-col :key="id">
             <img
-              :src="
-                '../src/assets/avatars/avatar' +
-                id +
-                '.png'
-              "
+              :src="'../src/assets/avatars/avatar' + id + '.png'"
               class="image"
               @click="changeAvatar(id)"
-              />
+            />
           </v-col>
         </div>
       </v-row>
@@ -25,17 +21,16 @@
 <script>
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     close() {
       this.$emit("close:AvatarSelection");
     },
-    changeAvatar(newAvatarId){
+    changeAvatar(newAvatarId) {
       this.$emit("close:AvatarSelection");
       this.$emit("update:Avatar", newAvatarId);
-    }
+    },
   },
 };
 </script>
@@ -74,10 +69,9 @@ export default {
   margin: auto;
 }
 
-.image{
+.image {
   cursor: pointer;
 }
-
 
 .image:active {
   box-shadow: 0 3px rgba(0, 0, 0, 0.05);

@@ -11,19 +11,45 @@ import CommandField from "@/components/CommandField.vue";
       >
         <v-col col="3">
           <div v-if="slot.identity != 'None' && slot.username != null">
-            <button class="seatButton" id="teamRed" v-bind:style="{backgroundImage:'url('+'../src/assets/avatars/avatar'+slot.avatarNumber+'.png'+')'}">
-            <p>{{ slot.username }}</p>
-          </button>
+            <button
+              class="seatButton"
+              id="teamRed"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' +
+                  '../src/assets/avatars/avatar' +
+                  slot.avatarNumber +
+                  '.png' +
+                  ')',
+              }"
+            >
+              <p>{{ slot.username }}</p>
+            </button>
           </div>
-          <div v-else-if="slot.username ==null">
-            <button class="emptySeat" v-bind:style="{backgroundImage:'url('+'../src/assets/avatars/changeSeat.png'+')'}"
-          @click="changeSeat(id)">
-          </button>
+          <div v-else-if="slot.username == null">
+            <button
+              class="emptySeat"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' + '../src/assets/avatars/changeSeat.png' + ')',
+              }"
+              @click="changeSeat(id)"
+            ></button>
           </div>
-          <div v-else-if="slot.username !=null">
-            <button class="seatButton" v-bind:style="{backgroundImage:'url('+'../src/assets/avatars/avatar'+slot.avatarNumber+'.png'+')'}">
-            <p>{{ slot.username }}</p>
-          </button>
+          <div v-else-if="slot.username != null">
+            <button
+              class="seatButton"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' +
+                  '../src/assets/avatars/avatar' +
+                  slot.avatarNumber +
+                  '.png' +
+                  ')',
+              }"
+            >
+              <p>{{ slot.username }}</p>
+            </button>
           </div>
         </v-col>
       </div>
@@ -58,19 +84,45 @@ import CommandField from "@/components/CommandField.vue";
       >
         <v-col col="3">
           <div v-if="slot.identity != 'None' && slot.username != null">
-            <button class="seatButton" id="teamBlue" v-bind:style="{backgroundImage:'url('+'../src/assets/avatars/avatar'+slot.avatarNumber+'.png'+')'}">
-            <p>{{ slot.username }}</p>
-          </button>
+            <button
+              class="seatButton"
+              id="teamBlue"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' +
+                  '../src/assets/avatars/avatar' +
+                  slot.avatarNumber +
+                  '.png' +
+                  ')',
+              }"
+            >
+              <p>{{ slot.username }}</p>
+            </button>
           </div>
           <div v-else-if="slot.username == null">
-            <button class="emptySeat" v-bind:style="{backgroundImage:'url('+'../src/assets/avatars/changeSeat.png'+')'}"
-          @click="changeSeat(id + slots.length / 2)">
-          </button>
+            <button
+              class="emptySeat"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' + '../src/assets/avatars/changeSeat.png' + ')',
+              }"
+              @click="changeSeat(id + slots.length / 2)"
+            ></button>
           </div>
-          <div v-else-if="slot.username !=null">
-            <button class="seatButton" v-bind:style="{backgroundImage:'url('+'../src/assets/avatars/avatar'+slot.avatarNumber+'.png'+')'}">
-            <p>{{ slot.username }}</p>
-          </button>
+          <div v-else-if="slot.username != null">
+            <button
+              class="seatButton"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' +
+                  '../src/assets/avatars/avatar' +
+                  slot.avatarNumber +
+                  '.png' +
+                  ')',
+              }"
+            >
+              <p>{{ slot.username }}</p>
+            </button>
           </div>
         </v-col>
       </div>
@@ -155,7 +207,7 @@ export default {
   display: inline-block;
   font-size: 2.5vh;
   font-size: 1.5vw;
-  text-shadow: #FC0 1px 0 10px;
+  text-shadow: #fc0 1px 0 10px;
   font-weight: bold;
   border-radius: 12px;
   margin-left: 1vh;
@@ -166,8 +218,8 @@ export default {
   background-size: cover;
 }
 
-.seatButton:hover{
-  color:black;
+.seatButton:hover {
+  color: black;
   cursor: default;
 }
 
@@ -196,11 +248,11 @@ button:hover {
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
-#teamRed{
+#teamRed {
   border: 3px solid red;
 }
 
-#teamBlue{
+#teamBlue {
   border: 3px solid blue;
 }
 </style>

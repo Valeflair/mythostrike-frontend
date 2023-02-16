@@ -42,12 +42,10 @@
             />
           </v-card>
           <img
-              :src="
-                '../src/assets/elements/lobby.png'
-              "
-              class="image lobbyImg mr-10"
-              @click="toLobbyOverview"
-            />
+            :src="'../src/assets/elements/lobby.png'"
+            class="image lobbyImg mr-10"
+            @click="toLobbyOverview"
+          />
         </v-row>
       </v-container>
     </div>
@@ -57,9 +55,7 @@
         <v-row>
           <div style="margin-right: 2.4vw">
             <img
-              :src="
-                '../src/assets/elements/button_Library.png'
-              "
+              :src="'../src/assets/elements/button_Library.png'"
               class="image libraryImg"
               @click="toLibrary"
             />
@@ -67,18 +63,15 @@
 
           <div style="margin-right: 2vw">
             <img
-              :src="
-                '../src/assets/elements/button_Setting.png'
-              "
+              :src="'../src/assets/elements/button_Setting.png'"
               class="image settingImg"
+              @click="music()"
             />
           </div>
 
           <div>
             <img
-              :src="
-                '../src/assets/elements/return.png'
-              "
+              :src="'../src/assets/elements/return.png'"
               class="image logoutImg"
               @click="logout"
             />
@@ -94,59 +87,70 @@ import { useUserStore } from "@/stores/user";
 import AvatarSelection from "../components/AvatarSelection.vue";
 import authService from "@/services/authService";
 export default {
-    data: () => ({
-        isSelectAvatarShown: false,
-        avatarNumber: null
-    }),
-    setup() {
-        const userStore = useUserStore();
-        return { userStore };
+  data: () => ({
+    isSelectAvatarShown: false,
+    avatarNumber: null,
+    isPlaying: false,
+  }),
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
+  },
+  components: {
+    AvatarSelection,
+  },
+  methods: {
+    openAvatarSelection() {
+      this.isSelectAvatarShown = true;
     },
-    components: {
-      AvatarSelection
+    closeAvatarSelection() {
+      this.isSelectAvatarShown = false;
     },
-    methods: {
-        openAvatarSelection() {
-            this.isSelectAvatarShown = true;
+    async updateAvatar(newAvatarId) {
+      await authService.changeAvatar(newAvatarId).then(
+        (response) => {
+          this.userStore.changeAvatar(newAvatarId);
         },
-        closeAvatarSelection(){
-          this.isSelectAvatarShown = false;
-        },
-        async updateAvatar(newAvatarId) {
-          await authService.changeAvatar(newAvatarId).then(
-            (response) => {
-              this.userStore.changeAvatar(newAvatarId);
-            },
-            (error) => {
-              console.log(error);
-            }
-        );
-        },
-        toLobbyOverview() {
-            this.$router.push({ path: "./lobbyOverview" });
-        },
-        toLibrary() {
-            this.$router.push({ path: "./library" });
-        },
-        logout() {
-            localStorage.removeItem("token");
-            this.userStore.reset();
-            this.$router.push({ path: "./" });
-        },
-        async auth(){
-          await authService.auth().then(
-          (response) => {
-            console.log(response);
-            this.userStore.setUser(response.data);
-            this.$router.push("/home");
-          },
-          (error) => {
-            console.log(error);
-            this.$router.push("/");
-            localStorage.removeItem("token")
-          })
+        (error) => {
+          console.log(error);
         }
-        /*
+      );
+    },
+    toLobbyOverview() {
+      this.$router.push({ path: "./lobbyOverview" });
+    },
+    toLibrary() {
+      this.$router.push({ path: "./library" });
+    },
+    logout() {
+      localStorage.removeItem("token");
+      this.userStore.reset();
+      this.$router.push({ path: "./" });
+    },
+    music() {
+      var audio = document.getElementById("MusicPlay");
+      this.isplaying = !this.isplaying;
+      if (this.isplaying === true) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    },
+    async auth() {
+      await authService.auth().then(
+        (response) => {
+          console.log(response);
+          this.userStore.setUser(response.data);
+          this.$router.push("/home");
+        },
+        (error) => {
+          console.log(error);
+          this.$router.push("/");
+          localStorage.removeItem("token");
+        }
+      );
+    },
+    /*
             toQueue() {
               this.$router.push({ path: "./Queue" });
             },
@@ -157,11 +161,11 @@ export default {
             toLibrary() {
               this.$router.push({ path: "./Library" });
             },*/
-    },
-    async created(){
-      this.auth();
-    },
-    components: { AvatarSelection }
+  },
+  async created() {
+    this.auth();
+  },
+  components: { AvatarSelection },
 };
 </script>
 
@@ -169,10 +173,10 @@ export default {
 .profil {
   background-color: #2e2824 !important;
   color: white;
-  width:15vw;
+  width: 15vw;
 }
 
-.image{
+.image {
   cursor: pointer;
 }
 
@@ -191,17 +195,17 @@ export default {
   height: 20vw;
 }
 
-.libraryImg{
+.libraryImg {
   width: 7vw;
   height: 13vh;
 }
 
-.settingImg{
+.settingImg {
   width: 8vw;
   height: 14vh;
 }
 
-.logoutImg{
+.logoutImg {
   width: 8vw;
   height: 14vh;
 }
@@ -227,7 +231,6 @@ export default {
   background: url("@/assets/elements/Button_Library.png");
   background-size: 100%;
 }
-
 
 #footer {
   position: fixed;

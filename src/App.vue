@@ -2,13 +2,19 @@
   <v-app>
     <v-main>
       <router-view />
+      <audio
+        src="../src/assets/musics/Night Vigil.mp3"
+        loop="true"
+        autoplay="autoplay"
+        id="MusicPlay"
+        hidden
+      ></audio>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import { useUserStore } from "@/stores/user";
-import authService from "./services/authService";
 export default {
   name: "App",
 

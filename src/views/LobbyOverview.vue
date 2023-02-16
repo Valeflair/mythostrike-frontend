@@ -175,7 +175,7 @@ export default {
     },
     back() {
       this.$router.push({ path: "./home" });
-    }
+    },
   },
   created() {
     this.getLobbies();

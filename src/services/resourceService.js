@@ -19,5 +19,5 @@ export default {
       method: "GET",
       url: service.CHAMPIONS_URL,
     });
-  }
+  },
 };

@@ -5,7 +5,11 @@
     <v-col cols="2" class="buttonMove">
       <button class="commandButton" @click="selectMode">Select Mode</button>
       <button class="commandButton">Invite</button>
-      <button class="commandButton" @click="start" :disabled="!this.isLobbyOwner">
+      <button
+        class="commandButton"
+        @click="start"
+        :disabled="!this.isLobbyOwner"
+      >
         Start Game
       </button>
     </v-col>
@@ -86,14 +90,14 @@ export default {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
   font-weight: bold;
-  font-size:20px;
+  font-size: 20px;
 }
 
-.commandButton:disabled{
+.commandButton:disabled {
   opacity: 0.4;
 }
 
-.commandButton:disabled:hover{
+.commandButton:disabled:hover {
   font-weight: normal;
   font-size: 17px;
 }

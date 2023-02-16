@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="area-3-4 pa-5">
-    <h1>Select your champion</h1>
-    <h1>Your identity: {{ this.identity }}</h1>
+      <h1>Select your champion</h1>
+      <h1>Your identity: {{ this.identity }}</h1>
       <div class="championContainer">
         <v-row class="d-flex justify-center">
           <div v-for="champion in champions" :key="champion.id">
@@ -10,9 +10,17 @@
               <button
                 class="championButton"
                 @click="changeChampion(champion)"
-                v-bind:style="{backgroundImage:'url('+'../src/assets/cards/'+champion.name+'.png'+')', backgroundSize:'100% 100%', backgroundRepeat: 'no-repeat'}"
-              >
-              </button>
+                v-bind:style="{
+                  backgroundImage:
+                    'url(' +
+                    '../src/assets/cards/' +
+                    champion.name +
+                    '.png' +
+                    ')',
+                  backgroundSize: '100% 100%',
+                  backgroundRepeat: 'no-repeat',
+                }"
+              ></button>
             </v-col>
           </div>
         </v-row>
@@ -20,14 +28,26 @@
     </div>
     <div class="area-1-4 justify-center">
       <div class="selectedChampion">
-        <button @click="printPassiveSkill" class="championDisplay" 
-          v-bind:style="{backgroundImage:'url('+'../src/assets/cards/'+this.currentChampion.name+'.png'+')', backgroundSize:'100% 100%', backgroundRepeat: 'no-repeat'}"
-          :style="{'border-color':this.color}" @mouseover="fade"
-          disabled>
-        </button>
+        <button
+          @click="printPassiveSkill"
+          class="championDisplay"
+          v-bind:style="{
+            backgroundImage:
+              'url(' +
+              '../src/assets/cards/' +
+              this.currentChampion.name +
+              '.png' +
+              ')',
+            backgroundSize: '100% 100%',
+            backgroundRepeat: 'no-repeat',
+          }"
+          :style="{ 'border-color': this.color }"
+          @mouseover="fade"
+          disabled
+        ></button>
       </div>
       <div class="championDescription">
-      <h1 :style="{'color':this.color}">{{ this.currentChampion.name }}</h1>
+        <h1 :style="{ color: this.color }">{{ this.currentChampion.name }}</h1>
         <div
           v-for="pSkill in this.currentChampion.passiveSkills"
           :key="pSkill.name"
@@ -54,8 +74,12 @@
         </div>
       </div>
 
-      <button class="confirmButton button" @click="confirmChampion">Confirm</button>
-      <button class="randomButton button" @click="randomChampion">Random</button>
+      <button class="confirmButton button" @click="confirmChampion">
+        Confirm
+      </button>
+      <button class="randomButton button" @click="randomChampion">
+        Random
+      </button>
     </div>
   </div>
 </template>
@@ -69,13 +93,13 @@ export default {
       champions: [],
       currentChampion: null,
       label: "Select your champion",
-      color: '#000000'
+      color: "#000000",
     };
   },
   setup() {
     const lobbyStore = useLobbyStore();
 
-    return {lobbyStore};
+    return { lobbyStore };
   },
   methods: {
     changeChampion(newChampion) {
@@ -83,7 +107,8 @@ export default {
       this.label = this.currentChampion.name;
     },
     randomChampion() {
-      this.currentChampion = this.champions[Math.floor(Math.random() * this.champions.length)];
+      this.currentChampion =
+        this.champions[Math.floor(Math.random() * this.champions.length)];
       this.label = this.currentChampion.name;
     },
     async confirmChampion() {
@@ -94,18 +119,18 @@ export default {
         (error) => {
           console.log(error);
         }
-      )
+      );
     },
-    initData(){
+    initData() {
       this.champions = this.lobbyStore.getChampions();
       this.currentChampion = this.champions[0];
       console.log(this.champions);
       this.lobbyID = this.lobbyStore.getLobby.id;
       this.identity = this.lobbyStore.getIdentity();
     },
-    fade(){
-      this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-    }
+    fade() {
+      this.color = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
+    },
   },
   created() {
     this.initData();
@@ -130,8 +155,6 @@ export default {
   transition-duration: 0.4s;
 }
 
-
-
 .confirmButton {
   position: relative;
   width: 10vw;
@@ -151,8 +174,8 @@ export default {
 .button:hover {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
-    font-size: 1.1vw;
-    font-weight: bold;
+  font-size: 1.1vw;
+  font-weight: bold;
 }
 
 .button:active {
@@ -183,8 +206,8 @@ export default {
   float: none;
   display: block;
   align-self: center;
-  color:white;
-  font-size:3vh;
+  color: white;
+  font-size: 3vh;
   background: url("@/assets/elements/skill-background.png");
   background-size: 100%;
 }
@@ -193,7 +216,7 @@ export default {
   opacity: 0;
   visibility: hidden;
   position: absolute;
-  text-align:center;
+  text-align: center;
   z-index: 10;
   word-wrap: break-word;
   font-weight: bold;
@@ -234,7 +257,7 @@ export default {
   margin-top: 3vh;
 }
 
-h1{
+h1 {
   font-size: 3vw;
   font-size: 4vh;
 }

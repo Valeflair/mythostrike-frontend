@@ -15,7 +15,7 @@ export default {
       data: {
         modeId: 0,
       },
-      headers: {Authorization: "Bearer " + localStorage.getItem("token")}
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   joinLobby(lobbyId) {
@@ -25,7 +25,7 @@ export default {
       data: {
         lobbyId: lobbyId,
       },
-      headers: {Authorization: "Bearer " + localStorage.getItem("token")}
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   addBot(lobbyId) {
@@ -35,7 +35,7 @@ export default {
       data: {
         lobbyId: lobbyId,
       },
-      headers: {Authorization: "Bearer " + localStorage.getItem("token")}
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   start(lobbyId) {
@@ -45,7 +45,7 @@ export default {
       data: {
         lobbyId: lobbyId,
       },
-      headers: {Authorization: "Bearer " + localStorage.getItem("token")}
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   leave(lobbyId) {
@@ -55,7 +55,7 @@ export default {
       data: {
         lobbyId: lobbyId,
       },
-      headers: {Authorization: "Bearer " + localStorage.getItem("token")}
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   changeMode(lobbyId, newModeId) {
@@ -66,7 +66,7 @@ export default {
         lobbyId: lobbyId,
         newModeId: newModeId,
       },
-      headers: {Authorization: "Bearer " + localStorage.getItem("token")}
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   changeSeat(lobbyId, newSeatId) {
@@ -77,7 +77,7 @@ export default {
         lobbyId: lobbyId,
         newSeatId: newSeatId,
       },
-      headers: {Authorization: "Bearer " + localStorage.getItem("token")}
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
 };

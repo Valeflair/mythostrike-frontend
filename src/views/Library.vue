@@ -6,14 +6,26 @@
       <v-row class="d-flex justify-left">
         <div v-for="card in cards" :key="card.id">
           <v-col :key="card.id">
-            <button v-bind:style="{backgroundImage:'url('+'../src/assets/cards/'+card.name+'.png'+')', backgroundSize:'100% 100%', backgroundRepeat: 'no-repeat'}" 
-            class="cardButton" @click="selectView(card)">
-            </button>
+            <button
+              v-bind:style="{
+                backgroundImage:
+                  'url(' + '../src/assets/cards/' + card.name + '.png' + ')',
+                backgroundSize: '100% 100%',
+                backgroundRepeat: 'no-repeat',
+              }"
+              class="cardButton"
+              @click="selectView(card)"
+            ></button>
           </v-col>
         </div>
       </v-row>
     </div>
-    <div class="big-picture"><img :src="'../src/assets/cards/'+this.currentCard.name+'.png'" alt=""></div>
+    <div class="big-picture">
+      <img
+        :src="'../src/assets/cards/' + this.currentCard.name + '.png'"
+        alt=""
+      />
+    </div>
     <div class="description">
       {{ this.currentCard.description }}
     </div>
@@ -90,8 +102,8 @@ export default {
   data() {
     return {
       cards: [],
-      champions:[],
-      currentCard: ""
+      champions: [],
+      currentCard: "",
     };
   },
   methods: {
@@ -101,22 +113,22 @@ export default {
     back() {
       this.$router.push({ path: "./home" });
     },
-    async initCards(){
+    async initCards() {
       await resourceService.getCards().then(
         (response) => {
           let cards = response.data;
           this.cards = cards.reduce((acc, card) => {
-            if (!acc.find(u => u.name === card.name)) {
-              acc.push(card)
+            if (!acc.find((u) => u.name === card.name)) {
+              acc.push(card);
             }
-              return acc
-            }, [])
+            return acc;
+          }, []);
           this.currentCard = this.cards[0];
         },
         (error) => {
           console.log(error);
         }
-      )
+      );
       await resourceService.getChampions().then(
         (response) => {
           let champions = response.data;
@@ -125,11 +137,11 @@ export default {
         (error) => {
           console.log(error);
         }
-      )
-    }
+      );
+    },
   },
-  created(){
+  created() {
     this.initCards();
-  }
+  },
 };
 </script>

@@ -3,40 +3,40 @@ import { defineStore } from "pinia";
 export const useLobbyStore = defineStore("lobby", {
   state: () => ({
     lobby: [],
-    identity:"",
-    selectableChampions:[],
-    stompClient:[]
+    identity: "",
+    selectableChampions: [],
+    stompClient: [],
   }),
   getters: {
     getLobby() {
       return this.lobby;
-    }
+    },
   },
   actions: {
     setLobby(lobbyData) {
       this.lobby = lobbyData;
     },
-    setChampions(championsData){
+    setChampions(championsData) {
       this.selectableChampions = championsData;
     },
-    getChampions(){
+    getChampions() {
       return this.selectableChampions;
     },
-    setIdentity(identity){
+    setIdentity(identity) {
       this.identity = identity;
     },
-    getIdentity(){
+    getIdentity() {
       return this.identity;
     },
-    setStompClient(client){
+    setStompClient(client) {
       this.stompClient = client;
     },
-    getStompClient(){
+    getStompClient() {
       return this.stompClient;
     },
-    reset(){
+    reset() {
       this.lobby = [];
       this.selectableChampions = [];
-    }
+    },
   },
 });
