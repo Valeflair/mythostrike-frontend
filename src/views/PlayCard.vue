@@ -61,7 +61,8 @@ export default {
       return path;
     },
     getImagePathChampion() {
-      let path = this.basePathSymbolChampion + this.name + ".png";
+      let text = this.name.replace(/\s/g, "");
+      let path = this.basePathSymbolChampion + text + ".png";
       return path;
     },
 

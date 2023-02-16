@@ -7,7 +7,6 @@ import equipmentComponent from "../components/blockWithDescription.vue";
       class="championCard"
       @mouseenter="this.showSkills = true"
       @mouseleave="this.showSkills = false"
-      @click="print"
     >
       <img
         class="frame"
@@ -48,12 +47,13 @@ import equipmentComponent from "../components/blockWithDescription.vue";
         {{ this.identity }}
       </div>
 
-      <table class="skillList" v-if="this.showSkills">
+      <table class="skillList">
         <tr
           v-for="(skill, i) in this.activeSkills.concat(this.passiveSkills)"
           :key="skill.name"
         >
-          <td class="skill" :style="{ bottom: 5 * i + 'vh' }">
+          <td class="skill" :style="{ bottom: 5 * i + 'vh' }"
+              @click="useSkill(i,skill.id)">
             <equipment-component
               widthProp="10.2"
               heightProp="5"
@@ -64,7 +64,6 @@ import equipmentComponent from "../components/blockWithDescription.vue";
                 containsId(skill.id, this.messageActivitysUsable.skillIds)
               "
               :id="skill.id"
-              @click="print()"
             />
           </td>
         </tr>
@@ -99,6 +98,7 @@ export default {
   props: {
     name: "",
     championName: "",
+    picked: Boolean,
     health: {
       type: Number,
       default: 0,
@@ -125,18 +125,14 @@ export default {
     getName() {
       return this.championName + "(" + this.name + ")";
     },
-    print() {
-      console.log("DER SKILL WURDE AUSGEFÜHRT");
-      console.log("id: ");
-      console.log("HIGHLIGHT");
-      console.log(this.messageActivitysUsable);
-    },
     useSkill(i, skillId) {
       console.log("DER SKILL WURDE AUSGEFÜHRT");
-      console.log("id: " + skillId);
+      console.log("id: ");
+      console.log(skillId);
       console.log("HIGHLIGHT");
       console.log(this.messageActivitysUsable);
-      if (this.containsId(skillId, this.messageActivitysUsable.skillsIds)) {
+      if (this.containsId(skillId, this.messageActivitysUsable.skillIds)) {
+        console.log("SKILL EMITTED");
         this.$emit("skillUsed", i, skillId);
       }
     },

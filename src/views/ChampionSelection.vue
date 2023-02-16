@@ -62,18 +62,19 @@
 <script>
 import gameService from "@/services/gameService";
 import { useLobbyStore } from "@/stores/lobby";
+
 export default {
   data() {
     return {
       champions: [],
       currentChampionId: 0,
-      lobbyId: null
+      lobbyId: null,
     };
   },
   setup() {
     const lobbyStore = useLobbyStore();
 
-    return {lobbyStore};
+    return { lobbyStore };
   },
   methods: {
     changeChampion(newChampionID) {
@@ -83,21 +84,23 @@ export default {
       this.currentChampionId = Math.floor(Math.random() * this.champions.length);
     },
     async confirmChampion() {
-      await gameService.selectChampion(this.lobbyId,this.currentChampionId).then(
+      await gameService.selectChampion(this.lobbyId, this.champions[this.currentChampionId].id).then(
         (response) => {
           this.$router.push("/game");
           console.log(response);
         },
         (error) => {
           console.log(error);
-        }
-      )
+        },
+      );
     },
-    initData(){
+    initData() {
       this.champions = this.lobbyStore.getChampions();
+      console.log("----------------------------------------------------- ALLE CHAMPIONS -----------------------------------------------------------");
+      console.log(this.champions);
       this.lobbyId = this.lobbyStore.getLobby.id;
       this.identity = this.lobbyStore.getIdentity();
-    }
+    },
   },
   created() {
     this.initData();
@@ -129,14 +132,14 @@ export default {
   background-color: red;
   color: #4caf50;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 .confirmButton:hover {
   background-color: red;
   color: #4caf50;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 .confirmButton {
@@ -181,6 +184,7 @@ export default {
   align-self: center;
   border: 2px solid red;
 }
+
 .skillDescription {
   width: 20vw;
   background-color: rgb(226, 217, 162);

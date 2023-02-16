@@ -424,14 +424,10 @@ export default {
             this.playerConditions.players = players.filter((player) => !this.containsId(player, this.playersPicked));
           }
 
-          console.log(
-            "CARDCONDITIONS: BEFORE " + this.cardConditions.cardIds.length + this.cardConditions.count.length,
-          );
-
+          //reset cardConditions because we have to select players
           this.cardConditions.cardIds = [];
           this.cardConditions.count = [];
 
-          console.log("CARDCONDITIONS: AFTER " + this.cardConditions.cardIds.length + this.cardConditions.count.length);
 
           //sonst nicht
         } else {
@@ -449,21 +445,28 @@ export default {
 
         //keinen weiteren skill auswählbar
         this.skillConditions.skillIds = [];
-        this.skillConditions.count = [];
-
+        this.skillConditions.count = [...this.messageActivitysUsable.skillCount];
+        console.log("---------------------------------------------- SKILLPLAYERCONDITIONS------------------------------------");
+        console.log(this.messageActivitysUsable.skillPlayerConditions);
         //player abhängig von Skill auswählbar
-        let players = this.messageActivitysUsable.skillPlayerConditions[this.skillPicked.index].players;
-        let count = this.messageActivitysUsable.skillPlayerConditions[this.skillPicked.index].count;
+        if (this.messageActivitysUsable.skillPlayerConditions.length !== 0) {
+          let players = this.messageActivitysUsable.skillPlayerConditions[this.skillPicked.index].players;
+          let count = this.messageActivitysUsable.skillPlayerConditions[this.skillPicked.index].count;
 
-        this.playerConditions.players = [...players];
-        this.playerConditions.count = [...count];
+          this.playerConditions.players = [...players];
+          this.playerConditions.count = [...count];
+        } else {
+          this.playerConditions.players = [];
+          this.playerConditions.count = [];
+        }
+
         //wenn weder skill noch karte ausgwählt ist, mach nur skill oder karte auswählbar
       } else {
         //der CANCEL BUTTON PRAKTISCH
         console.log(this.messageActivitysUsable);
         this.activateCancel = false;
         this.skillConditions.skillIds = [...this.messageActivitysUsable.skillIds];
-        this.cardConditions.count = [...this.messageActivitysUsable.skillCount];
+        this.skillConditions.count = [...this.messageActivitysUsable.skillCount];
         this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
         this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
         this.playerConditions.players = [];
@@ -480,14 +483,15 @@ export default {
       console.log(this.playerConditions);
       console.log("cardcondition: ");
       console.log(this.cardConditions);
-      console.log("skillPicked");
-      console.log(this.skillPicked);
+      console.log("skillConditions");
+      console.log(this.skillConditions);
       console.log("playerspicked");
       console.log(this.playersPicked);
       console.log("cardsPicked");
       console.log(this.cardsPicked);
       console.log("skillPicked");
       console.log(this.skillPicked);
+
       for (const length of this.playerConditions.count) {
         if (length === this.playersPicked.length) {
           playerConfirm = true;
@@ -504,19 +508,15 @@ export default {
           break;
         }
       }
-      for (const length of this.skillConditions.count) {
-        if (length === this.cardsPicked.length) {
-          skillConfirm = true;
-          this.axiosUseCard = false;
-          this.axiosSelectSkill = true;
-          console.log("SKILLCONFIRM");
-          break;
-        }
+      if ((this.containsId(0, this.skillConditions.count) && this.skillPicked.index === -1)
+        || (this.containsId(1, this.skillConditions.count) && this.skillPicked.index !== -1)) {
+        skillConfirm = true;
+        this.axiosUseCard = false;
+        this.axiosSelectSkill = true;
+        console.log("SKILLCONFIRM");
       }
 
       this.activateConfirm = playerConfirm || cardConfirm || skillConfirm;
-      console.log("CARDSCONDITION: ");
-      console.log(this.cardConditions);
     },
 
 
@@ -655,8 +655,19 @@ export default {
 
     //wenn der Spieler einen Skill einsetzt
     async useSkill(i, skillId) {
+
+      console.log(
+        "----------------------------------------------- USE SKILL --------------------------------------------",
+      );
       if (this.containsId(skillId, this.skillConditions.skillIds)) {
+        console.log("USESKILL : PLAYERCONDITION");
+        console.log(this.messageActivitysUsable);
+
         this.skillPicked = { skillId: skillId, index: i };
+        console.log("skillPicked.skillId");
+        console.log(this.skillPicked.skillId);
+        console.log("skillPicked.index");
+        console.log(this.skillPicked.index);
         this.updateConditions();
       }
     },
@@ -668,6 +679,7 @@ export default {
       );
 
       if (this.axiosUseCard) {
+        console.log("CONFIRM: CARD USED");
         //array mit Karten Index erstellen
         let cardIndexArray = [];
         this.showNotice = false;
@@ -677,6 +689,11 @@ export default {
         console.log("lobbyiD: " + this.lobbyId);
         console.log("cardIndexArray: ");
         console.log(cardIndexArray);
+        let nameCardArray = [];
+        for (let i = 0; i < cardIndexArray.length; i++) {
+          nameCardArray.push({ id: cardIndexArray[i], name: this.getCard(cardIndexArray[i]).name });
+        }
+        console.log(nameCardArray);
         console.log("playersPicked: " + this.playersPicked);
 
         console.log("RESET");
@@ -693,13 +710,17 @@ export default {
           },
         );
       } else if (this.axiosSelectSkill) {
+        console.log("CONFIRM: SELECT SKILL");
         this.showNotice = false;
 
         console.log("RESET");
+        console.log("SKILLPICKED BEFORE: " + this.skillPicked.skillId);
         //has to be resetted before call, because response takes to long and then new highlightMessage is resetted
         this.resetHighlightMessage();
-
-        gameService.useSkill(this.lobbyId, this.skillPicked.skillId, this.playersPicked).then(
+        console.log("SKILLPICKED: " + this.skillPicked.skillId);
+        console.log("PLAYERSPICKED");
+        console.log(this.playersPicked);
+        gameService.useSkill(this.lobbyId, this.skillPicked.index, this.playersPicked).then(
           (response) => {
             console.log(response);
           },
@@ -841,14 +862,6 @@ export default {
       return false;
     },
 
-    //TODO: MUSS ÜBERARBEITET WERDEN
-    checkConfirmStatus() {
-      console.log("checkConfirm Status");
-      return !(
-        this.playerPicked.length < this.messageActivitysUsable.minPlayer ||
-        this.tablePile.length < this.messageActivitysUsable.minCard
-      );
-    },
 
     //TODO: MUSS ÜBERARBEITET WERDEN
     updateCardMoveMessage() {
