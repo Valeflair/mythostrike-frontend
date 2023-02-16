@@ -112,9 +112,11 @@ export default {
       this.label = this.currentChampion.name;
     },
     async confirmChampion() {
-      await gameService.selectChampion(this.lobbyId).then(
+      console.log(this.currentChampion.id);
+      await gameService.selectChampion(this.lobbyStore.getLobby.id,this.currentChampion.id).then(
         (response) => {
           console.log(response);
+          this.$router.push("/game");
         },
         (error) => {
           console.log(error);
@@ -125,7 +127,6 @@ export default {
       this.champions = this.lobbyStore.getChampions();
       this.currentChampion = this.champions[0];
       console.log(this.champions);
-      this.lobbyID = this.lobbyStore.getLobby.id;
       this.identity = this.lobbyStore.getIdentity();
     },
     fade() {
