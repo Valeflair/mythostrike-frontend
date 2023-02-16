@@ -154,7 +154,7 @@
             :name="getCard(entry.cardId).name"
             :symbol="getCard(entry.cardId).symbol"
             :usable="false"
-            :value="getCard(entry.cardId).value"
+            :value="getCard(entry.cardId).point"
             class="playCard"
           />
         </div>
