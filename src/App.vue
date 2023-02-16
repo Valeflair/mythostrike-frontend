@@ -24,16 +24,7 @@ export default {
       if (localStorage.getItem("token") == null) {
         this.$router.push("/");
       } else {
-        await authService.auth().then(
-          (response) => {
-            console.log(response);
-            this.userStore.setUser(response.data);
-            this.$router.push("/home");
-          },
-          (error) => {
-            console.log(error);
-            this.$router.push("/");
-          })
+        this.$router.push("/home");
       }
     }
   },

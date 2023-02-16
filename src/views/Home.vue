@@ -133,8 +133,18 @@ export default {
             this.userStore.reset();
             this.$router.push({ path: "./" });
         },
-        reRender(){
-          this.$forceUpdate();
+        async auth(){
+          await authService.auth().then(
+          (response) => {
+            console.log(response);
+            this.userStore.setUser(response.data);
+            this.$router.push("/home");
+          },
+          (error) => {
+            console.log(error);
+            this.$router.push("/");
+            localStorage.removeItem("token")
+          })
         }
         /*
             toQueue() {
@@ -149,17 +159,7 @@ export default {
             },*/
     },
     async created(){
-      await authService.auth().then(
-          (response) => {
-            console.log(response);
-            this.userStore.setUser(response.data);
-            this.$router.push("/home");
-          },
-          (error) => {
-            console.log(error);
-            this.$router.push("/home");
-          })
-
+      this.auth();
     },
     components: { AvatarSelection }
 };

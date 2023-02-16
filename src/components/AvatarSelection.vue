@@ -5,7 +5,7 @@
       <h1 class="pb-5">Please select your avatar</h1>
       <v-row class="d-flex justify-center">
         <div v-for="id in 12" :key="id">
-          <v-col :key="n">
+          <v-col :key="id">
             <img
               :src="
                 '../src/assets/avatars/avatar' +
