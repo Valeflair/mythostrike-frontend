@@ -10,16 +10,54 @@ import CommandField from "@/components/CommandField.vue";
         :key="id"
       >
         <v-col col="3">
-          <button class="seatButton" @click="changeSeat(id)">
-            <p>{{ slot.username }}</p>
-          </button>
+          <div v-if="slot.identity != 'None' && slot.username != null">
+            <button
+              class="seatButton"
+              id="teamRed"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' +
+                  '../src/assets/avatars/avatar' +
+                  slot.avatarNumber +
+                  '.png' +
+                  ')',
+              }"
+            >
+              <p>{{ slot.username }}</p>
+            </button>
+          </div>
+          <div v-else-if="slot.username == null">
+            <button
+              class="emptySeat"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' + '../src/assets/avatars/changeSeat.png' + ')',
+              }"
+              @click="changeSeat(id)"
+            ></button>
+          </div>
+          <div v-else-if="slot.username != null">
+            <button
+              class="seatButton"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' +
+                  '../src/assets/avatars/avatar' +
+                  slot.avatarNumber +
+                  '.png' +
+                  ')',
+              }"
+            >
+              <p>{{ slot.username }}</p>
+            </button>
+          </div>
         </v-col>
       </div>
     </v-row>
 
     <v-row class="ma-8">
       <v-col cols="3"></v-col>
-      <v-col cols="2">
+      <v-col cols="3">
         <div class="label">
           <p class="labelText">Lobby ID: {{ this.lobbyId }}</p>
           <p class="labelText">Owner: {{ this.lobbyOwner }}</p>
@@ -45,9 +83,47 @@ import CommandField from "@/components/CommandField.vue";
         :key="id"
       >
         <v-col col="3">
-          <button class="seatButton" @click="changeSeat(id + slots.length / 2)">
-            <p>{{ slot.username }}</p>
-          </button>
+          <div v-if="slot.identity != 'None' && slot.username != null">
+            <button
+              class="seatButton"
+              id="teamBlue"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' +
+                  '../src/assets/avatars/avatar' +
+                  slot.avatarNumber +
+                  '.png' +
+                  ')',
+              }"
+            >
+              <p>{{ slot.username }}</p>
+            </button>
+          </div>
+          <div v-else-if="slot.username == null">
+            <button
+              class="emptySeat"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' + '../src/assets/avatars/changeSeat.png' + ')',
+              }"
+              @click="changeSeat(id + slots.length / 2)"
+            ></button>
+          </div>
+          <div v-else-if="slot.username != null">
+            <button
+              class="seatButton"
+              v-bind:style="{
+                backgroundImage:
+                  'url(' +
+                  '../src/assets/avatars/avatar' +
+                  slot.avatarNumber +
+                  '.png' +
+                  ')',
+              }"
+            >
+              <p>{{ slot.username }}</p>
+            </button>
+          </div>
         </v-col>
       </div>
     </v-row>
@@ -124,28 +200,59 @@ export default {
 }
 
 .seatButton {
-  background-color: #4caf50; /* Green */
-  border: none;
+  border: 4px solid black;
   color: white;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 150%;
-  width: 15vw;
-  height: 19vh;
+  font-size: 2.5vh;
+  font-size: 1.5vw;
+  text-shadow: #fc0 1px 0 10px;
+  font-weight: bold;
   border-radius: 12px;
   margin-left: 1vh;
   margin-right: 1vh;
   transition-duration: 0.4s;
+  width: 11vw;
+  height: 11vw;
+  background-size: cover;
 }
 
 .seatButton:hover {
-  background-color: white;
-  color: #181d18;
+  color: black;
+  cursor: default;
+}
+
+.emptySeat {
+  border: 4px solid black;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  width: 11vw;
+  height: 11vw;
+  border-radius: 12px;
+  margin-left: 1vh;
+  margin-right: 1vh;
+  transition-duration: 0.4s;
+  background-size: cover;
+  opacity: 0.4;
+}
+
+.emptySeat:hover {
+  opacity: 1;
 }
 
 button:hover {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+#teamRed {
+  border: 3px solid red;
+}
+
+#teamBlue {
+  border: 3px solid blue;
 }
 </style>

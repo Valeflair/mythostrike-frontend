@@ -1,36 +1,57 @@
 <template>
   <div class="container">
-    <div class="area-3-4">
-      <h1>Select your Champion</h1>
-
+    <div class="area-3-4 pa-5">
+      <h1>Select your champion</h1>
+      <h1>Your identity: {{ this.identity }}</h1>
       <div class="championContainer">
         <v-row class="d-flex justify-center">
           <div v-for="champion in champions" :key="champion.id">
             <v-col :key="champion.id">
               <button
                 class="championButton"
-                @click="changeChampion(champion.id)"
-              >
-                {{ champion.name }}
-              </button>
+                @click="changeChampion(champion)"
+                v-bind:style="{
+                  backgroundImage:
+                    'url(' +
+                    '../src/assets/cards/' +
+                    champion.name +
+                    '.png' +
+                    ')',
+                  backgroundSize: '100% 100%',
+                  backgroundRepeat: 'no-repeat',
+                }"
+              ></button>
             </v-col>
           </div>
         </v-row>
       </div>
     </div>
-
     <div class="area-1-4 justify-center">
-      <div class="descriptionChampion">
-        <button @click="printPassiveSkill" class="championDisplay">
-          {{ this.champions[this.currentChampionId].name }}
-        </button>
+      <div class="selectedChampion">
+        <button
+          @click="printPassiveSkill"
+          class="championDisplay"
+          v-bind:style="{
+            backgroundImage:
+              'url(' +
+              '../src/assets/cards/' +
+              this.currentChampion.name +
+              '.png' +
+              ')',
+            backgroundSize: '100% 100%',
+            backgroundRepeat: 'no-repeat',
+          }"
+          :style="{ 'border-color': this.color }"
+          @mouseover="fade"
+          disabled
+        ></button>
       </div>
-
-      <div class="skillContainer">
+      <div class="championDescription">
+        <h1 :style="{ color: this.color }">{{ this.currentChampion.name }}</h1>
         <div
-          v-for="pSkill in this.champions[this.currentChampionId].passiveSkills"
+          v-for="pSkill in this.currentChampion.passiveSkills"
           :key="pSkill.name"
-          class="justify-center"
+          class="justify-center pa-2"
         >
           <div class="skill">
             {{ pSkill.name }}
@@ -40,9 +61,9 @@
           </div>
         </div>
         <div
-          v-for="aSkill in this.champions[this.currentChampionId].activeSkills"
+          v-for="aSkill in this.currentChampion.activeSkills"
           :key="aSkill.name"
-          class="justify-center"
+          class="justify-center pa-2"
         >
           <div class="skill">
             {{ aSkill.name }}
@@ -53,8 +74,12 @@
         </div>
       </div>
 
-      <button class="confirmButton" @click="confirmChampion">Confirm</button>
-      <button class="randomButton" @click="randomChampion">Random</button>
+      <button class="confirmButton button" @click="confirmChampion">
+        Confirm
+      </button>
+      <button class="randomButton button" @click="randomChampion">
+        Random
+      </button>
     </div>
   </div>
 </template>
@@ -62,13 +87,13 @@
 <script>
 import gameService from "@/services/gameService";
 import { useLobbyStore } from "@/stores/lobby";
-
 export default {
   data() {
     return {
       champions: [],
-      currentChampionId: 0,
-      lobbyId: null,
+      currentChampion: null,
+      label: "Select your champion",
+      color: "#000000",
     };
   },
   setup() {
@@ -77,29 +102,35 @@ export default {
     return { lobbyStore };
   },
   methods: {
-    changeChampion(newChampionID) {
-      this.currentChampionId = newChampionID;
+    changeChampion(newChampion) {
+      this.currentChampion = newChampion;
+      this.label = this.currentChampion.name;
     },
     randomChampion() {
-      this.currentChampionId = Math.floor(Math.random() * this.champions.length);
+      this.currentChampion =
+        this.champions[Math.floor(Math.random() * this.champions.length)];
+      this.label = this.currentChampion.name;
     },
     async confirmChampion() {
-      await gameService.selectChampion(this.lobbyId, this.champions[this.currentChampionId].id).then(
+      console.log(this.currentChampion.id);
+      await gameService.selectChampion(this.lobbyStore.getLobby.id,this.currentChampion.id).then(
         (response) => {
-          this.$router.push("/game");
           console.log(response);
+          this.$router.push("/game");
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
     initData() {
       this.champions = this.lobbyStore.getChampions();
-      console.log("----------------------------------------------------- ALLE CHAMPIONS -----------------------------------------------------------");
+      this.currentChampion = this.champions[0];
       console.log(this.champions);
-      this.lobbyId = this.lobbyStore.getLobby.id;
       this.identity = this.lobbyStore.getIdentity();
+    },
+    fade() {
+      this.color = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
     },
   },
   created() {
@@ -113,33 +144,16 @@ export default {
   position: relative;
   width: 10vw;
   height: 5vh;
-  background-color: forestgreen;
+  background-color: #39373c;
   top: 10vh;
   left: 13vw;
 
   border: none;
   color: white;
-  padding: 14px 40px;
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+  font-size: 1vw;
   border-radius: 12px;
   transition-duration: 0.4s;
-}
-
-.randomButton:hover {
-  background-color: red;
-  color: #4caf50;
-  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-  0 17px 50px 0 rgba(0, 0, 0, 0.19);
-}
-
-.confirmButton:hover {
-  background-color: red;
-  color: #4caf50;
-  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-  0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 .confirmButton {
@@ -148,25 +162,36 @@ export default {
   height: 5vh;
   top: 15vh;
   left: 2vw;
-  background-color: forestgreen;
+  background-color: #39373c;
   border: none;
   color: white;
-  padding: 14px 40px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+  font-size: 1vw;
   border-radius: 12px;
+  transition-duration: 0.4s;
 }
 
-.descriptionChampion {
+.button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  font-size: 1.1vw;
+  font-weight: bold;
+}
+
+.button:active {
+  box-shadow: 0 3px rgba(0, 0, 0, 0.19);
+  transform: translateY(3px);
+}
+
+.selectedChampion {
   position: fixed;
   bottom: 65vh;
   align-self: center;
   margin-bottom: 1vh;
 }
 
-.skillContainer {
+.championDescription {
   width: 17vw;
   height: 40vh;
   align-self: center;
@@ -175,38 +200,44 @@ export default {
 }
 
 .skill {
-  width: 15vw;
+  border-radius: 10px;
   text-align: center;
   height: 5vh;
   margin-top: 1vh;
   float: none;
   display: block;
   align-self: center;
-  border: 2px solid red;
+  color: white;
+  font-size: 3vh;
+  background: url("@/assets/elements/skill-background.png");
+  background-size: 100%;
 }
-
 .skillDescription {
-  width: 20vw;
-  background-color: rgb(226, 217, 162);
-  display: none;
+  background-color: #ccaeb4;
+  opacity: 0;
+  visibility: hidden;
   position: absolute;
+  text-align: center;
   z-index: 10;
   word-wrap: break-word;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: opacity 300ms, visibility 500ms;
 }
 
 .skill:hover + .skillDescription {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .championDisplay {
-  background-color: blanchedalmond;
   width: 11vw;
   height: 30vh;
   padding: 1vh;
   margin-left: 3vh;
   margin-right: 3vh;
   margin-top: 3vh;
-  border: 2px solid black;
+  border: 5px solid;
   align-self: center;
 }
 
@@ -215,26 +246,34 @@ export default {
   overflow: auto;
   overflow-x: hidden;
   position: relative;
-  top: 10vh;
+  top: 5vh;
   left: 1vw;
 }
 
 .championButton {
-  background-color: blanchedalmond;
   width: 12vw;
-  height: 15vw;
-  padding: 1vh;
-  margin-left: 3vh;
+  height: 17vw;
+  margin-left: 2vh;
   margin-right: 3vh;
   margin-top: 3vh;
-  border: 2px solid black;
+}
+
+h1 {
+  font-size: 3vw;
+  font-size: 4vh;
+}
+
+.championButton:hover {
+  transform: scale(1.1);
+  transition: 0.5s;
 }
 
 .container {
   display: flex;
   background: url("@/assets/backgrounds/home_background.png");
-  width: 100%;
-  height: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .area-3-4 {

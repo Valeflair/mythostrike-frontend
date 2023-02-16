@@ -139,8 +139,7 @@ export default {
       this.currentModeName = this.lobbyStore.getLobby.mode;
       console.log(this.currentModeName);
       this.currentOwner = this.lobbyStore.getLobby.owner;
-      this.isLobbyOwner =
-        this.currentOwner == this.userStore.getUser.username;
+      this.isLobbyOwner = this.currentOwner == this.userStore.getUser.username;
       this.slots = this.lobbyStore.getLobby.seats;
     },
     connect() {
@@ -152,23 +151,26 @@ export default {
           this.lobbyStore.setLobby(lobbyData);
           this.lobbySetup();
         });
-        this.stompClient.subscribe("/lobbies/" + + this.lobbyId + "/" +this.userStore.getUser.username, (response) => {
-          let readyPhaseData = JSON.parse(response.body);
-          console.log(readyPhaseData);
-          this.lobbyStore.setChampions(readyPhaseData.champions);
-          this.lobbyStore.setIdentity(readyPhaseData.identity);
-          this.$router.push({ path: "./championselection" });
-        });
+        this.stompClient.subscribe(
+          "/lobbies/" + +this.lobbyId + "/" + this.userStore.getUser.username,
+          (response) => {
+            let readyPhaseData = JSON.parse(response.body);
+            console.log(readyPhaseData);
+            this.lobbyStore.setChampions(readyPhaseData.champions);
+            this.lobbyStore.setIdentity(readyPhaseData.identity);
+            this.$router.push({ path: "./championselection" });
+          }
+        );
       });
     },
     disconnect() {
       this.stompClient.disconnect();
     },
-    initStompClient(){
+    initStompClient() {
       let socket = new SockJS("http://localhost:8080/updates");
       this.lobbyStore.setStompClient(Stomp.over(socket));
       this.stompClient = this.lobbyStore.getStompClient();
-    }
+    },
   },
   created() {
     this.initModes();
@@ -178,9 +180,9 @@ export default {
   mounted() {
     this.connect();
   },
-  unmounted(){
+  unmounted() {
     this.disconnect();
-  }
+  },
 };
 </script>
 

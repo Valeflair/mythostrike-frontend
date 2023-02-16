@@ -25,6 +25,7 @@
         <div class="pt-10">
           <v-btn class="button" @click="createLobby">Create Lobby</v-btn>
         </div>
+        <button class="back" @click="back"></button>
       </div>
     </v-col>
     <v-col cols="9" id="right-bar">
@@ -84,6 +85,17 @@ tr:hover {
 
 .text-field {
   color: white;
+}
+.back {
+  position: absolute;
+  background-image: url("@/assets/elements/return.png");
+  width: 94px;
+  height: 64px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  left: 92%;
+  top: 2%;
 }
 
 .button {
@@ -160,6 +172,9 @@ export default {
           console.log(error);
         }
       );
+    },
+    back() {
+      this.$router.push({ path: "./home" });
     },
   },
   created() {

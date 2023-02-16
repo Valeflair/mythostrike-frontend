@@ -106,6 +106,7 @@
 </style>
 
 <script>
+import { useUserStore } from "@/stores/user";
 import authService from "@/services/authService";
 export default {
   name: "Start",
@@ -115,6 +116,10 @@ export default {
     alertStatus: false,
     alertMessage: "",
   }),
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
+  },
   methods: {
     async login() {
       if (this.checkInput()) {
