@@ -1,0 +1,378 @@
+[
+    {
+        "id": 0,
+        "name": "Achilles",
+        "cardName": "Achilles",
+        "frame": "gold_card_frame_g",
+        "stone": "stone-p",
+        "health": 4
+    },
+    {
+        "id": 1,
+        "name": "Aphrodite",
+        "cardName": "Aphrodite",
+        "frame": "gold_card_frame_p",
+        "stone": "stone-p",
+        "health": 3
+    },
+    {
+        "id": 2,
+        "name": "Ares",
+        "cardName": "Ares",
+        "frame": "gold_card_frame_g",
+        "stone": "stone-p",
+        "health": 4
+    },
+    {
+        "id": 3,
+        "name": "Heracles",
+        "cardName": "Heracles",
+        "frame": "gold_card_frame_g",
+        "stone": "stone-p",
+        "health": 4
+    },
+    {
+        "id": 4,
+        "name": "Kratos",
+        "cardName": "Kratos",
+        "frame": "gold_card_frame_r",
+        "stone": "stone-p",
+        "health": 5
+    },
+    {
+        "id": 5,
+        "name": "Mars",
+        "cardName": "Mars",
+        "frame": "gold_card_frame_g",
+        "stone": "stone-p",
+        "health": 4
+    },
+    {
+        "id": 6,
+        "name": "Poseidon",
+        "cardName": "Poseidon",
+        "frame": "gold_card_frame_g",
+        "stone": "stone-p",
+        "health": 3
+    },
+    {
+        "id": 7,
+        "name": "Terpsichore",
+        "cardName": "Terpsichore",
+        "frame": "gold_card_frame_p",
+        "stone": "stone-p",
+        "health": 3
+    },
+    {
+        "id": 8,
+        "name": "Urania",
+        "cardName": "Urania",
+        "frame": "gold_card_frame_p",
+        "stone": "stone-p",
+        "health": 4
+    },
+    {
+        "id": 9,
+        "name": "Nyx",
+        "cardName": "Nyx",
+        "frame": "gold_card_frame_p",
+        "stone": "stone-p",
+        "health": 3
+    },
+    {
+        "id": 10,
+        "name": "Zeus",
+        "cardName": "Zeus",
+        "frame": "gold_card_frame_g",
+        "stone": "stone-p",
+        "health": 4
+    },
+    {
+        "id": 1001,
+        "name": "attack",
+        "cardName": "Attack",
+        "suit": "heart",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1002,
+        "name": "attack",
+        "cardName": "Attack",
+        "suit": "diamond",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1003,
+        "name": "attack",
+        "cardName": "Attack",
+        "suit": "club",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1004,
+        "name": "attack",
+        "cardName": "Attack",
+        "suit": "spade",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1005,
+        "name": "defend",
+        "cardName": "Defend",
+        "suit": "heart",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1005,
+        "name": "defend",
+        "cardName": "Defend",
+        "suit": "diamond",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1006,
+        "name": "heal",
+        "cardName": "Heal",
+        "suit": "heart",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1007,
+        "name": "heal",
+        "cardName": "Heal",
+        "suit": "diamond",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1008,
+        "name": "godarena",
+        "cardName": "God Arena",
+        "suit": "club",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1009,
+        "name": "godarena",
+        "cardName": "God Arena",
+        "suit": "sapde",
+        "frame": "copper_card_frame_g",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1010,
+        "name": "goldenapple",
+        "cardName": "Goldden Apple",
+        "suit": "heart",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1011,
+        "name": "blessOfHecate",
+        "cardName": "Bless Of Hecate",
+        "suit": "heart",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1012,
+        "name": "drought",
+        "cardName": "Drought",
+        "suit": "spade",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1013,
+        "name": "duel",
+        "cardName": "Duel",
+        "suit": "heart",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1014,
+        "name": "duel",
+        "cardName": "Duel",
+        "suit": "diamond",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1015,
+        "name": "duel",
+        "cardName": "Duel",
+        "suit": "club",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1016,
+        "name": "duel",
+        "cardName": "Duel",
+        "suit": "spade",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1017,
+        "name": "extort",
+        "cardName": "Extort",
+        "suit": "diamond",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1018,
+        "name": "extort",
+        "cardName": "Extort",
+        "suit": "spade",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1019,
+        "name": "nightmare",
+        "cardName": "Nightmare",
+        "suit": "heart",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1020,
+        "name": "nightmare",
+        "cardName": "Nightmare",
+        "suit": "club",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1021,
+        "name": "nightmare",
+        "cardName": "Nightmare",
+        "suit": "spade",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1022,
+        "name": "vulcanEruption",
+        "cardName": "Vulcan Eruption",
+        "suit": "diamond",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1023,
+        "name": "vulcanEruption",
+        "cardName": "Vulcan Eruption",
+        "suit": "heart",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1024,
+        "name": "vulcanEruption",
+        "cardName": "Vulcan Eruption",
+        "suit": "club",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1025,
+        "name": "vulcanEruption",
+        "cardName": "Vulcan Eruption",
+        "suit": "spade",
+        "frame": "copper_card_frame_r",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1026,
+        "name": "ArrowOfApollo",
+        "cardName": "Arrow Of Apollo",
+        "suit": "club",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1027,
+        "name": "BowOfArtemis",
+        "cardName": "Bow Of Artemis",
+        "suit": "spade",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1028,
+        "name": "HeartOfTerra",
+        "cardName": "Heart Of Terra",
+        "suit": "heart",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1029,
+        "name": "ProtectionOfDiana",
+        "cardName": "Protection Of Diana",
+        "suit": "diamond",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1030,
+        "name": "ShieldOfAthena",
+        "cardName": "Shield Of Athena",
+        "suit": "club",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1031,
+        "name": "SpearOfAres",
+        "cardName": "Spear Of Ares",
+        "suit": "heart",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1032,
+        "name": "SpearOfMars",
+        "cardName": "Spear Of Mars",
+        "suit": "diamond",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1033,
+        "name": "SpiritOfLapetos",
+        "cardName": "Spirit Of Lapetos",
+        "suit": "heart",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1034,
+        "name": "SwordOfAthena",
+        "cardName": "Sword Of Athena",
+        "suit": "spade",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    },
+    {
+        "id": 1035,
+        "name": "TridentOfPoseidon",
+        "cardName": "Trident Of Poseidon",
+        "suit": "spade",
+        "frame": "silver_card_frame_p",
+        "stone": "stone-p"
+    }
+]

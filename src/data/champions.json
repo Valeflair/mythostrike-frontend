@@ -141,7 +141,7 @@
         ]
     },
     {
-        "id":7,
+        "id":6,
         "name":"Bot 4",
         "description":"Description of Bot 4",
         "passiveSkills":[
@@ -162,7 +162,7 @@
         ]
     },
     {
-        "id":8,
+        "id":6,
         "name":"Bot 4",
         "description":"Description of Bot 4",
         "passiveSkills":[
@@ -183,7 +183,7 @@
         ]
     },
     {
-        "id":9,
+        "id":6,
         "name":"Bot 4",
         "description":"Description of Bot 4",
         "passiveSkills":[
@@ -202,102 +202,6 @@
                 "description":"Description of aktive Bot 4 skill 2"
             }
         ]
-    },
-    {
-        "id":10,
-        "name":"Terpsichore",
-        "description":"Description of Terpsichore",
-        "passiveSkills":[
-            {
-                "name":"Voidness",
-                "description":"Description of Voidness"
-            },
-            {
-                "name":"Lullaby",
-                "description":"Description of Lullaby"
-            }
-        ],
-        "activeSkills":[]
-    },
-    {
-        "id":11,
-        "name":"Terpsichore",
-        "description":"Description of Terpsichore",
-        "passiveSkills":[
-            {
-                "name":"Voidness",
-                "description":"Description of Voidness"
-            },
-            {
-                "name":"Lullaby",
-                "description":"Description of Lullaby"
-            }
-        ],
-        "activeSkills":[]
-    },
-    {
-        "id":12,
-        "name":"Terpsichore",
-        "description":"Description of Terpsichore",
-        "passiveSkills":[
-            {
-                "name":"Voidness",
-                "description":"Description of Voidness"
-            },
-            {
-                "name":"Lullaby",
-                "description":"Description of Lullaby"
-            }
-        ],
-        "activeSkills":[]
-    },
-    {
-        "id":13,
-        "name":"Terpsichore",
-        "description":"Description of Terpsichore",
-        "passiveSkills":[
-            {
-                "name":"Voidness",
-                "description":"Description of Voidness"
-            },
-            {
-                "name":"Lullaby",
-                "description":"Description of Lullaby"
-            }
-        ],
-        "activeSkills":[]
-    },
-    {
-        "id":14,
-        "name":"Terpsichore",
-        "description":"Description of Terpsichore",
-        "passiveSkills":[
-            {
-                "name":"Voidness",
-                "description":"Description of Voidness"
-            },
-            {
-                "name":"Lullaby",
-                "description":"Description of Lullaby"
-            }
-        ],
-        "activeSkills":[]
-    },
-    {
-        "id":15,
-        "name":"Terpsichore",
-        "description":"Description of Terpsichore",
-        "passiveSkills":[
-            {
-                "name":"Voidness",
-                "description":"Description of Voidness"
-            },
-            {
-                "name":"Lullaby",
-                "description":"Description of Lullaby"
-            }
-        ],
-        "activeSkills":[]
     }
     
 
