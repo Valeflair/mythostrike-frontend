@@ -1,0 +1,316 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "c:\\Users\\byus1\\Documents\\PSE\\Frontend Projekt",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2023-01-31 13:40:28",
+            "filesum": 41,
+            "codesum": 8444,
+            "commentsum": 40,
+            "blanksum": 183,
+            "statistics": {
+                ".js": {
+                    "code": 170,
+                    "comment": 11,
+                    "blank": 16
+                },
+                ".json": {
+                    "code": 7201,
+                    "comment": 0,
+                    "blank": 54
+                },
+                "": {
+                    "code": 20,
+                    "comment": 8,
+                    "blank": 3
+                },
+                ".md": {
+                    "code": 26,
+                    "comment": 4,
+                    "blank": 15
+                },
+                ".cjs": {
+                    "code": 12,
+                    "comment": 1,
+                    "blank": 1
+                },
+                ".html": {
+                    "code": 13,
+                    "comment": 0,
+                    "blank": 3
+                },
+                ".vue": {
+                    "code": 914,
+                    "comment": 14,
+                    "blank": 72
+                },
+                ".css": {
+                    "code": 88,
+                    "comment": 2,
+                    "blank": 19
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 1,
+                    "filename": ".eslintrc.cjs"
+                },
+                {
+                    "blank": 3,
+                    "code": 20,
+                    "comment": 8,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": ".prettierrc.json"
+                },
+                {
+                    "blank": 3,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "index.html"
+                },
+                {
+                    "blank": 45,
+                    "code": 6835,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 37,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "filename": "public\\logo.ico",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 15,
+                    "code": 26,
+                    "comment": 4,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 2,
+                    "code": 39,
+                    "comment": 1,
+                    "filename": "src\\App.vue"
+                },
+                {
+                    "filename": "src\\assets\\avatars\\avatar0.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\avatars\\avatar1.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\backgrounds\\game_background.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\backgrounds\\home_background.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\backgrounds\\lobby_background.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\backgrounds\\start_background.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 13,
+                    "code": 59,
+                    "comment": 2,
+                    "filename": "src\\assets\\base.css"
+                },
+                {
+                    "filename": "src\\assets\\elements\\button.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\elements\\equipmentFrame.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\elements\\small_button.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\logo.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 6,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src\\assets\\main.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 206,
+                    "comment": 0,
+                    "filename": "src\\data\\champions.json"
+                },
+                {
+                    "blank": 4,
+                    "code": 30,
+                    "comment": 0,
+                    "filename": "src\\data\\gameMode.json"
+                },
+                {
+                    "blank": 1,
+                    "code": 42,
+                    "comment": 0,
+                    "filename": "src\\data\\modes.json"
+                },
+                {
+                    "blank": 2,
+                    "code": 50,
+                    "comment": 0,
+                    "filename": "src\\data\\players.json"
+                },
+                {
+                    "blank": 2,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "src\\main.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 4,
+                    "comment": 3,
+                    "filename": "src\\plugins\\vuetify.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 3,
+                    "comment": 6,
+                    "filename": "src\\plugins\\webfontloader.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 37,
+                    "comment": 0,
+                    "filename": "src\\router\\index.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "src\\services\\authService.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 30,
+                    "comment": 0,
+                    "filename": "src\\services\\lobbyService.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "src\\services\\resourceService.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 18,
+                    "comment": 0,
+                    "filename": "src\\services\\service.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 21,
+                    "comment": 0,
+                    "filename": "src\\stores\\user.js"
+                },
+                {
+                    "blank": 44,
+                    "code": 490,
+                    "comment": 2,
+                    "filename": "src\\views\\Game.vue"
+                },
+                {
+                    "blank": 12,
+                    "code": 91,
+                    "comment": 11,
+                    "filename": "src\\views\\Home.vue"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src\\views\\Library.vue"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src\\views\\Lobby.vue"
+                },
+                {
+                    "blank": 8,
+                    "code": 141,
+                    "comment": 0,
+                    "filename": "src\\views\\LobbyOverview.vue"
+                },
+                {
+                    "blank": 6,
+                    "code": 151,
+                    "comment": 0,
+                    "filename": "src\\views\\Start.vue"
+                },
+                {
+                    "blank": 3,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "vite.config.js"
+                }
+            ]
+        }
+    ]
+}
