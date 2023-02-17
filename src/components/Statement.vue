@@ -13,7 +13,6 @@
         <tr>
           <th class="text-left text-grey-darken-4">Team</th>
           <th class="text-left text-grey-darken-4">User</th>
-          <th class="text-left text-grey-darken-4">User ID</th>
           <th class="text-left text-grey-darken-4">Identity</th>
           <th class="text-left text-grey-darken-4">Drachma</th>
           <th class="text-left text-grey-darken-4">Rank Points</th>
@@ -27,7 +26,7 @@
           <td>{{ user.identity }}</td>
           <td>{{ user.drachma }}</td>
           <td>{{ user.rankPoints }}</td>
-          <td>YEAHH!</td>
+
         </tr>
         </tbody>
       </v-table>
@@ -36,7 +35,6 @@
         <tr>
           <th class="text-left text-grey-darken-4">Team</th>
           <th class="text-left text-grey-darken-4">User</th>
-          <th class="text-left text-grey-darken-4">User ID</th>
           <th class="text-left text-grey-darken-4">Identity</th>
           <th class="text-left text-grey-darken-4">Drachma</th>
           <th class="text-left text-grey-darken-4">Rank Points</th>
@@ -50,7 +48,6 @@
           <td>{{ user.identity }}</td>
           <td>{{ user.drachma }}</td>
           <td>{{ user.rankPoints }}</td>
-          <td>NOOOOE!</td>
         </tr>
         </tbody>
       </v-table>
