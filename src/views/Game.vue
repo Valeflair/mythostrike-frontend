@@ -182,7 +182,8 @@
 
     <!----------------------------------------DER ENDBUTTON----------------------------------------------->
 
-    <button v-if="this.messageActivitysUsable.activateEndTurn" class="endTurn button" @click="endTurn()">End Turn</button>
+    <button v-if="this.messageActivitysUsable.activateEndTurn" class="endTurn button" @click="endTurn()">End Turn
+    </button>
 
     <!-------------------------------NOTICE----------------------------------------------->
 
@@ -823,7 +824,7 @@ export default {
         this.messageActivitysUsable = this.gameStore.getGameData.payload;
         this.showNotice = true;
         this.notice = this.messageActivitysUsable.reason;
-        this.startProgressbar();
+        // this.startProgressbar();
         this.updateConditions();
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
@@ -1141,7 +1142,7 @@ export default {
   height: 10vh;
   position: absolute;
   font-weight: bold;
-  color:white;
+  color: white;
   text-shadow: #000000 2px 2px 4px;
   border-radius: 15px;
   right: 1vw;
@@ -1263,7 +1264,7 @@ export default {
   height: 29vh;
 }
 
-.button{
+.button {
   width: 10.25vw;
   min-height: 6vh;
   margin: 15px;
@@ -1273,7 +1274,7 @@ export default {
   background: url("/elements/button.png");
 }
 
-.button:hover{
+.button:hover {
   font-size: 1.1vw;
   font-weight: bold;
 }
