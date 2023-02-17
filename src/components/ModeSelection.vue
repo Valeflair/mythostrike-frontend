@@ -97,7 +97,7 @@ export default {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("@/assets/elements/modeSelection/arrow_Right.png");
+  background-image: url("@/assets/elements/modeSelection/arrow_right.png");
   width: 110px;
   height: 75px;
   position: relative;
@@ -109,7 +109,7 @@ export default {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("@/assets/elements/modeSelection/arrow_Left.png");
+  background-image: url("@/assets/elements/modeSelection/arrow_left.png");
   width: 110px;
   height: 75px;
   position: relative;
