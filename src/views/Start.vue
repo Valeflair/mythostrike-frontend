@@ -55,6 +55,7 @@
   width: 16vw;
   height: 16vw;
 }
+
 .bg-image {
   background: url("@/assets/backgrounds/start_background.png");
   height: 100vh;
@@ -106,8 +107,8 @@
 </style>
 
 <script>
-import { useUserStore } from "@/stores/user";
 import authService from "@/services/authService";
+
 export default {
   name: "Start",
   data: () => ({
@@ -116,10 +117,6 @@ export default {
     alertStatus: false,
     alertMessage: "",
   }),
-  setup() {
-    const userStore = useUserStore();
-    return { userStore };
-  },
   methods: {
     async login() {
       if (this.checkInput()) {
@@ -138,7 +135,7 @@ export default {
             (error) => {
               console.log(error);
               this.showAlert(error.response.data.message);
-            }
+            },
           );
       }
     },
@@ -159,7 +156,7 @@ export default {
             (error) => {
               console.log(error);
               this.showAlert(error.response.data.message);
-            }
+            },
           );
       }
     },
