@@ -997,6 +997,7 @@ export default {
 </script>
 
 <style scoped>
+
 .testBtn {
   width: 5vw;
   height: 5vw;
@@ -1135,7 +1136,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 8;
+  z-index: 15;
 }
 
 .player {
