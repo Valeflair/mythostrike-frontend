@@ -11,7 +11,7 @@ export default {
   data() {
     return {
 
-      basePathSymbol: "src/assets/cards/",
+      basePathSymbol: "/cards/",
     };
   },
   props: {

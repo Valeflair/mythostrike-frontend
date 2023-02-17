@@ -81,7 +81,7 @@ export default {
   border-radius: 15px;
   font-size: 1vw;
   transition-duration: 0.4s;
-  background-image: url("@/assets/elements/button.png");
+  background-image: url("/elements/button.png");
 }
 
 .commandButton:hover {

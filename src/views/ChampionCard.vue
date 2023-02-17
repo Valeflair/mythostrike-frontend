@@ -7,7 +7,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
     <div class="championCard" @mouseover="hoverStart()" @mouseleave="hoverEnd()">
       <img
         class="frame"
-        src="../assets/card/frame/gold_card_frame_r.png"
+        :src="'/card/frame/gold_card_frame_r.png'"
         alt=""
       />
 
@@ -25,7 +25,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
         </span>
       </div>
 
-      <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
+      <img class="stone" src="/card/smallParts/stone-p.png" alt="" />
 
       <table>
         <tr v-for="i in this.health" :key="i">
@@ -36,7 +36,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
                 top: 2 + (this.game ? 2 : 3) * i + 'vh',
                 left: 2 + 'vh',
               }"
-              src="../assets/card/smallParts/health_light.png"
+              src="/card/smallParts/health_light.png"
               alt=""
             />
           </td>
@@ -110,7 +110,7 @@ export default {
       timerDelay: 500,
       hoverComponents: false,
       description: "",
-      basePathSymbol: "src/assets/cards/",
+      basePathSymbol: "/cards/",
     };
   },
   components: {
@@ -380,17 +380,17 @@ export default {
 
 @font-face {
   font-family: "Greek";
-  src: url(../assets/fontStyle/greek.ttf);
+  src: url(/fontStyle/greek.ttf);
 }
 
 @font-face {
   font-family: "Rhianne";
-  src: url(../assets/fontStyle/rhianne.ttf);
+  src: url(/fontStyle/rhianne.ttf);
 }
 
 @font-face {
   font-family: "Blackadder";
-  src: url(../assets/fontStyle/blackadder.ttf);
+  src: url(/fontStyle/blackadder.ttf);
 }
 
 .container {

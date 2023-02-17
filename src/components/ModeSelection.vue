@@ -80,7 +80,7 @@ export default {
 }
 
 .close {
-  background-image: url("@/assets/elements/modeSelection/return.png");
+  background-image: url("/elements/modeSelection/return.png");
   width: 94px;
   height: 64px;
   background-size: cover;
@@ -97,7 +97,7 @@ export default {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("@/assets/elements/modeSelection/arrow_right.png");
+  background-image: url("/elements/modeSelection/arrow_right.png");
   width: 110px;
   height: 75px;
   position: relative;
@@ -109,7 +109,7 @@ export default {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("@/assets/elements/modeSelection/arrow_left.png");
+  background-image: url("/elements/modeSelection/arrow_left.png");
   width: 110px;
   height: 75px;
   position: relative;
@@ -118,7 +118,7 @@ export default {
 }
 
 .bg-image {
-  background: url("@/assets/backgrounds/modeselect_background.png");
+  background: url("/backgrounds/modeselect_background.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -131,7 +131,7 @@ export default {
   height: 69px;
   font-size: 32px;
   align-self: center;
-  background-image: url("@/assets/elements/modeSelection/selectbutton.png");
+  background-image: url("/elements/modeSelection/selectbutton.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

@@ -105,7 +105,7 @@ export default {
 .equipment {
   transition: 0.2s;
   position: absolute;
-  background-image: url(../assets/card/frame/silver_top_frame-p.png);
+  background-image: url(/card/frame/silver_top_frame-p.png);
   background-repeat: round;
   z-index: 4;
   font-size: 1vh;

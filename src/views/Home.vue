@@ -33,7 +33,7 @@
             <v-card-title>{{ this.userStore.getUser.username }}</v-card-title>
             <img
               :src="
-                '../src/assets/avatars/avatar' +
+                '/avatars/avatar' +
                 this.userStore.getUser.avatarNumber +
                 '.png'
               "
@@ -42,7 +42,7 @@
             />
           </v-card>
           <img
-            :src="'../src/assets/elements/lobby.png'"
+            src="/elements/lobby.png"
             class="image lobbyImg mr-10"
             @click="toLobbyOverview"
           />
@@ -55,7 +55,7 @@
         <v-row>
           <div style="margin-right: 2.4vw">
             <img
-              :src="'../src/assets/elements/button_library.png'"
+              src="/elements/button_library.png"
               class="image libraryImg"
               @click="toLibrary"
             />
@@ -63,7 +63,7 @@
 
           <div style="margin-right: 2vw">
             <img
-              :src="'../src/assets/elements/button_setting.png'"
+              src="/elements/button_setting.png"
               class="image settingImg"
               @click="music()"
             />
@@ -71,7 +71,7 @@
 
           <div>
             <img
-              :src="'../src/assets/elements/return.png'"
+              src="/elements/return.png"
               class="image logoutImg"
               @click="logout"
             />
@@ -211,7 +211,7 @@ export default {
 }
 
 .bg-image {
-  background: url("@/assets/backgrounds/home_background.png");
+  background: url("/backgrounds/home_background.png");
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;

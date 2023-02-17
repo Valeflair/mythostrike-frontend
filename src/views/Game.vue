@@ -295,7 +295,7 @@ export default {
 
       /*---------- ALLGEMEINE DATEN FÜR GAME ----------*/
       lobbyId: Number, //die LobbyId vom game wird mitgegeben
-      backgroundImage: "@/assets/backgrounds/game_background.png", // backgroundimage
+      backgroundImage: "/backgrounds/game_background.png", // backgroundimage
       timerDelay: 1000, // der delay für karten hover
       currentPlayer: "", // bekommen wir von websocket
       cards: [],
@@ -1207,7 +1207,7 @@ export default {
   text-shadow: #000000 2px 2px 4px;
   overflow-y: scroll;
   word-wrap: break-word;
-  background: url("@/assets/elements/text_background.png");
+  background: url("/elements/text_background.png");
   background-size: cover;
   border-radius: 15px;
 }
@@ -1282,7 +1282,7 @@ export default {
   border-radius: 1rem;
   width: 10vw;
   height: 29vh;
-  background-image: url(../assets/card/pictures/shield.png);
+  background-image: url(/card/pictures/shield.png);
 }
 
 .discardPile {
@@ -1502,7 +1502,7 @@ export default {
 }
 
 .bg-image {
-  background: url("@/assets/backgrounds/game_background.png");
+  background: url("/backgrounds/game_background.png");
   height: 100%;
   width: 100%;
   background-size: cover;

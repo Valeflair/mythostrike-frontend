@@ -3,7 +3,7 @@
     <v-col cols="3" id="left-bar" class="text-center">
       <img
         :src="
-          '../src/assets/avatars/avatar' +
+          '/avatars/avatar' +
           userStore.getUser.avatarNumber +
           '.png'
         "
@@ -88,7 +88,7 @@ tr:hover {
 }
 .back {
   position: absolute;
-  background-image: url("@/assets/elements/return.png");
+  background-image: url("/elements/return.png");
   width: 94px;
   height: 64px;
   background-size: cover;
@@ -104,7 +104,7 @@ tr:hover {
   color: white;
   font-size: 20px;
   border-radius: 15px;
-  background: url("@/assets/elements/button.png");
+  background: url("/elements/button.png");
 }
 </style>
 
