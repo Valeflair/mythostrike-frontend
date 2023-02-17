@@ -4,7 +4,7 @@
   <div class="statement">
     <img
       class="bg-image"
-      src="../assets/backgrounds/modeSelect_background.png"
+      src="../assets/backgrounds/modeselect_background.png"
       alt=""
     />
     <div class="table">

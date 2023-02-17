@@ -9,7 +9,7 @@
             <button
               v-bind:style="{
                 backgroundImage:
-                  'url(' + '../src/assets/cards/' + card.name + '.png' + ')',
+                  'url(' + '../src/assets/cards/' + card.name.toLowerCase() + '.png' + ')',
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
               }"
@@ -22,7 +22,7 @@
     </div>
     <div class="big-picture">
       <img
-        :src="'../src/assets/cards/' + this.currentCard.name + '.png'"
+        :src="'../src/assets/cards/' + this.currentCard.name.toLowerCase() + '.png'"
         alt=""
       />
     </div>

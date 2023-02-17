@@ -3,7 +3,7 @@
     <v-main>
       <router-view />
       <audio
-        src="../src/assets/musics/Night Vigil.mp3"
+        src="../src/assets/musics/night vigil.mp3"
         loop="true"
         autoplay="autoplay"
         id="MusicPlay"

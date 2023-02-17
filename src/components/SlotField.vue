@@ -31,7 +31,7 @@ import CommandField from "@/components/CommandField.vue";
               class="emptySeat"
               v-bind:style="{
                 backgroundImage:
-                  'url(' + '../src/assets/avatars/changeSeat.png' + ')',
+                  'url(' + '../src/assets/avatars/changeseat.png' + ')',
               }"
               @click="changeSeat(id)"
             ></button>
@@ -104,7 +104,7 @@ import CommandField from "@/components/CommandField.vue";
               class="emptySeat"
               v-bind:style="{
                 backgroundImage:
-                  'url(' + '../src/assets/avatars/changeSeat.png' + ')',
+                  'url(' + '../src/assets/avatars/changeseat.png' + ')',
               }"
               @click="changeSeat(id + slots.length / 2)"
             ></button>

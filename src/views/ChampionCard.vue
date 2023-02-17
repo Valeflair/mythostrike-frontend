@@ -36,7 +36,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
                 top: 2 + (this.game ? 2 : 3) * i + 'vh',
                 left: 2 + 'vh',
               }"
-              src="../assets/card/smallParts/Health_Light.png"
+              src="../assets/card/smallParts/health_light.png"
               alt=""
             />
           </td>
@@ -380,17 +380,17 @@ export default {
 
 @font-face {
   font-family: "Greek";
-  src: url(../assets/fontStyle/Greek.ttf);
+  src: url(../assets/fontStyle/greek.ttf);
 }
 
 @font-face {
   font-family: "Rhianne";
-  src: url(../assets/fontStyle/Rhianne.ttf);
+  src: url(../assets/fontStyle/rhianne.ttf);
 }
 
 @font-face {
   font-family: "Blackadder";
-  src: url(../assets/fontStyle/Blackadder.ttf);
+  src: url(../assets/fontStyle/blackadder.ttf);
 }
 
 .container {

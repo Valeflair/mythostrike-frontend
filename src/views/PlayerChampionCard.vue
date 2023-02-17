@@ -292,17 +292,17 @@ export default {
 
 @font-face {
   font-family: "Greek";
-  src: url(../assets/fontStyle/Greek.ttf);
+  src: url(../assets/fontStyle/greek.ttf);
 }
 
 @font-face {
   font-family: "Rhianne";
-  src: url(../assets/fontStyle/Rhianne.ttf);
+  src: url(../assets/fontStyle/rhianne.ttf);
 }
 
 @font-face {
   font-family: "Blackadder";
-  src: url(../assets/fontStyle/Blackadder.ttf);
+  src: url(../assets/fontStyle/blackadder.ttf);
 }
 
 .championCard {

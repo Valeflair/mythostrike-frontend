@@ -55,7 +55,7 @@
         <v-row>
           <div style="margin-right: 2.4vw">
             <img
-              :src="'../src/assets/elements/button_Library.png'"
+              :src="'../src/assets/elements/button_library.png'"
               class="image libraryImg"
               @click="toLibrary"
             />
@@ -63,7 +63,7 @@
 
           <div style="margin-right: 2vw">
             <img
-              :src="'../src/assets/elements/button_Setting.png'"
+              :src="'../src/assets/elements/button_setting.png'"
               class="image settingImg"
               @click="music()"
             />
