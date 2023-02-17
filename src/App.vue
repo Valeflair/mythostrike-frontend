@@ -26,6 +26,7 @@ export default {
     const userStore = useUserStore();
     return { userStore };
   },
+  //Überprüfen ob der User schon angemeldet ist oder nicht
   async beforeCreate() {
     if (this.userStore.getStatus() == false) {
       if (localStorage.getItem("token") == null) {

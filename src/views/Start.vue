@@ -160,6 +160,7 @@ export default {
           );
       }
     },
+    //Überprüfung ob die Eingabe null ist
     checkInput() {
       if (this.username != "" && this.password != "") {
         return true;
@@ -167,6 +168,7 @@ export default {
       this.showAlert("Username or password is empty");
       return false;
     },
+    //Fehlermeldung anzeigen
     showAlert(message) {
       this.alertMessage = message;
       this.alertStatus = true;

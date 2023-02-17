@@ -127,6 +127,7 @@ export default {
       this.userStore.reset();
       this.$router.push({ path: "./" });
     },
+    //Play or close the backgroundmusic
     music() {
       var audio = document.getElementById("MusicPlay");
       this.isplaying = !this.isplaying;

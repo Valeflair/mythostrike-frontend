@@ -113,6 +113,7 @@ export default {
     };
   },
   methods: {
+    //Select a card to view
     selectView(card) {
       this.currentCard = card;
     },
