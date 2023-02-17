@@ -1141,11 +1141,11 @@ export default {
   height: 10vh;
   position: absolute;
   font-weight: bold;
-  color:white;
+  color: white;
   text-shadow: #000000 2px 2px 4px;
   right: 1vw;
   bottom: 46vh;
-  background: url("@/assets/elements/banner.png");
+  background: url("/elements/banner.png");
   background-size: cover;
 }
 
@@ -1282,7 +1282,6 @@ export default {
   border-radius: 1rem;
   width: 10vw;
   height: 29vh;
-  background-image: url(/card/pictures/shield.png);
 }
 
 .discardPile {
