@@ -38,7 +38,7 @@
 
     <!-----------------------------------------DER LOGBUTTON----------------------------------------------------->
 
-    <div class="logClass">
+    <div class="logClass mr-1 mt-1">
       <button class="logBtn btn" @click="logOpen = !logOpen">
         <span>Log</span>
       </button>
@@ -187,7 +187,7 @@
     <!-------------------------------NOTICE----------------------------------------------->
 
     <transition name="notice-Animation">
-      <div v-if="showNotice" class="notice-message">{{ this.notice }}</div>
+      <div v-if="showNotice" class="notice-message pa-2">{{ this.notice }}</div>
     </transition>
 
     <!----------------------------------------DER TIMER----------------------------------------------->
@@ -1139,10 +1139,14 @@ export default {
 .notice-message {
   width: 15vw;
   height: 10vh;
-  background-color: red;
   position: absolute;
+  font-weight: bold;
+  color:white;
+  text-shadow: #000000 2px 2px 4px;
   right: 1vw;
   bottom: 46vh;
+  background: url("@/assets/elements/banner.png");
+  background-size: cover;
 }
 
 .cardUsedStyle {
@@ -1181,7 +1185,6 @@ export default {
   font-family: "Lato", sans-serif;
   font-weight: bold;
   font-size: 3vh;
-
   right: 0;
   background: transparent;
   cursor: pointer;
@@ -1198,13 +1201,15 @@ export default {
   width: 20vw;
   right: 0;
   top: 5vh;
-  height: 38vh;
+  height: 37vh;
   font-weight: bold;
   color: white;
+  text-shadow: #000000 2px 2px 4px;
   overflow-y: scroll;
   word-wrap: break-word;
   background: url("@/assets/elements/text_background.png");
   background-size: cover;
+  border-radius: 15px;
 }
 
 .logClass {
