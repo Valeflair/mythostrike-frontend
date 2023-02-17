@@ -159,8 +159,8 @@
         </div>
       </div>
 
-      <button v-if="this.activateConfirm" class="confirmB" @click="confirm()">Confirm</button>
-      <button v-if="this.activateCancel" class="cancelB" @click="cancel()">Cancel</button>
+      <button v-if="this.activateConfirm" class="confirmButton button" @click="confirm()">Confirm</button>
+      <button v-if="this.activateCancel" class="cancelButton button" @click="cancel()">Cancel</button>
     </div>
 
     <!-----------------------------------------------DER ZIEHSTAPEL----------------------------------------->
@@ -182,7 +182,7 @@
 
     <!----------------------------------------DER ENDBUTTON----------------------------------------------->
 
-    <button v-if="this.messageActivitysUsable.activateEndTurn" class="endTurn" @click="endTurn()">End Turn</button>
+    <button v-if="this.messageActivitysUsable.activateEndTurn" class="endTurn button" @click="endTurn()">End Turn</button>
 
     <!-------------------------------NOTICE----------------------------------------------->
 
@@ -1141,8 +1141,9 @@ export default {
   height: 10vh;
   position: absolute;
   font-weight: bold;
-  color: white;
+  color:white;
   text-shadow: #000000 2px 2px 4px;
+  border-radius: 15px;
   right: 1vw;
   bottom: 46vh;
   background: url("/elements/banner.png");
@@ -1156,10 +1157,7 @@ export default {
 .endTurn {
   position: absolute;
   right: 1vw;
-  width: 10vw;
-  height: 5vh;
-  bottom: 40vh;
-  background-color: blueviolet;
+  bottom: 38vh;
 }
 
 .playerSummarizeStyle {
@@ -1265,6 +1263,21 @@ export default {
   height: 29vh;
 }
 
+.button{
+  width: 10.25vw;
+  min-height: 6vh;
+  margin: 15px;
+  color: white;
+  font-size: 1vw;
+  border-radius: 15px;
+  background: url("/elements/button.png");
+}
+
+.button:hover{
+  font-size: 1.1vw;
+  font-weight: bold;
+}
+
 .clickCardMoveMessage {
   position: absolute;
   left: 19vw;
@@ -1282,6 +1295,7 @@ export default {
   border-radius: 1rem;
   width: 10vw;
   height: 29vh;
+  background-image: url(/card/pictures/shield.png);
 }
 
 .discardPile {
@@ -1371,22 +1385,16 @@ export default {
   display: block;
 }
 
-.cancelB {
-  width: 7vw;
-  height: 6vh;
-  background-color: pink;
+.cancelButton {
   position: absolute;
-  left: 50vw;
+  left: 47vw;
   border-radius: 10px;
   bottom: 0;
 }
 
-.confirmB {
-  width: 7vw;
-  height: 6vh;
-  background-color: pink;
+.confirmButton {
   position: absolute;
-  left: 50vw;
+  left: 47vw;
   border-radius: 10px;
   bottom: 8vh;
 }
