@@ -216,21 +216,6 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
 }
-.button {
-  width: 197px;
-  min-height: 61px;
-  margin: 15px;
-  border-radius: 15px;
-  color: white;
-  font-size: 20px;
-  background: url("@/assets/elements/button.png");
-}
-
-.libraryButton {
-  width: 5vw;
-  background: url("@/assets/elements/Button_Library.png");
-  background-size: 100%;
-}
 
 #footer {
   position: fixed;
