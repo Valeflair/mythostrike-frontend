@@ -22,7 +22,7 @@
         </span>
       </div>
 
-      <img class="stone" :src="'/card/smallParts/stone-p.png'" alt="" />
+      <img class="stone" src="/card/small-parts/stone-p.png" alt="" />
       <transition name="fade-in">
         <div class="description" v-if="this.showDescription">
           {{ this.description }}
@@ -52,7 +52,7 @@ export default {
     return {
       showDescription: false,
       timerDelay: 750,
-      basePathSymbol: "/card/smallParts/",
+      basePathSymbol: "/card/small-parts/",
       basePathSymbolChampion: "/cards/",
     };
   },

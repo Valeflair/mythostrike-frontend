@@ -25,7 +25,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
         </span>
       </div>
 
-      <img class="stone" src="/card/smallParts/stone-p.png" alt="" />
+      <img class="stone" src="/card/small-parts/stone-p.png" alt="" />
 
       <table>
         <tr v-for="i in this.health" :key="i">
@@ -36,7 +36,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
                 top: 2 + (this.game ? 2 : 3) * i + 'vh',
                 left: 2 + 'vh',
               }"
-              src="/card/smallParts/health_light.png"
+              src="/card/small-parts/health_light.png"
               alt=""
             />
           </td>

@@ -48,7 +48,7 @@
         <h1 :style="{ color: this.color }">{{ this.currentChampion.name }}</h1>
         <div class="text-center">
           <span v-for="n in this.currentChampion.maxHp"><img
-            src="/card/smallParts/health_light.png"
+            src="/card/small-parts/health_light.png"
             alt=""
           /></span>
         </div>
