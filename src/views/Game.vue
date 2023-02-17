@@ -630,7 +630,7 @@ export default {
     },
 
     //wenn der Spieler auf eine Karte drückt
-    async useCard(index, id) {
+    useCard(index, id) {
       console.log("---------------------------------- USE CARD -----------------------------------");
       console.log("INDEX: " + index + "      id: " + id);
       console.log("MESSAGE ACTIVITY USABLE: ");
@@ -659,7 +659,7 @@ export default {
       }
     },
     //wenn der Spieler auf einen Spieler drückt
-    async pickPlayer(name) {
+    pickPlayer(name) {
       console.log("-----------------PICK PLAYER------------------");
       if (this.containsId(name, this.playersPicked)) {
         this.playersPicked = this.playersPicked.filter((player) => player !== name);
@@ -688,7 +688,7 @@ export default {
     },
 
     //wenn der Spieler einen Skill einsetzt
-    async useSkill(i, skillId) {
+    useSkill(i, skillId) {
 
       console.log(
         "----------------------------------------------- USE SKILL --------------------------------------------",
@@ -778,7 +778,7 @@ export default {
     },
 
     //wenn der cancel button gedrückt wird
-    async cancel() {
+    cancel() {
       console.log("-------------------------------------------- CANCEL --------------------------------------------");
       console.log("funktioniert");
       this.cardUsed = false;
