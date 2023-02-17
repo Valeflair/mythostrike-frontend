@@ -15,6 +15,7 @@
 
 <script>
 import { useUserStore } from "@/stores/user";
+
 export default {
   name: "App",
 
@@ -36,3 +37,15 @@ export default {
   },
 };
 </script>
+
+<style>
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+}
+</style>

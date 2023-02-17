@@ -49,19 +49,19 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
       </div>
 
       <table>
-        <tr v-for="i in this.equipment.length" :key="i">
+        <tr v-for="(entry,i) in this.equipment" :key="i">
           <td
             v-if="game"
             class="equip"
-            :style="{ bottom: 13 - (i - 1) * 3.5 + 'vh' }"
+            :style="{ bottom: 6+ 5 * i + 'vh' }"
             @mouseenter="showInnerComponents(true)"
             @mouseleave="showInnerComponents(false)"
           >
             <equipment-component
               widthProp="8.9"
               heightProp="3.5"
-              name="NAME EQUIPMENT"
-              description="Description Equipment"
+              :name="entry.name"
+              :description="entry.description"
               fontProp="1.5"
               :id="i"
             />

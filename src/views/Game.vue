@@ -20,7 +20,7 @@
               :identity="player.identity"
               :isGame="true"
               :name="player.username"
-              :equipment="player.equipment"
+              :equipment="getCardsFromArray(player.equipment)"
               :delayedEffects="getCardsFromArray(player.delayedEffects)"
               :picked="containsId(player.username, this.playersPicked)"
               :usable="containsId(player.username, this.playerConditions.players)"
@@ -398,12 +398,23 @@ export default {
         this.skillConditions.count = [];
         this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
         this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
-
+        console.log("CHECK CARDSPICKED: ");
+        console.log(this.cardsPicked);
+        console.log("CHECK CARDCOUNT: ");
+        console.log(this.messageActivitysUsable.cardCount);
+        console.log("CHECK CARDPLAYERCONDITION:");
+        console.log(this.messageActivitysUsable.cardPlayerConditions);
+        console.log("CHECK CARDPLAYERCONDITIONS INDEX: ");
+        console.log(this.cardsPicked[0].index);
+        console.log("CHECK CARDPLAYERCONDITION EXACTLY");
+        console.log(this.messageActivitysUsable.cardPlayerConditions[this.cardsPicked[0].index]);
+        console.log("MATH MAX");
+        console.log(Math.max(this.messageActivitysUsable.cardCount));
         //wenn eine Karte ausgewählt ist und Gegner zur auswahl stehen, Gegner auswählbar machen
-        if (this.cardsPicked.length === 1 && Math.max(this.messageActivitysUsable.cardCount) === 1
+        if (this.cardsPicked.length === 1 && this.getMax(this.messageActivitysUsable.cardCount) === 1
           && this.messageActivitysUsable.cardPlayerConditions[this.cardsPicked[0].index] != null) {
           //spieler die man auswählen kann und dessen Anzahl holen
-          console.log("----- AUSWÄHLBAR SPIELER -------");
+          console.log("----- AUSWÄHLBAR SPIELER ONE CARD -------");
           let id = this.cardsPicked[0].index;
           let players = this.messageActivitysUsable.cardPlayerConditions[id].players;
           this.playerConditions.count = this.messageActivitysUsable.cardPlayerConditions[id].count;
@@ -420,7 +431,7 @@ export default {
           console.log(this.playerConditions.count);
 
           //check if not too many players are selected
-          if (this.playersPicked.length >= Math.max(this.playerConditions.count)) {
+          if (this.playersPicked.length >= this.getMax(this.playerConditions.count)) {
             this.playerConditions.players = [];
           } else {
             //filtere schon ausgewählte spieler raus
@@ -434,7 +445,7 @@ export default {
 
           //sonst nicht
         } else {
-          console.log("----- AUSWÄHLBAR SPIELER -------");
+          console.log("----- KEINE AUSWÄHLBAR SPIELER -------");
           this.playerConditions.players = [];
           this.playerConditions.count = [];
         }
@@ -561,6 +572,15 @@ export default {
         if (element.cardId === id) return true;
       }
       return false;
+    },
+
+    getMax(array) {
+      let max = -1;
+      for (let i = 0; i < array.length; i++) {
+        if (array[i] > max)
+          max = array[i];
+      }
+      return max;
     },
 
     printSchnittstellen() {
