@@ -1,5 +1,5 @@
 <script setup>
-import equipmentComponent from "../components/blockWithDescription.vue";
+import equipmentComponent from "../components/BlockWithDescription.vue";
 </script>
 <template>
   <div class="container">

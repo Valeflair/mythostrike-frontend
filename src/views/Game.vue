@@ -200,7 +200,7 @@
 
 <script>
 import championCard from "./ChampionCard.vue";
-import equipmentComponent from "../components/blockWithDescription.vue";
+import equipmentComponent from "../components/BlockWithDescription.vue";
 import DelayedeffectComponent from "../components/DelayedeffectComponent.vue";
 import playerCard from "./PlayerChampionCard.vue";
 import resultPage from "../components/Statement.vue";
@@ -226,7 +226,7 @@ export default {
     },
   },
   mounted() {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   },
   data() {
     return {
@@ -823,7 +823,7 @@ export default {
         this.messageActivitysUsable = this.gameStore.getGameData.payload;
         this.showNotice = true;
         this.notice = this.messageActivitysUsable.reason;
-        //this.startProgressbar();
+        this.startProgressbar();
         this.updateConditions();
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
@@ -1010,7 +1010,10 @@ export default {
         fill: "forwards",
       });
       this.animation.onfinish = () => {
-        this.endTurn();
+        if (this.activateConfirm)
+          this.connect();
+        else
+          this.endTurn();
         this.animation.onfinish = null;
       };
       this.$refs.progress.style.animation = "progress-animation 20s ease-in forwards";

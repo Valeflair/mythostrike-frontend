@@ -1,5 +1,5 @@
 <script setup>
-import equipmentComponent from "../components/blockWithDescription.vue";
+import equipmentComponent from "../components/BlockWithDescription.vue";
 import delayComponent from "../components/DelayedeffectComponent.vue";
 </script>
 <template>
