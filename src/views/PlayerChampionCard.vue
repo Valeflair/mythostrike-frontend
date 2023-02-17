@@ -36,7 +36,7 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
             <img
               class="heartBig"
               :style="{ top: 2 + 3 * i + 'vh', left: 2 + 'vh' }"
-              src="../assets/card/smallParts/Health_Light.png"
+              src="../assets/card/smallParts/health_light.png"
               alt=""
             />
           </td>

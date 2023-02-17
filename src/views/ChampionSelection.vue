@@ -14,7 +14,7 @@
                   backgroundImage:
                     'url(' +
                     '../src/assets/cards/' +
-                    champion.name +
+                    champion.name.toLowerCase() +
                     '.png' +
                     ')',
                   backgroundSize: '100% 100%',
@@ -35,7 +35,7 @@
             backgroundImage:
               'url(' +
               '../src/assets/cards/' +
-              this.currentChampion.name +
+              this.currentChampion.name.toLowerCase() +
               '.png' +
               ')',
             backgroundSize: '100% 100%',

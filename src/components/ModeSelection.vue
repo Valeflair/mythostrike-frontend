@@ -131,7 +131,7 @@ export default {
   height: 69px;
   font-size: 32px;
   align-self: center;
-  background-image: url("@/assets/elements/modeSelection/selectButton.png");
+  background-image: url("@/assets/elements/modeSelection/selectbutton.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
