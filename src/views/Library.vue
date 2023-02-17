@@ -9,7 +9,7 @@
             <button
               v-bind:style="{
                 backgroundImage:
-                  'url(' + '/cards/' + card.name.toLowerCase() + '.png' + ')',
+                  'url(' + '/cards/' + getImagePath(card.name) + '.png' + ')',
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
               }"
@@ -145,6 +145,10 @@ export default {
         },
       );
     },
+    getImagePath(name) {
+      let text = name.replace(/\s/g, "");
+      return text.toLowerCase();
+    }
   },
   created() {
     this.initCards();
