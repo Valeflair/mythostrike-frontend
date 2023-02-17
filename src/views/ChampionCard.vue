@@ -44,8 +44,13 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
       </table>
 
       <div v-if="game" class="handcard-num">{{ this.handcardNum }}</div>
-      <div v-if="game" class="identity">
-        {{ this.identity }}
+
+      <div v-if="game && this.identity==='Team Blue'||'Team Red' " class="identity"
+           :style="{
+          background: 'url(' + this.getIdentityImagePath() + ')',
+          backgroundSize: 'cover',
+        }"
+      >
       </div>
 
       <table>
@@ -153,7 +158,10 @@ export default {
     picked: Boolean,
   },
   methods: {
-
+    getIdentityImagePath() {
+      let path = "/card/small-parts/" + this.identity.replace(/\s/g, "").toLowerCase() + ".png";
+      return path;
+    },
     getImagePath() {
       let path = this.basePathSymbol + this.championName + ".png";
       return path.toLowerCase();

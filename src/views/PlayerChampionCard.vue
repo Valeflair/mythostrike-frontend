@@ -43,8 +43,12 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
         </tr>
       </table>
 
-      <div v-if="game" class="identity">
-        {{ this.identity }}
+      <div v-if="game && this.identity==='Team Blue'||'Team Red' " class="identity"
+           :style="{
+          background: 'url(' + this.getIdentityImagePath() + ')',
+          backgroundSize: 'cover',
+        }"
+      >
       </div>
 
       <table class="skillList">
@@ -118,7 +122,10 @@ export default {
   },
   methods: {
 
-
+    getIdentityImagePath() {
+      let path = "/card/small-parts/" + this.identity.replace(/\s/g, "").toLowerCase() + ".png";
+      return path;
+    },
     getImagePath() {
       let path = this.basePathSymbol + this.championName + ".png";
       return path.toLowerCase();
