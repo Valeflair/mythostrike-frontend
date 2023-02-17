@@ -221,6 +221,7 @@ export default {
   position: absolute;
   text-align: center;
   z-index: 10;
+  width: 16vw;
   word-wrap: break-word;
   font-weight: bold;
   border-radius: 5px;
