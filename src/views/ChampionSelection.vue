@@ -14,7 +14,7 @@
                   backgroundImage:
                     'url(' +
                     '../src/assets/cards/' +
-                    champion.name.toLowerCase() +
+                    champion.name +
                     '.png' +
                     ')',
                   backgroundSize: '100% 100%',
@@ -35,19 +35,23 @@
             backgroundImage:
               'url(' +
               '../src/assets/cards/' +
-              this.currentChampion.name.toLowerCase() +
+              this.currentChampion.name +
               '.png' +
               ')',
             backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat',
           }"
-          :style="{ 'border-color': this.color }"
-          @mouseover="fade"
           disabled
         ></button>
       </div>
       <div class="championDescription">
         <h1 :style="{ color: this.color }">{{ this.currentChampion.name }}</h1>
+        <div class="text-center">
+          <span v-for="n in this.currentChampion.maxHp"><img
+            src="../assets/card/smallParts/health_light.png"
+            alt=""
+          /></span>
+        </div>
         <div
           v-for="pSkill in this.currentChampion.passiveSkills"
           :key="pSkill.name"
@@ -87,13 +91,13 @@
 <script>
 import gameService from "@/services/gameService";
 import { useLobbyStore } from "@/stores/lobby";
+
 export default {
   data() {
     return {
       champions: [],
       currentChampion: null,
       label: "Select your champion",
-      color: "#000000",
     };
   },
   setup() {
@@ -113,14 +117,14 @@ export default {
     },
     async confirmChampion() {
       console.log(this.currentChampion.id);
-      await gameService.selectChampion(this.lobbyStore.getLobby.id,this.currentChampion.id).then(
+      await gameService.selectChampion(this.lobbyStore.getLobby.id, this.currentChampion.id).then(
         (response) => {
           console.log(response);
           this.$router.push("/game");
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     initData() {
@@ -128,9 +132,6 @@ export default {
       this.currentChampion = this.champions[0];
       console.log(this.champions);
       this.identity = this.lobbyStore.getIdentity();
-    },
-    fade() {
-      this.color = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
     },
   },
   created() {
@@ -174,7 +175,7 @@ export default {
 
 .button:hover {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  0 17px 50px 0 rgba(0, 0, 0, 0.19);
   font-size: 1.1vw;
   font-weight: bold;
 }
@@ -212,6 +213,7 @@ export default {
   background: url("@/assets/elements/skill-background.png");
   background-size: 100%;
 }
+
 .skillDescription {
   background-color: #ccaeb4;
   opacity: 0;

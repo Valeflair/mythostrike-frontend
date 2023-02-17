@@ -64,7 +64,7 @@ import CommandField from "@/components/CommandField.vue";
           <p class="labelText">Mode: {{ this.gameModeName }}</p>
         </div>
       </v-col>
-      <v-col cols="4">
+      <v-col cols="5">
         <div class="field">
           <command-field
             :isLobbyOwner="this.isLobbyOwner"
@@ -195,9 +195,6 @@ export default {
   top: 10vh;
 }
 
-.field {
-  background-color: rgba(255, 255, 255, 0.2);
-}
 
 .seatButton {
   border: 4px solid black;
@@ -245,7 +242,7 @@ export default {
 
 button:hover {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 #teamRed {

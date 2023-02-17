@@ -59,12 +59,12 @@ export default {
   methods: {
     getImagePathSymbol() {
       let path = this.basePathSymbol + this.symbol + ".png";
-      return path;
+      return path.toLowerCase();
     },
     getImagePathChampion() {
       let text = this.name.replace(/\s/g, "");
       let path = this.basePathSymbolChampion + text + ".png";
-      return path;
+      return path.toLowerCase();
     },
 
     hoverStart() {

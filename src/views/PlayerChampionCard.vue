@@ -121,7 +121,7 @@ export default {
 
     getImagePath() {
       let path = this.basePathSymbol + this.championName + ".png";
-      return path;
+      return path.toLowerCase();
     },
     getName() {
       return this.championName + "(" + this.name + ")";

@@ -58,7 +58,6 @@ export default {
 .labelclass {
   text-align: center;
   font-size: 150%;
-  color: yellow;
   margin-top: 2vh;
   margin-bottom: 2vh;
 }
@@ -75,12 +74,12 @@ export default {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  width: 197px;
-  min-height: 61px;
+  width: 10.25vw;
+  height: 4vh;
+  min-height: 6vh;
   margin: 15px;
   border-radius: 15px;
-  color: white;
-  font-size: 17px;
+  font-size: 1vw;
   transition-duration: 0.4s;
   background-image: url("@/assets/elements/button.png");
 }
@@ -88,7 +87,7 @@ export default {
 .commandButton:hover {
   color: white;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  0 17px 50px 0 rgba(0, 0, 0, 0.19);
   font-weight: bold;
   font-size: 20px;
 }

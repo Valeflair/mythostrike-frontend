@@ -22,7 +22,7 @@ export default {
   methods: {
     getImagePath() {
       let path = this.basePathSymbol + this.name + ".png";
-      return path;
+      return path.toLowerCase();
     },
   },
 };

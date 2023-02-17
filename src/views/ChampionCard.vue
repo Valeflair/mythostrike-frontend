@@ -156,7 +156,7 @@ export default {
 
     getImagePath() {
       let path = this.basePathSymbol + this.championName + ".png";
-      return path;
+      return path.toLowerCase();
     },
     getName() {
       console.log("handcard: " + this.handcardNum);
