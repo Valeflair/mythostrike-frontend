@@ -15,7 +15,7 @@
   </div>
   <transition name="fade-in">
     <div
-      class="equipment-description"
+      class="equipment-description ma-1"
       :style="{
       width: widthProp + 'vw',
     }"
@@ -109,8 +109,9 @@ export default {
   background-repeat: round;
   z-index: 4;
   font-size: 1vh;
-  -webkit-text-stroke: 2px rgba(100, 83, 83, 0.63);
+  font-weight: bold;
   color: white;
+  text-shadow: #000000 2px 2px 4px;
   text-align: center;
   margin: 0 auto;
 }
@@ -118,11 +119,14 @@ export default {
 .equipment-description {
   font-size: 1.5vh;
   padding: 5px;
-  background-color: red;
   position: absolute;
   bottom: 0;
   z-index: 9;
   overflow-y: auto;
+  color:white;
+  text-shadow: #000000 2px 2px 4px;
+  background: url("/elements/banner.png");
+  background-size: cover;
 }
 
 .equipment:hover + .equipment-description {
