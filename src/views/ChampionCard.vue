@@ -4,7 +4,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
 </script>
 <template>
   <div class="container" :class="{'usable':this.usable||this.picked}">
-    <div class="championCard" @mouseover="hoverStart()" @mouseout="hoverEnd()">
+    <div class="championCard" @mouseover="hoverStart()" @mouseleave="hoverEnd()">
       <img
         class="frame"
         src="../assets/card/frame/gold_card_frame_r.png"
@@ -53,7 +53,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
           <td
             v-if="game"
             class="equip"
-            :style="{ bottom: 6+ 5 * i + 'vh' }"
+            :style="{ bottom: 10+ 5 * i + 'vh' }"
             @mouseenter="showInnerComponents(true)"
             @mouseleave="showInnerComponents(false)"
           >
@@ -74,7 +74,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
           <td v-for="(entry,i) in this.delayedEffects" :key="i">
             <div
               class="delayEffect"
-              :style="{ left: -2 + i * 4 + 'vh' }"
+              :style="{ left: 1.5 + i * 4 + 'vh' }"
               @mouseenter="showInnerComponents(true)"
               @mouseleave="showInnerComponents(false)"
             >
@@ -84,7 +84,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
         </tr>
       </table>
       <transition name="fade-in">
-        <div class="description" v-if="this.showDescription">
+        <div class="description" v-if="this.showDescription" @mouseover="this.showDescription">
           <p v-html="logTextWithLineBreaks"></p>
         </div>
       </transition>

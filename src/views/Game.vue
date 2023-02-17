@@ -225,6 +225,9 @@ export default {
       return this.logText.replace(/\n/g, "<br>");
     },
   },
+  mounted() {
+    document.body.style.overflow = 'hidden';
+  },
   data() {
     return {
       /*---------- WEBSOCKET ----------*/
@@ -1433,6 +1436,7 @@ export default {
   overflow: auto;
   position: absolute;
   bottom: 16vh;
+
 }
 
 .passiveCircle {

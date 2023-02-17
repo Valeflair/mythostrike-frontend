@@ -8,23 +8,32 @@
       'font-size': fontProp + 'vh',
     }"
     @click="emitSkillUsed"
+    @mouseenter="hoverStart"
+    @mouseleave="hoverEnd"
   >
     {{ this.name }}
   </div>
-  <div
-    class="equipment-description"
-    :style="{
+  <transition name="fade-in">
+    <div
+      class="equipment-description"
+      :style="{
       width: widthProp + 'vw',
-      height: 3 * heightProp + 'vh',
-      top: -3 * heightProp + 'vh',
     }"
-  >
-    {{ this.description }}
-  </div>
+      v-if="this.showDescription"
+    >
+      {{ this.description }}
+    </div>
+  </transition>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      showDescription: false,
+      timerDelay: 500,
+    };
+  },
   props: {
     widthProp: Number,
     heightProp: Number,
@@ -35,10 +44,50 @@ export default {
     description: "",
     id: Number,
   },
+  methods: {
+    hoverStart() {
+      console.log("HOVER FUNKTIONIERT");
+      this.hoverTimer = setTimeout(() => {
+        this.showDescription = true;
+      }, this.timerDelay);
+    },
+    hoverEnd() {
+      clearTimeout(this.hoverTimer);
+      this.showDescription = false;
+    },
+  },
 };
 </script>
 
 <style scoped>
+.fade-in-enter-from {
+  opacity: 0;
+  transform: translateY(1vh);
+}
+
+.fade-in-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-enter-active {
+  transition: all 0.5s ease;
+}
+
+.fade-in-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-leave-to {
+  opacity: 0;
+  transform: translateY(1vh);
+}
+
+.fade-in-leave-active {
+  transition: all 0.3s ease;
+}
+
 .usableClass {
   border: solid yellow 2px;
   cursor: pointer;
@@ -59,7 +108,7 @@ export default {
   background-image: url(../assets/card/frame/silver_top_frame-p.png);
   background-repeat: round;
   z-index: 4;
-  font-size: 1.5vh;
+  font-size: 1vh;
   -webkit-text-stroke: 2px rgba(100, 83, 83, 0.63);
   color: white;
   text-align: center;
@@ -67,12 +116,11 @@ export default {
 }
 
 .equipment-description {
-  display: none;
-  width: 10vw;
-  height: 15vh;
+  font-size: 1.5vh;
+  padding: 5px;
   background-color: red;
   position: absolute;
-  top: 4vh;
+  bottom: 0;
   z-index: 9;
   overflow-y: auto;
 }

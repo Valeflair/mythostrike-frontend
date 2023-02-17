@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       showDescription: false,
-      timerDelay: 1000,
+      timerDelay: 750,
       basePathSymbol: "src/assets/card/smallParts/",
       basePathSymbolChampion: "src/assets/cards/",
     };
@@ -68,9 +68,12 @@ export default {
     },
 
     hoverStart() {
-      this.showDescription = true;
+      this.hoverTimer = setTimeout(() => {
+        this.showDescription = true;
+      }, this.timerDelay);
     },
     hoverEnd() {
+      clearTimeout(this.hoverTimer);
       this.showDescription = false;
     },
   },
