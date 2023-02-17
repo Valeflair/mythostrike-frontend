@@ -43,7 +43,7 @@
         <span>Log</span>
       </button>
       <div v-if="this.logOpen" class="logTextArea">
-        <p v-html="logTextWithLineBreaks"></p>
+        <p v-html="logTextWithLineBreaks" class="ma-3"></p>
       </div>
     </div>
 
@@ -1179,7 +1179,7 @@ export default {
   border-radius: 5px;
   padding: 10px 25px;
   font-family: "Lato", sans-serif;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 3vh;
 
   right: 0;
@@ -1199,10 +1199,12 @@ export default {
   right: 0;
   top: 5vh;
   height: 38vh;
-  background-color: rgb(241, 244, 92);
-  color: black;
+  font-weight: bold;
+  color: white;
   overflow-y: scroll;
   word-wrap: break-word;
+  background: url("@/assets/elements/text_background.png");
+  background-size: cover;
 }
 
 .logClass {
