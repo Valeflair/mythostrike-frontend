@@ -5,7 +5,7 @@
         <img
           alt="Vue logo"
           class="logo"
-          src="public/logo.png"
+          src="/logo.png"
           width="300"
           height="300"
         />

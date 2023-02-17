@@ -295,7 +295,7 @@ export default {
 
       /*---------- ALLGEMEINE DATEN FÜR GAME ----------*/
       lobbyId: Number, //die LobbyId vom game wird mitgegeben
-      backgroundImage: "@/assets/backgrounds/game_background.png", // backgroundimage
+      backgroundImage: "/backgrounds/game_background.png", // backgroundimage
       timerDelay: 1000, // der delay für karten hover
       currentPlayer: "", // bekommen wir von websocket
       cards: [],
@@ -1203,7 +1203,7 @@ export default {
   color: white;
   overflow-y: scroll;
   word-wrap: break-word;
-  background: url("@/assets/elements/text_background.png");
+  background: url("/elements/text_background.png");
   background-size: cover;
 }
 
