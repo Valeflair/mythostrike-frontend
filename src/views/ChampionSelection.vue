@@ -13,8 +13,8 @@
                 v-bind:style="{
                   backgroundImage:
                     'url(' +
-                    '../src/assets/cards/' +
-                    champion.name +
+                    '/cards/' +
+                    champion.name.toLowerCase() +
                     '.png' +
                     ')',
                   backgroundSize: '100% 100%',
@@ -34,8 +34,8 @@
           v-bind:style="{
             backgroundImage:
               'url(' +
-              '../src/assets/cards/' +
-              this.currentChampion.name +
+              '/cards/' +
+              this.currentChampion.name.toLowerCase() +
               '.png' +
               ')',
             backgroundSize: '100% 100%',
@@ -210,7 +210,7 @@ export default {
   align-self: center;
   color: white;
   font-size: 3vh;
-  background: url("@/assets/elements/skill-background.png");
+  background: url("/elements/skill-background.png");
   background-size: 100%;
 }
 
@@ -272,7 +272,7 @@ h1 {
 
 .container {
   display: flex;
-  background: url("@/assets/backgrounds/home_background.png");
+  background: url("/backgrounds/home_background.png");
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;

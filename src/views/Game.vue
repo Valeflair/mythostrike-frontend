@@ -1277,7 +1277,7 @@ export default {
   border-radius: 1rem;
   width: 10vw;
   height: 29vh;
-  background-image: url(../assets/card/pictures/shield.png);
+  background-image: url(/card/pictures/shield.png);
 }
 
 .discardPile {
@@ -1497,7 +1497,7 @@ export default {
 }
 
 .bg-image {
-  background: url("@/assets/backgrounds/game_background.png");
+  background: url("/backgrounds/game_background.png");
   height: 100%;
   width: 100%;
   background-size: cover;

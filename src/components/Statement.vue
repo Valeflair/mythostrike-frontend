@@ -4,7 +4,7 @@
   <div class="statement">
     <img
       class="bg-image"
-      src="../assets/backgrounds/modeselect_background.png"
+      :src="'/backgrounds/modeselect_background.png'"
       alt=""
     />
     <div class="table">
@@ -100,7 +100,7 @@ th {
 
 .quit {
   position: absolute;
-  background-image: url(../assets/elements/modeSelection/return.png);
+  background-image: url(/elements/modeSelection/return.png);
   width: 94px;
   height: 64px;
   background-size: cover;

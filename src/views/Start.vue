@@ -5,7 +5,7 @@
         <img
           alt="Vue logo"
           class="logo"
-          src="@/assets/logo.png"
+          src="public/logo.png"
           width="300"
           height="300"
         />
@@ -57,7 +57,7 @@
 }
 
 .bg-image {
-  background: url("@/assets/backgrounds/start_background.png");
+  background: url("/backgrounds/start_background.png");
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;
@@ -70,7 +70,7 @@
   color: white;
   font-size: 1vw;
   border-radius: 15px;
-  background: url("@/assets/elements/button.png");
+  background: url("/elements/button.png");
 }
 
 .text {

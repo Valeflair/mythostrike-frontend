@@ -7,7 +7,7 @@
         <div v-for="id in 12" :key="id">
           <v-col :key="id">
             <img
-              :src="'../src/assets/avatars/avatar' + id + '.png'"
+              :src="'/avatars/avatar' + id + '.png'"
               class="image"
               @click="changeAvatar(id)"
             />
@@ -49,7 +49,7 @@ export default {
 
 .close {
   position: absolute;
-  background-image: url("@/assets/elements/return.png");
+  background-image: url("/elements/return.png");
   width: 94px;
   height: 64px;
   z-index: 10;

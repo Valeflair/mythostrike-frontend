@@ -10,7 +10,7 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
     >
       <img
         class="frame"
-        src="../assets/card/frame/gold_card_frame_r.png"
+        :src="'/card/frame/gold_card_frame_r.png'"
         alt=""
       />
 
@@ -28,7 +28,7 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
         </span>
       </div>
 
-      <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
+      <img class="stone" :src="'/card/smallParts/stone-p.png'" alt="" />
 
       <table>
         <tr v-for="i in this.health" :key="i">
@@ -36,7 +36,7 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
             <img
               class="heartBig"
               :style="{ top: 2 + 3 * i + 'vh', left: 2 + 'vh' }"
-              src="../assets/card/smallParts/health_light.png"
+              :src="'/card/smallParts/health_light.png'"
               alt=""
             />
           </td>
@@ -89,7 +89,7 @@ export default {
       showSkills: false,
       timerDelay: 1000,
       hoverComponents: false,
-      basePathSymbol: "src/assets/cards/",
+      basePathSymbol: "/cards/",
 
     };
   },
@@ -292,17 +292,17 @@ export default {
 
 @font-face {
   font-family: "Greek";
-  src: url(../assets/fontStyle/greek.ttf);
+  src: url(/fontStyle/greek.ttf);
 }
 
 @font-face {
   font-family: "Rhianne";
-  src: url(../assets/fontStyle/rhianne.ttf);
+  src: url(/fontStyle/rhianne.ttf);
 }
 
 @font-face {
   font-family: "Blackadder";
-  src: url(../assets/fontStyle/blackadder.ttf);
+  src: url(/fontStyle/blackadder.ttf);
 }
 
 .championCard {

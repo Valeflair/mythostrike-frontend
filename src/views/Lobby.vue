@@ -188,7 +188,7 @@ export default {
 
 <style scoped>
 .bg-image {
-  background: url("@/assets/backgrounds/lobby_background.png");
+  background: url("/backgrounds/lobby_background.png");
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;

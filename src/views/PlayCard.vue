@@ -5,7 +5,7 @@
     <div class="card">
       <img
         class="frame"
-        src="../assets/card/frame/gold_card_frame_r.png"
+        :src="'/card/frame/gold_card_frame_r.png'"
         alt=""
       />
       <div
@@ -22,7 +22,7 @@
         </span>
       </div>
 
-      <img class="stone" src="../assets/card/smallParts/stone-p.png" alt="" />
+      <img class="stone" :src="'/card/smallParts/stone-p.png'" alt="" />
       <transition name="fade-in">
         <div class="description" v-if="this.showDescription">
           {{ this.description }}
@@ -52,8 +52,8 @@ export default {
     return {
       showDescription: false,
       timerDelay: 750,
-      basePathSymbol: "src/assets/card/smallParts/",
-      basePathSymbolChampion: "src/assets/cards/",
+      basePathSymbol: "/card/smallParts/",
+      basePathSymbolChampion: "/cards/",
     };
   },
   methods: {
@@ -272,17 +272,17 @@ export default {
 
 @font-face {
   font-family: "Greek";
-  src: url(../assets/fontStyle/greek.ttf);
+  src: url(/fontStyle/greek.ttf);
 }
 
 @font-face {
   font-family: "Rhianne";
-  src: url(../assets/fontStyle/rhianne.ttf);
+  src: url(/fontStyle/rhianne.ttf);
 }
 
 @font-face {
   font-family: "Blackadder";
-  src: url(../assets/fontStyle/blackadder.ttf);
+  src: url(/fontStyle/blackadder.ttf);
 }
 
 .usable {

@@ -9,7 +9,7 @@
             <button
               v-bind:style="{
                 backgroundImage:
-                  'url(' + '../src/assets/cards/' + card.name.toLowerCase() + '.png' + ')',
+                  'url(' + '/cards/' + card.name.toLowerCase() + '.png' + ')',
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
               }"
@@ -22,7 +22,7 @@
     </div>
     <div class="big-picture">
       <img
-        :src="'../src/assets/cards/' + this.currentCard.name.toLowerCase() + '.png'"
+        :src="'/cards/' + this.currentCard.name.toLowerCase() + '.png'"
         alt=""
       />
     </div>
@@ -39,7 +39,7 @@ h1 {
 
 .back {
   position: absolute;
-  background-image: url("@/assets/elements/return.png");
+  background-image: url("/elements/return.png");
   width: 94px;
   height: 64px;
   background-size: cover;
@@ -51,7 +51,7 @@ h1 {
 
 .library {
   position: relative;
-  background-image: url("@/assets/backgrounds/lobby_background.png");
+  background-image: url("/backgrounds/lobby_background.png");
   width: 100%;
   height: 100%;
   background-attachment: fixed;
@@ -90,7 +90,7 @@ h1 {
   position: absolute;
   max-width: 30vw;
   max-height: 30vw;
-  background-image: url("@/assets/elements/text-background.png");
+  background-image: url("/elements/text-background.png");
   background-repeat: round;
   top: 30vh;
   left: 65vw;

@@ -17,7 +17,7 @@ import CommandField from "@/components/CommandField.vue";
               v-bind:style="{
                 backgroundImage:
                   'url(' +
-                  '../src/assets/avatars/avatar' +
+                  '/avatars/avatar' +
                   slot.avatarNumber +
                   '.png' +
                   ')',
@@ -31,7 +31,7 @@ import CommandField from "@/components/CommandField.vue";
               class="emptySeat"
               v-bind:style="{
                 backgroundImage:
-                  'url(' + '../src/assets/avatars/changeseat.png' + ')',
+                  'url(' + '/avatars/changeseat.png' + ')',
               }"
               @click="changeSeat(id)"
             ></button>
@@ -42,7 +42,7 @@ import CommandField from "@/components/CommandField.vue";
               v-bind:style="{
                 backgroundImage:
                   'url(' +
-                  '../src/assets/avatars/avatar' +
+                  '/avatars/avatar' +
                   slot.avatarNumber +
                   '.png' +
                   ')',
@@ -90,7 +90,7 @@ import CommandField from "@/components/CommandField.vue";
               v-bind:style="{
                 backgroundImage:
                   'url(' +
-                  '../src/assets/avatars/avatar' +
+                  '/avatars/avatar' +
                   slot.avatarNumber +
                   '.png' +
                   ')',
@@ -104,7 +104,7 @@ import CommandField from "@/components/CommandField.vue";
               class="emptySeat"
               v-bind:style="{
                 backgroundImage:
-                  'url(' + '../src/assets/avatars/changeseat.png' + ')',
+                  'url(' + '/avatars/changeseat.png' + ')',
               }"
               @click="changeSeat(id + slots.length / 2)"
             ></button>
@@ -115,7 +115,7 @@ import CommandField from "@/components/CommandField.vue";
               v-bind:style="{
                 backgroundImage:
                   'url(' +
-                  '../src/assets/avatars/avatar' +
+                  '/avatars/avatar' +
                   slot.avatarNumber +
                   '.png' +
                   ')',
