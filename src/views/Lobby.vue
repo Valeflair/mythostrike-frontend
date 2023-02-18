@@ -36,6 +36,7 @@ import { useLobbyStore } from "@/stores/lobby";
 import { useUserStore } from "@/stores/user";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import service from "@/services/service";
 export default {
   data() {
     return {
@@ -167,7 +168,7 @@ export default {
       this.stompClient.disconnect();
     },
     initStompClient() {
-      let socket = new SockJS("http://localhost:8080/updates");
+      let socket = new SockJS(service.WS_URL);
       this.lobbyStore.setStompClient(Stomp.over(socket));
       this.stompClient = this.lobbyStore.getStompClient();
     },

@@ -213,6 +213,7 @@ import Stomp from "stompjs";
 import { useLobbyStore } from "@/stores/lobby";
 import { useUserStore } from "@/stores/user";
 import resourceService from "@/services/resourceService";
+import service from "@/services/service";
 
 export default {
   setup() {
@@ -791,7 +792,7 @@ export default {
     //-------------------------------- WEBSOCKET ---------------------------------------------------
     connect() {
       console.log("versuche dich zu connecten");
-      let socket = new SockJS("http://localhost:8080/updates");
+      let socket = new SockJS(service.WS_URL);
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect({}, (frame) => {
         console.log("Connected to Game " + frame);
