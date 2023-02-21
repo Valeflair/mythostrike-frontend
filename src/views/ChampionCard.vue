@@ -3,7 +3,7 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
 import delayComponent from "../components/DelayedeffectComponent.vue";
 </script>
 <template>
-  <div class="container" :class="{'usable':this.usable||this.picked}">
+  <div class="container" :class="{'usable':usable||picked}">
     <div class="championCard" @mouseover="hoverStart()" @mouseleave="hoverEnd()">
       <img
         class="frame"
@@ -14,26 +14,26 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
       <div
         class="avatar"
         :style="{
-          background: 'url(' + this.getImagePath() + ')',
+          background: 'url(' + getImagePath() + ')',
           backgroundSize: 'cover',
         }"
       ></div>
 
       <div class="name">
         <span>
-          {{ this.getName() }}
+          {{ getName() }}
         </span>
       </div>
 
       <img class="stone" src="/card/small-parts/stone-p.png" alt="" />
 
       <table>
-        <tr v-for="i in this.health" :key="i">
+        <tr v-for="i in health" :key="i">
           <td>
             <img
-              :class="{ heartSmall: this.game, heartBig: !this.game }"
+              :class="{ heartSmall: game, heartBig: !game }"
               :style="{
-                top: 2 + (this.game ? 2 : 3) * i + 'vh',
+                top: 2 + (game ? 2 : 3) * i + 'vh',
                 left: 2 + 'vh',
               }"
               src="/card/small-parts/health_light.png"
@@ -43,18 +43,18 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
         </tr>
       </table>
 
-      <div v-if="game" class="handcard-num">{{ this.handcardNum }}</div>
+      <div v-if="game" class="handcard-num">{{ handcardNum }}</div>
 
-      <div v-if="game && this.identity==='Team Blue'||'Team Red' " class="identity"
+      <div v-if="game && identity==='Team Blue'||'Team Red' " class="identity"
            :style="{
-          background: 'url(' + this.getIdentityImagePath() + ')',
+          background: 'url(' + getIdentityImagePath() + ')',
           backgroundSize: 'cover',
         }"
       >
       </div>
 
       <table>
-        <tr v-for="(entry,i) in this.equipment" :key="i">
+        <tr v-for="(entry,i) in equipment" :key="i">
           <td
             v-if="game"
             class="equip"
@@ -76,7 +76,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
 
       <table v-if="game">
         <tr>
-          <td v-for="(entry,i) in this.delayedEffects" :key="i">
+          <td v-for="(entry,i) in delayedEffects" :key="i">
             <div
               class="delayEffect"
               :style="{ left: 1.5 + i * 4 + 'vh' }"
@@ -89,18 +89,18 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
         </tr>
       </table>
       <transition name="fade-in">
-        <div class="description" v-if="this.showDescription" @mouseover="this.showDescription">
+        <div class="description" v-if="showDescription" @mouseover="showDescription">
           <p v-html="logTextWithLineBreaks"></p>
         </div>
       </transition>
     </div>
     <div
-      v-show="this.usable === true || this.currentPlayer || this.picked"
+      v-show="usable === true || currentPlayer || picked"
       class="lightCard"
       :class="{
-        lightCard3:this.picked,
-        lightCard2: this.currentPlayer,
-        lightCard: this.usable,
+        lightCard3:picked,
+        lightCard2: currentPlayer,
+        lightCard: usable,
       }"
     ></div>
   </div>

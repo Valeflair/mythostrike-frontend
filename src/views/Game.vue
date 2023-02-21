@@ -5,7 +5,7 @@
       <table>
         <tr>
           <td
-            v-for="player in playerDaten.filter((player) => player.username !== this.username)"
+            v-for="player in playerDaten.filter((player) => player.username !== username)"
             :key="player.username"
           >
             <championCard
@@ -13,7 +13,7 @@
               :activeSkills="player.champion.activeSkills"
               :passiveSkills="player.champion.passiveSkills"
               :championName="player.champion.name"
-              :class="{ actualPlayer: player.username === this.currentPlayer }"
+              :class="{ actualPlayer: player.username === currentPlayer }"
               :currentPlayer="player.isCurrentPlayer"
               :handcardNum="player.cardCount"
               :health="player.currentHp"
@@ -22,8 +22,8 @@
               :name="player.username"
               :equipment="getCardsFromArray(player.equipment)"
               :delayedEffects="getCardsFromArray(player.delayedEffects)"
-              :picked="containsId(player.username, this.playersPicked)"
-              :usable="containsId(player.username, this.playerConditions.players)"
+              :picked="containsId(player.username, playersPicked)"
+              :usable="containsId(player.username, playerConditions.players)"
               class="playerChampions"
               @click="pickPlayer(player.username)"
             />
@@ -34,7 +34,7 @@
 
     <!-----------------------------------------DIE SPIELERGEBNISSE----------------------------------------------->
 
-    <result-page v-if="this.playerSummarize.length !== 0" :users="this.playerSummarize" class="playerSummarizeStyle" />
+    <result-page v-if="playerSummarize.length !== 0" :users="playerSummarize" class="playerSummarizeStyle" />
 
     <!-----------------------------------------DER LOGBUTTON----------------------------------------------------->
 
@@ -42,7 +42,7 @@
       <button class="logBtn btn" @click="logOpen = !logOpen">
         <span>Log</span>
       </button>
-      <div v-if="this.logOpen" class="logTextArea">
+      <div v-if="logOpen" class="logTextArea">
         <p v-html="logTextWithLineBreaks" class="ma-3"></p>
       </div>
     </div>
@@ -51,15 +51,15 @@
 
     <div class="player">
       <player-card
-        :activeSkills="this.findPlayer(this.username).champion.activeSkills"
-        :championName="this.findPlayer(this.username).champion.name"
-        :currentPlayer="this.findPlayer(this.username).isCurrentPlayer"
-        :health="this.findPlayer(username).currentHp"
-        :identity="this.findPlayer(this.username).identity"
-        :messageActivitysUsable="this.messageActivitysUsable"
-        :name="this.username"
-        :passiveSkills="this.findPlayer(this.username).champion.passiveSkills"
-        :usedSkill="this.skillPicked"
+        :activeSkills="findPlayer(username).champion.activeSkills"
+        :championName="findPlayer(username).champion.name"
+        :currentPlayer="findPlayer(username).isCurrentPlayer"
+        :health="findPlayer(username).currentHp"
+        :identity="findPlayer(username).identity"
+        :messageActivitysUsable="messageActivitysUsable"
+        :name="username"
+        :passiveSkills="findPlayer(username).champion.passiveSkills"
+        :usedSkill="skillPicked"
         @skillUsed="useSkill"
       />
     </div>
@@ -107,11 +107,11 @@
     <div class="handCardSlot">
       <div class="card-Container">
         <div
-          v-for="(card, i) in this.playerCards"
+          v-for="(card, i) in playerCards"
           :key="i"
           :class="[{ 'not-first-card': i !== 0 }, 'not-last-card']"
           :style="{
-            'margin-left': calculateMarginLeft(this.playerCards.length, i),
+            'margin-left': calculateMarginLeft(playerCards.length, i),
           }"
           @mouseenter="hoverStart(getCard(card))"
           @mouseleave="hoverEnd(getCard(card))"
@@ -123,7 +123,7 @@
             :name="getCard(card).name"
             :picked="checkCardPicked(card)"
             :symbol="getCard(card).symbol"
-            :usable="containsId(card, this.cardConditions.cardIds)"
+            :usable="containsId(card, cardConditions.cardIds)"
             :value="getCard(card).point"
             class="playCard"
             @click="useCard(i, card)"
@@ -138,11 +138,11 @@
     <div class="tablePileSlot">
       <div class="tableContainer">
         <div
-          v-for="(entry, i) in this.tablePile"
+          v-for="(entry, i) in tablePile"
           :key="i"
           :class="[{ 'not-first-card': i !== 0 }, 'not-last-card']"
           :style="{
-            'margin-left': calculateMarginLeft(this.tablePile.length, i),
+            'margin-left': calculateMarginLeft(tablePile.length, i),
           }"
           @mouseenter="hoverStart(getCard(entry.cardId))"
           @mouseleave="hoverEnd(getCard(entry.cardId))"
@@ -159,36 +159,36 @@
         </div>
       </div>
 
-      <button v-if="this.activateConfirm" class="confirmButton button" @click="confirm()">Confirm</button>
-      <button v-if="this.activateCancel" class="cancelButton button" @click="cancel()">Cancel</button>
+      <button v-if="activateConfirm" class="confirmButton button" @click="confirm()">Confirm</button>
+      <button v-if="activateCancel" class="cancelButton button" @click="cancel()">Cancel</button>
     </div>
 
     <!-----------------------------------------------DER ZIEHSTAPEL----------------------------------------->
 
-    <div v-if="this.drawPile.length > 0" class="drawPile"></div>
+    <div v-if="drawPile.length > 0" class="drawPile"></div>
 
     <!-----------------------------------------------DER ABLEGESTAPEL--------------------------------------------------------->
 
-    <div v-if="this.discardPile.length > 0" class="discardPile">
+    <div v-if="discardPile.length > 0" class="discardPile">
       <play-card
-        :description="getCard(this.discardPile[this.discardPile.length - 1]).description"
+        :description="getCard(discardPile[discardPile.length - 1]).description"
         :identity="null"
-        :name="getCard(this.discardPile[this.discardPile.length - 1]).name"
-        :symbol="getCard(this.discardPile[this.discardPile.length - 1]).symbol"
-        :value="getCard(this.discardPile[this.discardPile.length - 1]).point"
+        :name="getCard(discardPile[discardPile.length - 1]).name"
+        :symbol="getCard(discardPile[discardPile.length - 1]).symbol"
+        :value="getCard(discardPile[discardPile.length - 1]).point"
       />
       <div class="discardPileOverlay"></div>
     </div>
 
     <!----------------------------------------DER ENDBUTTON----------------------------------------------->
 
-    <button v-if="this.messageActivitysUsable.activateEndTurn" class="endTurn button" @click="endTurn()">End Turn
+    <button v-if="messageActivitysUsable.activateEndTurn" class="endTurn button" @click="endTurn()">End Turn
     </button>
 
     <!-------------------------------NOTICE----------------------------------------------->
 
     <transition name="notice-Animation">
-      <div v-if="showNotice" class="notice-message pa-2">{{ this.notice }}</div>
+      <div v-if="showNotice" class="notice-message pa-2">{{ notice }}</div>
     </transition>
 
     <!----------------------------------------DER TIMER----------------------------------------------->
@@ -1297,7 +1297,6 @@ export default {
   border-radius: 1rem;
   width: 10vw;
   height: 29vh;
-  background-image: url(/card/pictures/shield.png);
 }
 
 .discardPile {

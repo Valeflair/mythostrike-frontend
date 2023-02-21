@@ -19,7 +19,7 @@
           <th class="text-left text-grey-darken-4">Win</th>
         </tr>
         </thead>
-        <tbody id="body" v-for="user in this.users" :key="user.userId">
+        <tbody id="body" v-for="user in users" :key="user.userId">
         <tr v-if="user.hasWon === true">
           <td>{{ user.team }}</td>
           <td>{{ user.username }}</td>
@@ -41,7 +41,7 @@
           <th class="text-left text-grey-darken-4">Lose</th>
         </tr>
         </thead>
-        <tbody id="body" v-for="user in this.users" :key="user.userId">
+        <tbody id="body" v-for="user in users" :key="user.userId">
         <tr v-if="user.hasWon == false">
           <td>{{ user.team }}</td>
           <td>{{ user.username }}</td>

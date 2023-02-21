@@ -11,7 +11,7 @@
     @mouseenter="hoverStart"
     @mouseleave="hoverEnd"
   >
-    {{ this.name }}
+    {{ name }}
   </div>
   <transition name="fade-in">
     <div
@@ -19,9 +19,9 @@
       :style="{
       width: widthProp + 'vw',
     }"
-      v-if="this.showDescription"
+      v-if="showDescription"
     >
-      {{ this.description }}
+      {{ description }}
     </div>
   </transition>
 </template>
@@ -123,7 +123,7 @@ export default {
   bottom: 0;
   z-index: 9;
   overflow-y: auto;
-  color:white;
+  color: white;
   text-shadow: #000000 2px 2px 4px;
   background: url("/elements/banner.png");
   background-size: cover;

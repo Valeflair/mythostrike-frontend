@@ -1,8 +1,8 @@
 <template>
   <div class="debuff"
-       :style="{width: diameter+'vh',height: diameter+'vh', background: 'url(' + this.getImagePath() + ')',backgroundSize: 'cover'}"></div>
+       :style="{width: diameter+'vh',height: diameter+'vh', background: 'url(' + getImagePath() + ')',backgroundSize: 'cover'}"></div>
 
-  <div class="debuff-description">{{ this.description }}</div>
+  <div class="debuff-description">{{ description }}</div>
 
 </template>
 

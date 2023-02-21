@@ -5,8 +5,8 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
   <div class="container">
     <div
       class="championCard"
-      @mouseenter="this.showSkills = true"
-      @mouseleave="this.showSkills = false"
+      @mouseenter="showSkills = true"
+      @mouseleave="showSkills = false"
     >
       <img
         class="frame"
@@ -17,21 +17,21 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
       <div
         class="avatar"
         :style="{
-          background: 'url(' + this.getImagePath() + ')',
+          background: 'url(' + getImagePath() + ')',
           backgroundSize: 'cover',
         }"
       ></div>
 
       <div class="name">
         <span>
-          {{ this.getName() }}
+          {{ getName() }}
         </span>
       </div>
 
       <img class="stone" :src="'/card/small-parts/stone-p.png'" alt="" />
 
       <table>
-        <tr v-for="i in this.health" :key="i">
+        <tr v-for="i in health" :key="i">
           <td>
             <img
               class="heartBig"
@@ -43,9 +43,9 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
         </tr>
       </table>
 
-      <div v-if="game && this.identity==='Team Blue'||'Team Red' " class="identity"
+      <div v-if="game && identity==='Team Blue'||'Team Red' " class="identity"
            :style="{
-          background: 'url(' + this.getIdentityImagePath() + ')',
+          background: 'url(' + getIdentityImagePath() + ')',
           backgroundSize: 'cover',
         }"
       >
@@ -53,7 +53,7 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
 
       <table class="skillList">
         <tr
-          v-for="(skill, i) in this.activeSkills.concat(this.passiveSkills)"
+          v-for="(skill, i) in activeSkills.concat(passiveSkills)"
           :key="skill.name"
         >
           <td class="skill" :style="{ bottom: 5 * i + 'vh' }"
@@ -65,9 +65,9 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
               :description="skill.description"
               fontProp="1.5"
               :usableProp="
-                containsId(skill.id, this.messageActivitysUsable.skillIds)
+                containsId(skill.id, messageActivitysUsable.skillIds)
               "
-              :used="this.usedSkill.skillId === skill.id"
+              :used="usedSkill.skillId === skill.id"
               :id="skill.id"
             />
           </td>
@@ -76,10 +76,10 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
     </div>
 
     <div
-      v-if="this.usable || this.currentPlayer"
+      v-if="currentPlayer"
       :class="{
-        lightCard2: this.currentPlayer,
-        lightCard: !this.currentPlayer,
+        lightCard2: currentPlayer,
+        lightCard: !currentPlayer,
       }"
     ></div>
   </div>

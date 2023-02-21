@@ -1,7 +1,7 @@
 <script setup></script>
 <template>
   <div class="container" @mouseenter="hoverStart()" @mouseleave="hoverEnd()"
-       :class="{'usable':this.usable||this.picked}">
+       :class="{'usable':usable||picked}">
     <div class="card">
       <img
         class="frame"
@@ -11,38 +11,38 @@
       <div
         class="avatar"
         :style="{
-          background: 'url(' + this.getImagePathChampion() + ')',
+          background: 'url(' + getImagePathChampion() + ')',
           backgroundSize: 'cover',
         }"
       ></div>
 
       <div class="name">
         <span>
-          {{ this.name }}
+          {{ name }}
         </span>
       </div>
 
       <img class="stone" src="/card/small-parts/stone-p.png" alt="" />
       <transition name="fade-in">
-        <div class="description" v-if="this.showDescription">
-          {{ this.description }}
+        <div class="description" v-if="showDescription">
+          {{ description }}
         </div>
       </transition>
-      <div class="identity" v-if="this.identity !== null">
-        {{ this.identity }}
+      <div class="identity" v-if="identity !== null">
+        {{ identity }}
       </div>
       <div
         class="symbol"
         :style="{
-          background: 'url(' + this.getImagePathSymbol() + ')',
+          background: 'url(' + getImagePathSymbol() + ')',
           backgroundSize: 'cover',
         }"
       >
-        <p class="value">{{ this.value }}</p>
+        <p class="value">{{ value }}</p>
       </div>
     </div>
-    <div v-if="this.usable || this.picked"
-         :class="{'lightCard':this.usable&&!this.picked,'lightCard2':this.picked}"></div>
+    <div v-if="usable || picked"
+         :class="{'lightCard':usable&&!picked,'lightCard2':picked}"></div>
   </div>
 </template>
 
