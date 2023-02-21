@@ -13,7 +13,7 @@
       <button class="imageLeft" @click="updatePointer(-1)"></button>
       <button
         class="confirmButton"
-        :disabled="!this.isLobbyOwner"
+        :disabled="!isLobbyOwner"
         @click="confirm()"
       >
         CONFIRM

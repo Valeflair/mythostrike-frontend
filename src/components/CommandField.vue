@@ -8,7 +8,7 @@
       <button
         class="commandButton"
         @click="start"
-        :disabled="!this.isLobbyOwner"
+        :disabled="!isLobbyOwner"
       >
         Start Game
       </button>
@@ -19,7 +19,7 @@
         <button
           class="commandButton"
           @click="addBot"
-          :disabled="!this.isLobbyOwner"
+          :disabled="!isLobbyOwner"
         >
           Add Bot
         </button>

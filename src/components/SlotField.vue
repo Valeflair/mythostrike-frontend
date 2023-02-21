@@ -59,15 +59,15 @@ import CommandField from "@/components/CommandField.vue";
       <v-col cols="3"></v-col>
       <v-col cols="3">
         <div class="label">
-          <p class="labelText">Lobby ID: {{ this.lobbyId }}</p>
-          <p class="labelText">Owner: {{ this.lobbyOwner }}</p>
-          <p class="labelText">Mode: {{ this.gameModeName }}</p>
+          <p class="labelText">Lobby ID: {{ lobbyId }}</p>
+          <p class="labelText">Owner: {{ isLobbyOwner }}</p>
+          <p class="labelText">Mode: {{ gameModeName }}</p>
         </div>
       </v-col>
       <v-col cols="5">
         <div class="field">
           <command-field
-            :isLobbyOwner="this.isLobbyOwner"
+            :isLobbyOwner="isLobbyOwner"
             @open:mode="toggleModeSelection"
             @update:leave="leave"
             @update:bot="addBot"
@@ -144,7 +144,6 @@ export default {
   },
   props: {
     lobbyId: Number,
-    lobbyOwner: String,
     slotsProp: Array,
     isLobbyOwner: Boolean,
     gameModeName: String,
