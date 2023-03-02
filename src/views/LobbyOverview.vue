@@ -4,7 +4,7 @@
       <img
         :src="
           '/avatars/avatar' +
-          userStore.getUser.avatarNumber +
+          this.userStore.getUser.avatarNumber +
           '.png'
         "
       />
@@ -25,7 +25,7 @@
         <div class="pt-10">
           <v-btn class="button" @click="createLobby">Create Lobby</v-btn>
         </div>
-        <button class="back" @click="back"></button>
+        <button class="back" @click="backToHome"></button>
       </div>
     </v-col>
     <v-col cols="9" id="right-bar">
@@ -173,9 +173,9 @@ export default {
         }
       );
     },
-    back() {
+    backToHome() {
       this.$router.push({ path: "./home" });
-    },
+    }
   },
   created() {
     this.getLobbies();

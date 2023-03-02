@@ -15,7 +15,7 @@
 
 <script>
 import { useUserStore } from "@/stores/user";
-
+import authService from "@/services/authService";
 export default {
   name: "App",
 
@@ -28,14 +28,22 @@ export default {
   },
   //Überprüfen ob der User schon angemeldet ist oder nicht
   async beforeCreate() {
-    if (this.userStore.getStatus() == false) {
-      if (localStorage.getItem("token") == null) {
+    if (localStorage.getItem("token") == null) {
         this.$router.push("/");
-      } else {
-        this.$router.push("/home");
-      }
+    } else {
+      await authService.auth().then(
+        (response) => {
+          console.log(response);
+          this.userStore.setUser(response.data);
+        },
+        (error) => {
+          console.log(error);
+          this.$router.push("/");
+          localStorage.removeItem("token");
+        }
+      )
     }
-  },
+  }
 };
 </script>
 

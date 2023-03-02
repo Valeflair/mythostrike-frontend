@@ -136,21 +136,7 @@ export default {
       } else {
         audio.pause();
       }
-    },
-    async auth() {
-      await authService.auth().then(
-        (response) => {
-          console.log(response);
-          this.userStore.setUser(response.data);
-          this.$router.push("/home");
-        },
-        (error) => {
-          console.log(error);
-          this.$router.push("/");
-          localStorage.removeItem("token");
-        }
-      );
-    },
+    }
     /*
             toQueue() {
               this.$router.push({ path: "./Queue" });
@@ -162,9 +148,6 @@ export default {
             toLibrary() {
               this.$router.push({ path: "./Library" });
             },*/
-  },
-  async created() {
-    this.auth();
   },
   components: { AvatarSelection },
 };

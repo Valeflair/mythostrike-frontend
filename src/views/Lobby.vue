@@ -165,6 +165,7 @@ export default {
       });
     },
     disconnect() {
+      this.stompClient.unsubscribe("/lobbies/" + this.lobbyId + "/" + this.userStore.getUser.username);
       this.stompClient.disconnect();
     },
     initStompClient() {

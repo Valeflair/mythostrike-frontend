@@ -176,6 +176,6 @@ export default {
         this.alertStatus = false;
       }, 7000);
     },
-  },
+  }
 };
 </script>
