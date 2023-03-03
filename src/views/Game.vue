@@ -829,7 +829,6 @@ export default {
         this.updateConditions();
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
-        this.status = true;
         console.log(" PRIVATE CARDMOVE aktiviert");
         console.log(this.cardMoveMessage);
         this.updateCardMoveMessage();
@@ -838,11 +837,6 @@ export default {
 
     //der setup für public connection
     gameSetup() {
-      console.log("status: " + this.status);
-      if (this.status) {
-        this.status = false;
-        return;
-      }
       console.log("PUBLIC MESSAGE");
       if (this.gameStore.getGameData.messageType === "UPDATE_GAME") {
         this.playerDaten = this.gameStore.getGameData.payload;
