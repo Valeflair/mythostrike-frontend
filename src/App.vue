@@ -16,6 +16,7 @@
 <script>
 import { useUserStore } from "@/stores/user";
 import authService from "@/services/authService";
+import lobbyService from "@/services/lobbyService";
 export default {
   name: "App",
 
@@ -24,6 +25,7 @@ export default {
   }),
   setup() {
     const userStore = useUserStore();
+
     return { userStore };
   },
   //Überprüfen ob der User schon angemeldet ist oder nicht
@@ -42,6 +44,19 @@ export default {
           localStorage.removeItem("token");
         }
       )
+      let lobbyId = localStorage.getItem("lobbyId");
+      if(lobbyId != null){
+      await lobbyService.leave(lobbyId).then(
+        (response) => {
+          this.$router.push({ path: "./lobbyoverview" });
+          localStorage.removeItem("lobbyId");
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+      }
     }
   }
 };

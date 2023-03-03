@@ -3,7 +3,7 @@ import CommandField from "@/components/CommandField.vue";
 </script>
 
 <template>
-  <v-container class="SeatCommandContainer">
+  <v-container class="SeatCommandContainer" v-if="slots">
     <v-row class="d-flex justify-center">
       <div
         v-for="(slot, id) in slots.filter((slot, id) => id < slots.length / 2)"

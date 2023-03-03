@@ -136,6 +136,7 @@ export default {
     },
     lobbySetup() {
       this.lobbyId = this.lobbyStore.getLobby.id;
+      localStorage.setItem("lobbyId", this.lobbyId);
       console.log(this.lobbyStore.getLobby.id);
       this.currentModeName = this.lobbyStore.getLobby.mode;
       console.log(this.currentModeName);
