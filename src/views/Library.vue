@@ -22,7 +22,7 @@
     </div>
     <div class="big-picture">
       <img
-        :src="'/cards/' + this.currentCard.name.toLowerCase() + '.png'"
+        :src="'/cards/' + this.currentCard.name.toLowerCase().replace(/\s/g,'') + '.png'"
         alt=""
       />
     </div>
