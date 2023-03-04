@@ -5,7 +5,6 @@
       <audio
         src="/musics/night vigil.mp3"
         loop="true"
-        autoplay="autoplay"
         id="MusicPlay"
         hidden
       ></audio>
@@ -45,6 +44,7 @@ export default {
         }
       )
       let lobbyId = localStorage.getItem("lobbyId");
+      console.log(lobbyId);
       if(lobbyId != null){
       await lobbyService.leave(lobbyId).then(
         (response) => {

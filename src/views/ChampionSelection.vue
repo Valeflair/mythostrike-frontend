@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="currentChampion">
     <div class="area-3-4 pa-5">
       <h1>Select your champion</h1>
       <h1>Your identity: {{ this.identity }}</h1>
