@@ -3,16 +3,8 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
 </script>
 <template>
   <div class="container">
-    <div
-      class="championCard"
-      @mouseenter="showSkills = true"
-      @mouseleave="showSkills = false"
-    >
-      <img
-        class="frame"
-        :src="'/card/frame/gold_card_frame_r.png'"
-        alt=""
-      />
+    <div class="championCard" @mouseenter="showSkills = true" @mouseleave="showSkills = false">
+      <img class="frame" :src="'/card/frame/gold_card_frame_r.png'" alt="" />
 
       <div
         class="avatar"
@@ -43,30 +35,25 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
         </tr>
       </table>
 
-      <div v-if="game && identity==='Team Blue'||'Team Red' " class="identity"
-           :style="{
+      <div
+        v-if="(game && identity === 'Team Blue') || 'Team Red'"
+        class="identity"
+        :style="{
           background: 'url(' + getIdentityImagePath() + ')',
           backgroundSize: 'cover',
         }"
-      >
-      </div>
+      ></div>
 
       <table class="skillList">
-        <tr
-          v-for="(skill, i) in activeSkills.concat(passiveSkills)"
-          :key="skill.name"
-        >
-          <td class="skill" :style="{ bottom: 5 * i + 'vh' }"
-              @click="useSkill(i,skill.id)">
+        <tr v-for="(skill, i) in activeSkills.concat(passiveSkills)" :key="skill.name">
+          <td class="skill" :style="{ bottom: 5 * i + 'vh' }" @click="useSkill(i, skill.id)">
             <equipment-component
               widthProp="10.2"
               heightProp="5"
               :name="skill.name"
               :description="skill.description"
               fontProp="1.5"
-              :usableProp="
-                containsId(skill.id, messageActivitysUsable.skillIds)
-              "
+              :usableProp="containsId(skill.id, messageActivitysUsable.skillIds)"
               :used="usedSkill.skillId === skill.id"
               :id="skill.id"
             />
@@ -94,7 +81,6 @@ export default {
       timerDelay: 1000,
       hoverComponents: false,
       basePathSymbol: "/cards/",
-
     };
   },
   components: {
@@ -121,7 +107,6 @@ export default {
     currentPlayer: Boolean,
   },
   methods: {
-
     getIdentityImagePath() {
       let path = "/card/small-parts/" + this.identity.replace(/\s/g, "").toLowerCase() + ".png";
       return path;

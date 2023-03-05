@@ -4,10 +4,7 @@
     <header class="table-wrapper">
       <table>
         <tr>
-          <td
-            v-for="player in playerDaten.filter((player) => player.username !== username)"
-            :key="player.username"
-          >
+          <td v-for="player in playerDaten.filter((player) => player.username !== username)" :key="player.username">
             <championCard
               v-if="player.champion !== null"
               :activeSkills="player.champion.activeSkills"
@@ -76,8 +73,11 @@
               :style="{ left: j * 3.5 + 'vw' }"
               class="passiveCircle"
             >
-              <delayedeffect-component :diameter="7" :name="getCard(passive).name"
-                                       :description="getCard(passive).description" />
+              <delayedeffect-component
+                :diameter="7"
+                :name="getCard(passive).name"
+                :description="getCard(passive).description"
+              />
             </td>
           </tr>
         </table>
@@ -132,7 +132,6 @@
       </div>
     </div>
 
-
     <!-----------------DIE KARTEN AUF DEM TISCH UND DER CONFIRM/CANCEL BUTTON-------------------------------------->
 
     <div class="tablePileSlot">
@@ -182,8 +181,7 @@
 
     <!----------------------------------------DER ENDBUTTON----------------------------------------------->
 
-    <button v-if="messageActivitysUsable.activateEndTurn" class="endTurn button" @click="endTurn()">End Turn
-    </button>
+    <button v-if="messageActivitysUsable.activateEndTurn" class="endTurn button" @click="endTurn()">End Turn</button>
 
     <!-------------------------------NOTICE----------------------------------------------->
 
@@ -229,6 +227,9 @@ export default {
   },
   mounted() {
     document.body.style.overflow = "hidden";
+  },
+  beforeMount() {
+    window.addEventListener("beforeunload", this.disconnect);
   },
   data() {
     return {
@@ -416,8 +417,11 @@ export default {
         console.log("MATH MAX");
         console.log(Math.max(this.messageActivitysUsable.cardCount));
         //wenn eine Karte ausgewählt ist und Gegner zur auswahl stehen, Gegner auswählbar machen
-        if (this.cardsPicked.length === 1 && this.getMax(this.messageActivitysUsable.cardCount) === 1
-          && this.messageActivitysUsable.cardPlayerConditions[this.cardsPicked[0].index] != null) {
+        if (
+          this.cardsPicked.length === 1 &&
+          this.getMax(this.messageActivitysUsable.cardCount) === 1 &&
+          this.messageActivitysUsable.cardPlayerConditions[this.cardsPicked[0].index] != null
+        ) {
           //spieler die man auswählen kann und dessen Anzahl holen
           console.log("----- AUSWÄHLBAR SPIELER ONE CARD -------");
           let id = this.cardsPicked[0].index;
@@ -447,7 +451,6 @@ export default {
           this.cardConditions.cardIds = [];
           this.cardConditions.count = [];
 
-
           //sonst nicht
         } else {
           console.log("----- KEINE AUSWÄHLBAR SPIELER -------");
@@ -465,7 +468,9 @@ export default {
         //keinen weiteren skill auswählbar
         this.skillConditions.skillIds = [];
         this.skillConditions.count = [...this.messageActivitysUsable.skillCount];
-        console.log("---------------------------------------------- SKILLPLAYERCONDITIONS------------------------------------");
+        console.log(
+          "---------------------------------------------- SKILLPLAYERCONDITIONS------------------------------------"
+        );
         console.log(this.messageActivitysUsable.skillPlayerConditions);
         //player abhängig von Skill auswählbar
         if (this.messageActivitysUsable.skillPlayerConditions.length !== 0) {
@@ -496,7 +501,7 @@ export default {
       let cardConfirm = false;
       let skillConfirm = false;
       console.log(
-        "------------------------------------------ CHECK -------------------------------------------------------------------------------",
+        "------------------------------------------ CHECK -------------------------------------------------------------------------------"
       );
       console.log("playcondition: ");
       console.log(this.playerConditions);
@@ -527,8 +532,10 @@ export default {
           break;
         }
       }
-      if ((this.containsId(0, this.skillConditions.count) && this.skillPicked.index === -1)
-        || (this.containsId(1, this.skillConditions.count) && this.skillPicked.index !== -1)) {
+      if (
+        (this.containsId(0, this.skillConditions.count) && this.skillPicked.index === -1) ||
+        (this.containsId(1, this.skillConditions.count) && this.skillPicked.index !== -1)
+      ) {
         skillConfirm = true;
         this.axiosUseCard = false;
         this.axiosSelectSkill = true;
@@ -538,12 +545,10 @@ export default {
       this.activateConfirm = playerConfirm || cardConfirm || skillConfirm;
     },
 
-
     findMaxEntry(array) {
       let max = -1;
       for (const element of array) {
-        if (max < element)
-          max = element;
+        if (max < element) max = element;
       }
       return max;
     },
@@ -582,8 +587,7 @@ export default {
     getMax(array) {
       let max = -1;
       for (let i = 0; i < array.length; i++) {
-        if (array[i] > max)
-          max = array[i];
+        if (array[i] > max) max = array[i];
       }
       return max;
     },
@@ -609,7 +613,6 @@ export default {
       console.log(this.playerConditions);
       console.log("___________________________________SKILL CONDITION___________________________________");
       console.log(this.skillConditions);
-
     },
 
     //--------------------------------- AXIOS ----------------------------------------------------
@@ -626,7 +629,7 @@ export default {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
 
@@ -675,7 +678,7 @@ export default {
     //wenn der Spieler seine Runde beenden will muss noch geprüft werden, ob er genug karten / leben hat
     async endTurn() {
       console.log(
-        "------------------------------------------ END TURN --------------------------------------------------",
+        "------------------------------------------ END TURN --------------------------------------------------"
       );
       this.resetHighlightMessage();
       await gameService.end(this.lobbyId).then(
@@ -684,15 +687,14 @@ export default {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
 
     //wenn der Spieler einen Skill einsetzt
     useSkill(i, skillId) {
-
       console.log(
-        "----------------------------------------------- USE SKILL --------------------------------------------",
+        "----------------------------------------------- USE SKILL --------------------------------------------"
       );
       if (this.containsId(skillId, this.skillConditions.skillIds)) {
         console.log("USESKILL : PLAYERCONDITION");
@@ -716,7 +718,7 @@ export default {
     //wenn der confirm button gedrückt wird
     async confirm() {
       console.log(
-        "----------------------------------------------- CONFIRM --------------------------------------------",
+        "----------------------------------------------- CONFIRM --------------------------------------------"
       );
 
       if (this.axiosUseCard) {
@@ -748,7 +750,7 @@ export default {
           },
           (error) => {
             console.log(error);
-          },
+          }
         );
       } else if (this.axiosSelectSkill) {
         console.log("CONFIRM: SELECT SKILL");
@@ -767,7 +769,7 @@ export default {
           },
           (error) => {
             console.log(error);
-          },
+          }
         );
       }
 
@@ -812,10 +814,10 @@ export default {
         });
       });
     },
-
-    //keine Ahnung ob man es braucht
     disconnect() {
+      this.stompClient.unsubscribe("/games/" + this.lobbyId + "/" + this.userStore.getUser.username);
       this.stompClient.disconnect();
+      window.removeEventListener("beforeunload", this.disconnect);
     },
 
     //der setup für private Connection
@@ -829,6 +831,7 @@ export default {
         this.updateConditions();
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
+        this.status = true;
         console.log(" PRIVATE CARDMOVE aktiviert");
         console.log(this.cardMoveMessage);
         this.updateCardMoveMessage();
@@ -837,6 +840,11 @@ export default {
 
     //der setup für public connection
     gameSetup() {
+      console.log("status: " + this.status);
+      if (this.status) {
+        this.status = false;
+        return;
+      }
       console.log("PUBLIC MESSAGE");
       if (this.gameStore.getGameData.messageType === "UPDATE_GAME") {
         this.playerDaten = this.gameStore.getGameData.payload;
@@ -853,7 +861,6 @@ export default {
         console.log(" PUBLIC LOG aktiviert");
         this.logText += "\n" + this.gameStore.getGameData.payload.message;
         console.log(this.gameStore.getGameData.payload);
-
       } else if (this.gameStore.getGameData.messageType === "GAME_END") {
         this.playerSummarize = this.gameStore.getGameData.payload;
         console.log(" PUBLIC GAME_END aktiviert");
@@ -899,7 +906,6 @@ export default {
       return false;
     },
 
-
     //TODO: MUSS ÜBERARBEITET WERDEN
     updateCardMoveMessage() {
       this.showNotice = false;
@@ -919,9 +925,7 @@ export default {
         }
       } else if (this.cardMoveMessage.source === "delayedEffect-" + this.username) {
         for (const element of this.cardMoveMessage.cardIds) {
-          this.playerDelayedEffect = this.playerDelayedEffect.filter(
-            (card) => card !== element,
-          );
+          this.playerDelayedEffect = this.playerDelayedEffect.filter((card) => card !== element);
         }
       } else {
         for (const element of this.playerDaten) {
@@ -941,8 +945,7 @@ export default {
           this.discardPile.push(element);
         }
       } else if (this.cardMoveMessage.destination === "drawPile") {
-        for (const element of this.cardMoveMessage.cardIds)
-          this.drawPile.push(element);
+        for (const element of this.cardMoveMessage.cardIds) this.drawPile.push(element);
       } else if (this.cardMoveMessage.destination === "tablePile") {
         for (const element of this.cardMoveMessage.cardIds)
           this.tablePile.push({
@@ -980,7 +983,6 @@ export default {
       }
     },
 
-
     getCardsFromArray(array) {
       let newArray = [];
       for (let i = 0; i < array.length; i++) {
@@ -1006,10 +1008,8 @@ export default {
         fill: "forwards",
       });
       this.animation.onfinish = () => {
-        if (this.activateConfirm)
-          this.connect();
-        else
-          this.endTurn();
+        if (this.activateConfirm) this.connect();
+        else this.endTurn();
         this.animation.onfinish = null;
       };
       this.$refs.progress.style.animation = "progress-animation 20s ease-in forwards";
@@ -1019,7 +1019,6 @@ export default {
 </script>
 
 <style scoped>
-
 .testBtn {
   width: 5vw;
   height: 5vw;
@@ -1169,7 +1168,6 @@ export default {
   right: 5px;
 }
 
-
 .logBtn {
   width: 7vw;
   height: 5vh;
@@ -1186,7 +1184,7 @@ export default {
   position: absolute;
   display: inline-block;
   box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5), 7px 7px 20px 0px rgba(0, 0, 0, 0.1),
-  4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   outline: none;
 }
 
@@ -1448,7 +1446,6 @@ export default {
   overflow: auto;
   position: absolute;
   bottom: 16vh;
-
 }
 
 .passiveCircle {
@@ -1533,7 +1530,7 @@ export default {
   bottom: 0;
   background: rgb(147, 12, 3);
   box-shadow: -7px -7px 20px 0px rgba(255, 255, 255, 0.9), -4px -4px 5px 0px rgba(255, 255, 255, 0.9),
-  7px 7px 20px 0px rgba(0, 0, 0, 0.2), 4px 4px 5px 0px rgba(0, 0, 0, 0.3);
+    7px 7px 20px 0px rgba(0, 0, 0, 0.2), 4px 4px 5px 0px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
 
@@ -1568,7 +1565,7 @@ export default {
   top: 0;
   background: rgb(147, 12, 3);
   box-shadow: -7px -7px 20px 0px rgba(255, 255, 255, 0.9), -4px -4px 5px 0px rgba(255, 255, 255, 0.9),
-  7px 7px 20px 0px rgba(0, 0, 0, 0.2), 4px 4px 5px 0px rgba(0, 0, 0, 0.3);
+    7px 7px 20px 0px rgba(0, 0, 0, 0.2), 4px 4px 5px 0px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
 

@@ -1,13 +1,8 @@
 <script setup></script>
 <template>
-  <div class="container" @mouseenter="hoverStart()" @mouseleave="hoverEnd()"
-       :class="{'usable':usable||picked}">
+  <div class="container" @mouseenter="hoverStart()" @mouseleave="hoverEnd()" :class="{ usable: usable || picked }">
     <div class="card">
-      <img
-        class="frame"
-        :src="'/card/frame/gold_card_frame_r.png'"
-        alt=""
-      />
+      <img class="frame" :src="'/card/frame/gold_card_frame_r.png'" alt="" />
       <div
         class="avatar"
         :style="{
@@ -41,8 +36,7 @@
         <p class="value">{{ value }}</p>
       </div>
     </div>
-    <div v-if="usable || picked"
-         :class="{'lightCard':usable&&!picked,'lightCard2':picked}"></div>
+    <div v-if="usable || picked" :class="{ lightCard: usable && !picked, lightCard2: picked }"></div>
   </div>
 </template>
 
@@ -204,7 +198,6 @@ export default {
   filter: blur(20px);
   opacity: 0.8;
 }
-
 
 .lightCard2 {
   background: #191c29;

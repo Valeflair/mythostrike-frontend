@@ -11,7 +11,7 @@ export default {
         cardIds: cardsUsed,
         targets: playersPicked,
       },
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   end(lobby) {
@@ -21,7 +21,7 @@ export default {
       data: {
         lobbyId: lobby,
       },
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   useSkill(lobbyId, skillId, playersPicked) {
@@ -33,7 +33,7 @@ export default {
         skillId: skillId,
         targets: playersPicked,
       },
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   cancel(lobby) {
@@ -43,7 +43,7 @@ export default {
       data: {
         lobbyId: lobby,
       },
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
   },
   selectChampion(lobbyId, selectedChampionId) {
@@ -54,9 +54,7 @@ export default {
         lobbyId: lobbyId,
         championId: selectedChampionId,
       },
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
-  }
-
-
+  },
 };

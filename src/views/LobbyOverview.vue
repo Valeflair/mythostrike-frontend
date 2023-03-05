@@ -1,13 +1,7 @@
 <template>
   <div class="d-flex justify-center">
     <v-col cols="3" id="left-bar" class="text-center">
-      <img
-        :src="
-          '/avatars/avatar' +
-          this.userStore.getUser.avatarNumber +
-          '.png'
-        "
-      />
+      <img :src="'/avatars/avatar' + userStore.getUser.avatarNumber + '.png'" />
       <v-divider inset></v-divider>
       <div class="text-h4 pa-4">
         <div class="pa-5">
@@ -25,7 +19,7 @@
         <div class="pt-10">
           <v-btn class="button" @click="createLobby">Create Lobby</v-btn>
         </div>
-        <button class="back" @click="backToHome"></button>
+        <button class="back" @click="back"></button>
       </div>
     </v-col>
     <v-col cols="9" id="right-bar">
@@ -49,9 +43,7 @@
               <td>{{ lobby.mode }}</td>
               <td>{{ lobby.numberPlayers }}/{{ lobby.maxPlayers }}</td>
               <td>
-                <v-btn variant="outlined" @click="joinLobbyById(lobby.id)"
-                  >Join</v-btn
-                >
+                <v-btn variant="outlined" @click="joinLobbyById(lobby.id)">Join</v-btn>
               </td>
             </tr>
           </tbody>
@@ -173,9 +165,9 @@ export default {
         }
       );
     },
-    backToHome() {
+    back() {
       this.$router.push({ path: "./home" });
-    }
+    },
   },
   created() {
     this.getLobbies();

@@ -8,8 +8,7 @@
           <v-col :key="card.id">
             <button
               v-bind:style="{
-                backgroundImage:
-                  'url(' + '/cards/' + getImagePath(card.name) + '.png' + ')',
+                backgroundImage: 'url(' + '/cards/' + getImagePath(card.name) + '.png' + ')',
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
               }"
@@ -21,10 +20,7 @@
       </v-row>
     </div>
     <div class="big-picture">
-      <img
-        :src="'/cards/' + this.currentCard.name.toLowerCase().replace(/\s/g,'') + '.png'"
-        alt=""
-      />
+      <img :src="'/cards/' + this.currentCard.name.toLowerCase().replace(/\s/g, '') + '.png'" alt="" />
     </div>
     <div class="description">
       {{ this.currentCard.description }}
@@ -134,7 +130,7 @@ export default {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
       await resourceService.getChampions().then(
         (response) => {
@@ -143,13 +139,13 @@ export default {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
     getImagePath(name) {
       let text = name.replace(/\s/g, "");
       return text.toLowerCase();
-    }
+    },
   },
   created() {
     this.initCards();

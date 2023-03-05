@@ -1,16 +1,21 @@
 <template>
-  <div class="debuff"
-       :style="{width: diameter+'vh',height: diameter+'vh', background: 'url(' + getImagePath() + ')',backgroundSize: 'cover'}"></div>
+  <div
+    class="debuff"
+    :style="{
+      width: diameter + 'vh',
+      height: diameter + 'vh',
+      background: 'url(' + getImagePath() + ')',
+      backgroundSize: 'cover',
+    }"
+  ></div>
 
   <div class="debuff-description">{{ description }}</div>
-
 </template>
 
 <script>
 export default {
   data() {
     return {
-
       basePathSymbol: "/cards/",
     };
   },
@@ -28,9 +33,7 @@ export default {
 };
 </script>
 
-
 <style scoped>
-
 .debuff-description {
   display: none;
   width: 10vw;
@@ -50,4 +53,3 @@ export default {
   border-radius: 100%;
 }
 </style>
-
