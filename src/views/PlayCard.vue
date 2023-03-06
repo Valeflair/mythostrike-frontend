@@ -289,6 +289,7 @@ export default {
   cursor: pointer;
 }
 
+
 .frame {
   width: 100%;
   height: 100%;

@@ -5,7 +5,7 @@
       <table>
         <tr>
           <td
-            v-for="player in playerDaten.filter((player) => player.username !== username)"
+            v-for="(player,i) in playerDaten.filter((player) => player.username !== username)"
             :key="player.username"
           >
             <championCard
@@ -26,6 +26,7 @@
               :usable="containsId(player.username, playerConditions.players)"
               class="playerChampions"
               @click="pickPlayer(player.username)"
+              :id="`#championCard-${i}`"
             />
           </td>
         </tr>
@@ -66,28 +67,29 @@
 
     <!-----------------------------------------------DIE DELAYED EFFEKTE & EQUIPMENT--------------------------------------------------------->
 
-    <div class="passivePosNegSlot">
       <div class="passiveSlot">
-        <table>
-          <tr>
-            <td
+
+
+            <div
               v-for="(passive, j) in playerDelayedEffect"
               :key="passive.id"
-              :style="{ left: j * 3.5 + 'vw' }"
-              class="passiveCircle"
             >
-              <delayedeffect-component :diameter="7" :name="getCard(passive).name"
-                                       :description="getCard(passive).description" />
-            </td>
-          </tr>
-        </table>
+              <div :id="`#passiveCard-${j}`" class="passiveCircle">
+                <delayedeffect-component :diameter="7" :name="getCard(passive).name"
+                                         :description="getCard(passive).description"
+                                         />
+              </div>
+            </div>
+
+
       </div>
 
       <div class="equipmentSlot">
-        <table>
-          <tr v-for="(equip, i) in playerEquipment" :key="equip.id">
-            <td>
-              <div :style="{ bottom: 15 - i * 8 + 'vh' }" class="equipment">
+          <div v-for="(equip, i) in playerEquipment" :key="equip.id">
+
+             <div class="equipment"
+            :id="`#equipmentCard-${i}`">
+                
                 <equipment-component
                   :description="getCard(equip).description"
                   :name="getCard(equip).name"
@@ -95,12 +97,10 @@
                   heightProp="6.5"
                   widthProp="18"
                 />
+         
               </div>
-            </td>
-          </tr>
-        </table>
+          </div>
       </div>
-    </div>
 
     <!-------------------------------------------DIE HANDKARTEN---------------------------------------------->
 
@@ -116,6 +116,7 @@
           @mouseenter="hoverStart(getCard(card))"
           @mouseleave="hoverEnd(getCard(card))"
         >
+          <div class="cardWrapper" :id="`#cardWrapper-${i}`">
           <play-card
             :class="{ cardUsedStyle: checkCardPicked(card) }"
             :description="getCard(card).description"
@@ -127,7 +128,9 @@
             :value="getCard(card).point"
             class="playCard"
             @click="useCard(i, card)"
+            :id="`#playCard-${i}`"
           />
+          </div>
         </div>
       </div>
     </div>
@@ -155,6 +158,7 @@
             :usable="false"
             :value="getCard(entry.cardId).point"
             class="playCard"
+            :id="`#tableCard-${i}`"
           />
         </div>
       </div>
@@ -165,19 +169,25 @@
 
     <!-----------------------------------------------DER ZIEHSTAPEL----------------------------------------->
 
-    <div v-if="drawPile.length > 0" class="drawPile"></div>
+    <div class="drawPile" :id="`#drawPile`">
+      <img src="/cards/cardcover.png" :style="{ width: '100%', height: '100%' }">
+    </div>
 
     <!-----------------------------------------------DER ABLEGESTAPEL--------------------------------------------------------->
 
-    <div v-if="discardPile.length > 0" class="discardPile">
+    <div v-if="discardPile.length > 0">
+      <div v-for="(discard,i) in discardPile" :key="i" class="discardPile">
       <play-card
-        :description="getCard(discardPile[discardPile.length - 1]).description"
+        :description="getCard(discardPile[i]).description"
         :identity="null"
-        :name="getCard(discardPile[discardPile.length - 1]).name"
-        :symbol="getCard(discardPile[discardPile.length - 1]).symbol"
-        :value="getCard(discardPile[discardPile.length - 1]).point"
+        :name="getCard(discardPile[i]).name"
+        :symbol="getCard(discardPile[i]).symbol"
+        :value="getCard(discardPile[i]).point"
+        :id="`#discardPile-${i}`"
       />
-      <div class="discardPileOverlay"></div>
+    </div>
+    
+    <div class="discardPileOverlay"></div>
     </div>
 
     <!----------------------------------------DER ENDBUTTON----------------------------------------------->
@@ -636,6 +646,8 @@ export default {
       console.log("INDEX: " + index + "      id: " + id);
       console.log("MESSAGE ACTIVITY USABLE: ");
       console.log(this.messageActivitysUsable);
+      console.log("CHECKCARDPICKED : ");
+      console.log(this.checkCardPicked(id));
       if (this.containsId(id, this.messageActivitysUsable.cardIds)) {
         if (this.checkCardPicked(id)) {
           this.cardsPicked = this.cardsPicked.filter((card) => card.cardId !== id);
@@ -829,7 +841,6 @@ export default {
         this.updateConditions();
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
-        this.status = true;
         console.log(" PRIVATE CARDMOVE aktiviert");
         console.log(this.cardMoveMessage);
         this.updateCardMoveMessage();
@@ -838,11 +849,6 @@ export default {
 
     //der setup für public connection
     gameSetup() {
-      console.log("status: " + this.status);
-      if (this.status) {
-        this.status = false;
-        return;
-      }
       console.log("PUBLIC MESSAGE");
       if (this.gameStore.getGameData.messageType === "UPDATE_GAME") {
         this.playerDaten = this.gameStore.getGameData.payload;
@@ -906,77 +912,8 @@ export default {
     },
 
 
-    //TODO: MUSS ÜBERARBEITET WERDEN
-    updateCardMoveMessage() {
-      this.showNotice = false;
-      //1. wir entfernen die Karten.
-      //erst prüfen ob es eines der Stapeln ist
-      //Wenn es auch nicht da ist prüfe ob es der Spieler seine equipment / passive ist
 
-      if (this.cardMoveMessage.source === "discardPile") {
-        for (const element of this.cardMoveMessage.cardIds) this.discardPile.pop();
-      } else if (this.cardMoveMessage.source === "drawPile") {
-        for (const element of this.cardMoveMessage.cardIds) this.drawPile.pop();
-      } else if (this.cardMoveMessage.source === "tablePile") {
-        for (const element of this.cardMoveMessage.cardIds) this.tablePile.pop();
-      } else if (this.cardMoveMessage.source === "equipment-" + this.username) {
-        for (const element of this.cardMoveMessage.cardIds) {
-          this.playerEquipment = this.playerEquipment.filter((card) => card !== element);
-        }
-      } else if (this.cardMoveMessage.source === "delayedEffect-" + this.username) {
-        for (const element of this.cardMoveMessage.cardIds) {
-          this.playerDelayedEffect = this.playerDelayedEffect.filter(
-            (card) => card !== element,
-          );
-        }
-      } else {
-        for (const element of this.playerDaten) {
-          if (element.username === this.cardMoveMessage.source) {
-            element.cardCount -= this.cardMoveMessage.count;
-            if (this.cardMoveMessage.source === this.username) {
-              for (const element of this.cardMoveMessage.cardIds) {
-                this.playerCards = this.playerCards.filter((card) => card !== element);
-              }
-            }
-          }
-        }
-      }
-      //2. wir fügen die Karte nun dahin wohin sie hingehört ein
-      if (this.cardMoveMessage.destination === "discardPile") {
-        for (const element of this.cardMoveMessage.cardIds) {
-          this.discardPile.push(element);
-        }
-      } else if (this.cardMoveMessage.destination === "drawPile") {
-        for (const element of this.cardMoveMessage.cardIds)
-          this.drawPile.push(element);
-      } else if (this.cardMoveMessage.destination === "tablePile") {
-        for (const element of this.cardMoveMessage.cardIds)
-          this.tablePile.push({
-            cardId: element,
-            playerName: this.cardMoveMessage.source,
-          });
-      } else if (this.cardMoveMessage.destination === "equipment-" + this.username) {
-        for (const element of this.cardMoveMessage.cardIds) {
-          this.playerEquipment.push(element);
-        }
-      } else if (this.cardMoveMessage.destination === "delayedEffect-" + this.username) {
-        for (const element of this.cardMoveMessage.cardIds) {
-          this.playerDelayedEffect.push(element);
-        }
-      } else {
-        for (const element of this.playerDaten) {
-          if (this.cardMoveMessage.destination === element.username) {
-            element.cardCount += this.cardMoveMessage.count;
-            if (this.cardMoveMessage.destination === this.username) {
-              for (const element of this.cardMoveMessage.cardIds) {
-                this.playerCards.push(element);
-              }
-            }
-          }
-        }
-      }
-    },
-
+    
     /*sucht die Karte mit der bestimmten id */
     getCard(id) {
       for (const element of this.cards) {
@@ -1020,38 +957,330 @@ export default {
       };
       this.$refs.progress.style.animation = "progress-animation 20s ease-in forwards";
     },
+
+
+    //TODO: MUSS ÜBERARBEITET WERDEN
+    updateCardMoveMessage() {
+      this.showNotice = false;
+      //1. wir entfernen die Karten.
+      //erst prüfen ob es eines der Stapeln ist
+      //Wenn es auch nicht da ist prüfe ob es der Spieler seine equipment / passive ist
+      console.log("CARDMOVE ACTIVATED");
+      let copyDataMovingCards=[];
+      const viewportWidth = document.documentElement.clientWidth;
+      const viewportHeight = document.documentElement.clientHeight;
+      
+
+      if (this.cardMoveMessage.source === "discardPile") {
+        for (const element of this.cardMoveMessage.cardIds) this.discardPile.pop();
+      } else if (this.cardMoveMessage.source === "drawPile") {
+        for (const element of this.cardMoveMessage.cardIds){ 
+            copyDataMovingCards.push({xPoint:0.01*viewportWidth,yPoint:viewportHeight-0.32*viewportHeight,cardId:element});
+          this.drawPile.pop();}
+      } else if (this.cardMoveMessage.source === "tablePile") {
+          const cardIds = this.cardMoveMessage.cardIds;
+          for (let i = 0; i < cardIds.length; i++) {
+            const cardId = cardIds[i];
+            let num = 0;
+            for(let j=0;j<this.tablePile.length;j++){
+              if(this.tablePile[j].cardId === cardId)
+                num = j;
+            }
+            const cardElement = document.getElementById(`#tableCard-${num}`);
+            const cardRect = cardElement.getBoundingClientRect();
+            const cardX = cardRect.left* window.devicePixelRatio; 
+            const cardY = cardRect.top* window.devicePixelRatio; 
+            copyDataMovingCards.push({xPoint:cardX,yPoint:cardY,cardId:cardId});
+          }
+        for (const element of this.cardMoveMessage.cardIds)
+          this.tablePile.pop();
+
+      } else if (this.cardMoveMessage.source === "equipment-" + this.username) {
+        for (const element of this.cardMoveMessage.cardIds) {
+          this.playerEquipment = this.playerEquipment.filter((card) => card !== element);
+
+          copyDataMovingCards.push({xPoint:0,yPoint:0.8*viewportHeight,cardId:element});
+        }
+      } else if (this.cardMoveMessage.source === "delayedEffect-" + this.username) {
+        for (const element of this.cardMoveMessage.cardIds) {
+          this.playerDelayedEffect = this.playerDelayedEffect.filter(
+            (card) => card !== element,
+          );
+          copyDataMovingCards.push({xPoint:0,yPoint:0.7*viewportHeight,cardId:element});
+        }
+      } else {
+        for (const element of this.playerDaten) {
+          if (element.username === this.cardMoveMessage.source) {
+            element.cardCount -= this.cardMoveMessage.count;
+            
+            const cardIds = this.cardMoveMessage.cardIds;
+
+            for (let i = 0; i < cardIds.length; i++) {
+              const cardId = cardIds[i];
+              let num = 0;
+              for(let j=0;j<this.playerCards.length;j++){
+                if(this.playerCards[j] === cardId)
+                  num = j;
+              }
+              const cardElement = document.getElementById(`#playCard-${num}`);
+              const cardRect = cardElement.getBoundingClientRect();
+              const cardX = cardRect.left* window.devicePixelRatio; 
+              const cardY = cardRect.top* window.devicePixelRatio; 
+              copyDataMovingCards.push({xPoint:cardX,yPoint:cardY,cardId:cardId});
+            
+              
+            }
+            for (const element of this.cardMoveMessage.cardIds)
+               this.playerCards = this.playerCards.filter((card) => card !== element);
+            
+          }
+        }
+      }
+      //2. wir fügen die Karte nun dahin wohin sie hingehört ein
+      if (this.cardMoveMessage.destination === "discardPile") {
+        for (const element of this.cardMoveMessage.cardIds) {
+          this.discardPile.push(element);
+        }
+      } else if (this.cardMoveMessage.destination === "drawPile") {
+        for (const element of this.cardMoveMessage.cardIds)
+          this.drawPile.push(element);
+      } else if (this.cardMoveMessage.destination === "tablePile") {
+        for (const element of this.cardMoveMessage.cardIds)
+          this.tablePile.push({
+            cardId: element,
+            playerName: this.cardMoveMessage.source,
+          });
+      } else if (this.cardMoveMessage.destination === "equipment-" + this.username) {
+        for (const element of this.cardMoveMessage.cardIds) {
+          this.playerEquipment.push(element);
+        }
+      } else if (this.cardMoveMessage.destination === "delayedEffect-" + this.username) {
+        for (const element of this.cardMoveMessage.cardIds) {
+          this.playerDelayedEffect.push(element);
+        }
+      } else {
+        for (const element of this.playerDaten) {
+          if (this.cardMoveMessage.destination === element.username) {
+            element.cardCount += this.cardMoveMessage.count;
+            if (this.cardMoveMessage.destination === this.username) {
+              for (const element of this.cardMoveMessage.cardIds) {
+                this.playerCards.push(element);
+              }
+            }
+          }
+        }
+      }
+      console.log("CHECK ANIMATION");
+      this.$nextTick(() => {
+        if(copyDataMovingCards.length===0) return;
+
+      
+        const oldX=[];
+        const oldY=[];
+
+
+        const source = this.cardMoveMessage.source;
+
+        if(source === "drawPile"){
+          let element = document.getElementById(`#drawPile`);
+          let elementPos = element.getBoundingClientRect();
+          let x=elementPos.left* window.devicePixelRatio;
+          let y=elementPos.top* window.devicePixelRatio;
+          for(let i=0;i<this.cardMoveMessage.cardIds.length;i++){
+              oldX.push(x);
+              oldY.push(y);
+            }
+        }else if(source === "tablePile"){
+            for(let i=0;i<copyDataMovingCards.length;i++){
+              oldX.push(copyDataMovingCards[i].xPoint);
+              oldY.push(copyDataMovingCards[i].yPoint);
+            }
+        }else if(source === "discardPile"){
+
+        }else if(source === "equipment-"+this.username){
+          for(let i=0;i<copyDataMovingCards.length;i++){
+            oldX.push(copyDataMovingCards[i].xPoint);
+            oldY.push(copyDataMovingCards[i].yPoint);
+          }
+        }else if(source === "delayedEffect-"+this.username){
+
+          for(let i=0;i<copyDataMovingCards.length;i++){
+            oldX.push(copyDataMovingCards[i].xPoint);
+            oldY.push(copyDataMovingCards[i].yPoint);
+          }
+        }else{
+          if(source === this.username){
+            for(let i=0;i<copyDataMovingCards.length;i++){
+              oldX.push(copyDataMovingCards[i].xPoint);
+              oldY.push(copyDataMovingCards[i].yPoint);
+            }
+          }else{
+            let num;
+            let array =  [...this.playerDaten];
+            array = array.filter(player=> player.username!==this.username);
+            for(let p=0;p<array.length;p++){
+              if(array[p].username === this.cardMoveMessage.source){
+                num=p;
+                break;
+              }
+            }
+            let playerElement = document.getElementById(`#championCard-${num}`);
+            let playerPos = playerElement.getBoundingClientRect();
+            const playerX=playerPos.left* window.devicePixelRatio;
+            const playerY=playerPos.top* window.devicePixelRatio;
+            for(let i=0;i<copyDataMovingCards.length;i++){
+              oldX.push(playerX);
+              oldY.push(playerY);
+            }
+          } 
+        }
+
+
+        const destination = this.cardMoveMessage.destination;
+
+        if(destination === "drawPile"){
+          
+
+        }else if(destination === "tablePile"){
+          console.log("DESITINATION IST TABLE")
+          for(let i=0;i<this.tablePile.length;i++){
+            if(this.containsId(this.tablePile[i].cardId,this.cardMoveMessage.cardIds)){
+              for(let j=0;j<copyDataMovingCards.length;j++){
+                if(copyDataMovingCards[j].cardId === this.tablePile[i].cardId){
+                  console.log("KARTE WIRD ANIMIERT");
+                  let element = document.getElementById(`#tableCard-${i}`);
+                  let elementPos = element.getBoundingClientRect();
+                  let newX=elementPos.left* window.devicePixelRatio;
+                  let newY=elementPos.top* window.devicePixelRatio;
+                  element.style.transition = 'transform 1s ease-in-out';
+                  console.log("toTablePile:equipment");
+                  if(source === this.username){
+                    console.log("DU BIST SOURCE");
+                    element.style.left = `${oldX[j]-newX}px`;
+                    element.style.top = `${oldY[j]-newY-0.04*viewportHeight}px`;
+                    element.style.transform = `translate(${newX-oldX[j]}px, ${newY-oldY[j]+0.04*viewportHeight}px)`;
+                  }else{
+                    console.log("ANDERER SPIELER IST SOURCE")    
+                    element.style.left = `${oldX[j]-newX}px`;
+                    element.style.top = `${oldY[j]-newY}px`;
+                    element.style.transform = `translate(${newX-oldX[j]}px, ${newY-oldY[j]}px)`;
+                  }
+            }}}}
+
+        }else if(destination === "discardPile"){
+          for(let i=0;i<this.discardPile.length;i++){
+            if(this.containsId(this.discardPile[i],this.cardMoveMessage.cardIds)){
+              for(let j=0;j<copyDataMovingCards.length;j++){
+                if(copyDataMovingCards[j].cardId === this.discardPile[i]){
+                  let element = document.getElementById(`#discardPile-${i}`);
+                  let elementPos = element.getBoundingClientRect();
+                  let newX=elementPos.left* window.devicePixelRatio;
+                  let newY=elementPos.top* window.devicePixelRatio;
+                  element.style.transition = 'transform 1s ease-in-out';
+                  element.style.left = `${oldX[j]-newX}px`;
+                  element.style.top = `${oldY[j]-newY}px`;
+                  element.style.transform = `translate(${newX-oldX[j]}px, ${newY-oldY[j]}px)`;
+                }}}
+          }
+        }else if(destination === "equipment-"+this.username){
+          for(let i=0;i<this.playerEquipment.length;i++){
+            if(this.containsId(this.playerEquipment[i],this.cardMoveMessage.cardIds)){
+              for(let j=0;j<copyDataMovingCards.length;j++){
+                if(copyDataMovingCards[j].cardId === this.playerEquipment[i]){
+                  
+                  let element = document.getElementById(`#equipmentCard-${i}`);
+
+                  let elementPos = element.getBoundingClientRect();
+                  let newX=elementPos.left* window.devicePixelRatio;
+
+                  let newY = (i*20+elementPos.top)* window.devicePixelRatio;
+
+
+                  console.log("index: "+i);
+                  console.log("old X:"+oldX[j]+"   old Y:"+oldY[j]);
+                  console.log("new X:"+newX+"   new Y:"+newY);
+                  console.log("----------------------- NEW Y ------------------------------------------- : ");
+                  element.style.transition = 'transform 1s ease-in-out';
+                  element.style.left = `${oldX[j]-newX}px`;
+                  element.style.top = `${oldY[j]-newY}px`;
+                  console.log("transformedY: ");
+                  console.log(newY-oldY[j]);
+                  console.log("max height: ");
+                  console.log(viewportHeight*window.devicePixelRatio);
+                  if(i===0)
+                    element.style.transform = `translate(${newX-oldX[j]}px, ${850-oldY[j]}px)`;
+                  else
+                    element.style.transform = `translate(${newX-oldX[j]}px, ${800-oldY[j]}px)`;
+                }}}
+          }
+        }else if(destination === "delayedEffect-"+this.username){
+
+          for(let i=0;i<this.playerDelayedEffect.length;i++) {
+            if (this.containsId(this.playerDelayedEffect[i], this.cardMoveMessage.cardIds)) {
+              console.log("auszuspielnd");
+              for (let j = 0; j < copyDataMovingCards.length; j++) {
+                if (copyDataMovingCards[j].cardId === this.playerDelayedEffect[i]) {
+                  let element = document.getElementById(`#passiveCard-${i}`);
+                  console.log("animation delay effect");
+                  let elementPos = element.getBoundingClientRect();
+                  let newX = elementPos.left * window.devicePixelRatio;
+                  let newY = 0.8 * viewportHeight;
+                  oldX[j] += 0.05 * viewportWidth;
+                  element.style.transition = 'transform 1s ease-in-out';
+                  element.style.left = `${oldX[j] - newX}px`;
+                  element.style.top = `${oldY[j] - newY}px`;
+                  element.style.transform = `translate(${(i * 0.03 * viewportWidth) + newX - oldX[j]}px, ${0.2 * viewportHeight + newY - oldY[j]}px)`;
+
+
+              }
+            }
+          }
+          }
+        }else{
+          console.log("playercards");
+          console.log(this.playerCards);
+
+          for(let i=0;i<this.playerCards.length;i++){
+            if(this.containsId(this.playerCards[i],this.cardMoveMessage.cardIds)){
+              for(let j=0;j<this.cardMoveMessage.cardIds.length;j++){
+                if(this.cardMoveMessage.cardIds[j] === this.playerCards[i]){
+                  console.log("VOM STAPEL");
+                  console.log("KARTE WIRD ANIMIERT");
+                  let element = document.getElementById(`#cardWrapper-${i}`);
+                  let elementPos = element.getBoundingClientRect();
+                  let newX=elementPos.left* window.devicePixelRatio;
+                  let newY=elementPos.top* window.devicePixelRatio;
+                  element.style.transition = 'transform 1s ease-in-out';
+
+                  element.style.left = `${oldX[j]-newX}px`;
+                  element.style.top = `${oldY[j]-newY}px`;
+                  console.log("move old: "+oldX[j]+"  "+oldY[j]);
+                  console.log("move new: "+newX+"   "+newY);
+                  element.style.transform = `translate(${newX-oldX[j]}px, ${newY-oldY[j]}px)`;
+
+            }}}}
+        }
+
+
+        
+
+      copyDataMovingCards = 0;
+      });
+    },
+
+
   },
 };
 </script>
 
 <style scoped>
-
-.testBtn {
-  width: 5vw;
-  height: 5vw;
-  background-color: pink;
-  position: absolute;
-  right: 15vw;
-  bottom: 50px;
+.cardWrapper{
+  position: relative;
+  left:0;
+  top:0;
 }
 
-.start-Progressbar {
-  width: 10vw;
-  height: 5vh;
-  position: absolute;
-  background-color: red;
-  right: 0;
-  top: 40vh;
-}
 
-.interrupt-Progressbar {
-  width: 10vw;
-  height: 5vh;
-  position: absolute;
-  background-color: red;
-  right: 0;
-  top: 30vh;
-}
 
 .progress-container {
   position: absolute;
@@ -1155,6 +1384,7 @@ export default {
 .cardUsedStyle {
   transform: translateY(-3vh);
 }
+
 
 .endTurn {
   position: absolute;
@@ -1280,15 +1510,6 @@ export default {
   font-weight: bold;
 }
 
-.clickCardMoveMessage {
-  position: absolute;
-  left: 19vw;
-  bottom: 10vw;
-  width: 5vw;
-  height: 5vh;
-  background-color: red;
-  cursor: pointer;
-}
 
 .drawPile {
   position: absolute;
@@ -1297,6 +1518,7 @@ export default {
   border-radius: 1rem;
   width: 10vw;
   height: 29vh;
+  object-fit: contain;
 }
 
 .discardPile {
@@ -1311,10 +1533,11 @@ export default {
 
 .discardPileOverlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  left: 13vw;
+  bottom: 32vh;
+  border-radius: 1rem;
+  width: 10vw;
+  height: 29vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 5;
 }
@@ -1326,65 +1549,12 @@ export default {
   margin-right: 2vh;
 }
 
-.cardOverlay {
-  width: 4vw;
-  height: 4vw;
-  background-color: red;
-}
 
-.information {
-  background-color: rgb(54, 164, 215);
-  height: 22vh;
-  width: 10vw;
-  position: absolute;
-  right: 5px;
-  bottom: 18vw;
-}
 
 .information p {
   border: solid yellow 1px;
 }
 
-.playerChampion {
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
-  width: 11.5vw;
-  height: 35vh;
-  background-color: grey;
-}
-
-.skillContainer {
-  position: absolute;
-  display: flex;
-  right: 0;
-  bottom: 1vh;
-}
-
-.skill {
-  border-radius: 0.5rem;
-  transition: 0.2s;
-  width: 13vw;
-  left: 5px;
-  margin-bottom: 1vh;
-  text-align: center;
-  height: 5vh;
-  align-self: center;
-  border: 2px solid red;
-}
-
-.skillDescription {
-  position: relative;
-  top: -6.5vw;
-  width: 13vw;
-  height: 5vw;
-  background-color: green;
-  z-index: 3;
-}
-
-.skill:hover + .skillDescription {
-  display: block;
-}
 
 .cancelButton {
   position: absolute;
@@ -1400,23 +1570,6 @@ export default {
   bottom: 8vh;
 }
 
-.description {
-  position: absolute;
-  top: 1vw;
-  right: -13.5vw;
-  width: 13vw;
-  height: 13vw;
-  background-color: red;
-}
-
-.usableClass {
-  border: solid yellow 5px;
-  cursor: pointer;
-}
-
-.notUsableClass {
-  border: solid black 5px;
-}
 
 .playCard {
   border-radius: 1rem;
@@ -1446,31 +1599,25 @@ export default {
   left: 22vw;
   width: 61vw;
   height: 29vh;
+
 }
 
 .passiveSlot {
   width: 18vw;
   height: 30vh;
-  overflow: auto;
   position: absolute;
+  display: flex;
   bottom: 16vh;
 
 }
 
 .passiveCircle {
-  position: relative;
+  position: absolute;
   background-color: purple;
   top: 20vh;
+  left: 0;
 }
 
-.passiveDescription {
-  position: relative;
-  top: -13vw;
-  width: 18vw;
-  height: 13vw;
-  background-color: green;
-  z-index: 3;
-}
 
 .equipmentSlot {
   position: absolute;
@@ -1484,29 +1631,8 @@ export default {
 .equipment {
   position: absolute;
   left: 0;
-
+  z-index: 2;
   line-height: 350%;
-}
-
-.equipmentButton {
-  width: 18vw;
-  height: 6.5vh;
-  background-color: green;
-  border-radius: 1rem;
-  transition: 0.2s;
-}
-
-.equipmentDescription {
-  position: relative;
-  top: -15.5vw;
-  width: 18vw;
-  height: 13vw;
-  background-color: green;
-  z-index: 3;
-}
-
-.equipmentSlot:hover + .overlayDescription {
-  display: block;
 }
 
 .bg-image {

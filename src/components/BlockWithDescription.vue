@@ -42,7 +42,6 @@ export default {
     used: false,
     name: "",
     description: "",
-    id: Number,
   },
   methods: {
     hoverStart() {
@@ -131,5 +130,6 @@ export default {
 
 .equipment:hover + .equipment-description {
   display: block;
+  z-index: 8;
 }
 </style>
