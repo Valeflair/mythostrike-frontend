@@ -5,22 +5,14 @@ import CommandField from "@/components/CommandField.vue";
 <template>
   <v-container class="SeatCommandContainer">
     <v-row class="d-flex justify-center">
-      <div
-        v-for="(slot, id) in slots.filter((slot, id) => id < slots.length / 2)"
-        :key="id"
-      >
+      <div v-for="(slot, id) in slots.filter((slot, id) => id < slots.length / 2)" :key="id">
         <v-col col="3">
           <div v-if="slot.identity != 'None' && slot.username != null">
             <button
               class="seatButton"
               id="teamRed"
               v-bind:style="{
-                backgroundImage:
-                  'url(' +
-                  '/avatars/avatar' +
-                  slot.avatarNumber +
-                  '.png' +
-                  ')',
+                backgroundImage: 'url(' + '/avatars/avatar' + slot.avatarNumber + '.png' + ')',
               }"
             >
               <p>{{ slot.username }}</p>
@@ -30,8 +22,7 @@ import CommandField from "@/components/CommandField.vue";
             <button
               class="emptySeat"
               v-bind:style="{
-                backgroundImage:
-                  'url(' + '/avatars/changeseat.png' + ')',
+                backgroundImage: 'url(' + '/avatars/changeseat.png' + ')',
               }"
               @click="changeSeat(id)"
             ></button>
@@ -40,12 +31,7 @@ import CommandField from "@/components/CommandField.vue";
             <button
               class="seatButton"
               v-bind:style="{
-                backgroundImage:
-                  'url(' +
-                  '/avatars/avatar' +
-                  slot.avatarNumber +
-                  '.png' +
-                  ')',
+                backgroundImage: 'url(' + '/avatars/avatar' + slot.avatarNumber + '.png' + ')',
               }"
             >
               <p>{{ slot.username }}</p>
@@ -60,7 +46,7 @@ import CommandField from "@/components/CommandField.vue";
       <v-col cols="3">
         <div class="label">
           <p class="labelText">Lobby ID: {{ lobbyId }}</p>
-          <p class="labelText">Owner: {{ isLobbyOwner }}</p>
+          <p class="labelText">Owner: {{ lobbyOwner }}</p>
           <p class="labelText">Mode: {{ gameModeName }}</p>
         </div>
       </v-col>
@@ -78,22 +64,14 @@ import CommandField from "@/components/CommandField.vue";
     </v-row>
 
     <v-row class="d-flex justify-center">
-      <div
-        v-for="(slot, id) in slots.filter((slot, id) => id >= slots.length / 2)"
-        :key="id"
-      >
+      <div v-for="(slot, id) in slots.filter((slot, id) => id >= slots.length / 2)" :key="id">
         <v-col col="3">
           <div v-if="slot.identity != 'None' && slot.username != null">
             <button
               class="seatButton"
               id="teamBlue"
               v-bind:style="{
-                backgroundImage:
-                  'url(' +
-                  '/avatars/avatar' +
-                  slot.avatarNumber +
-                  '.png' +
-                  ')',
+                backgroundImage: 'url(' + '/avatars/avatar' + slot.avatarNumber + '.png' + ')',
               }"
             >
               <p>{{ slot.username }}</p>
@@ -103,8 +81,7 @@ import CommandField from "@/components/CommandField.vue";
             <button
               class="emptySeat"
               v-bind:style="{
-                backgroundImage:
-                  'url(' + '/avatars/changeseat.png' + ')',
+                backgroundImage: 'url(' + '/avatars/changeseat.png' + ')',
               }"
               @click="changeSeat(id + slots.length / 2)"
             ></button>
@@ -113,12 +90,7 @@ import CommandField from "@/components/CommandField.vue";
             <button
               class="seatButton"
               v-bind:style="{
-                backgroundImage:
-                  'url(' +
-                  '/avatars/avatar' +
-                  slot.avatarNumber +
-                  '.png' +
-                  ')',
+                backgroundImage: 'url(' + '/avatars/avatar' + slot.avatarNumber + '.png' + ')',
               }"
             >
               <p>{{ slot.username }}</p>
@@ -145,6 +117,7 @@ export default {
   props: {
     lobbyId: Number,
     slotsProp: Array,
+    lobbyOwner: String,
     isLobbyOwner: Boolean,
     gameModeName: String,
   },
@@ -194,7 +167,6 @@ export default {
   top: 10vh;
 }
 
-
 .seatButton {
   border: 4px solid black;
   color: white;
@@ -240,8 +212,7 @@ export default {
 }
 
 button:hover {
-  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-  0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 #teamRed {

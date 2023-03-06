@@ -6,11 +6,7 @@
       <v-row class="d-flex justify-center">
         <div v-for="id in 12" :key="id">
           <v-col :key="id">
-            <img
-              :src="'/avatars/avatar' + id + '.png'"
-              class="image"
-              @click="changeAvatar(id)"
-            />
+            <img :src="'/avatars/avatar' + id + '.png'" class="image" @click="changeAvatar(id)" />
           </v-col>
         </div>
       </v-row>

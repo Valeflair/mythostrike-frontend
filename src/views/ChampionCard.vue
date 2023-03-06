@@ -3,13 +3,9 @@ import equipmentComponent from "../components/BlockWithDescription.vue";
 import delayComponent from "../components/DelayedeffectComponent.vue";
 </script>
 <template>
-  <div class="container" :class="{'usable':usable||picked}">
+  <div class="container" :class="{ usable: usable || picked }">
     <div class="championCard" @mouseover="hoverStart()" @mouseleave="hoverEnd()">
-      <img
-        class="frame"
-        :src="'/card/frame/gold_card_frame_r.png'"
-        alt=""
-      />
+      <img class="frame" :src="'/card/frame/gold_card_frame_r.png'" alt="" />
 
       <div
         class="avatar"
@@ -45,20 +41,21 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
 
       <div v-if="game" class="handcard-num">{{ handcardNum }}</div>
 
-      <div v-if="game && identity==='Team Blue'||'Team Red' " class="identity"
-           :style="{
+      <div
+        v-if="(game && identity === 'Team Blue') || 'Team Red'"
+        class="identity"
+        :style="{
           background: 'url(' + getIdentityImagePath() + ')',
           backgroundSize: 'cover',
         }"
-      >
-      </div>
+      ></div>
 
       <table>
-        <tr v-for="(entry,i) in equipment" :key="i">
+        <tr v-for="(entry, i) in equipment" :key="i">
           <td
             v-if="game"
             class="equip"
-            :style="{ bottom: 10+ 5 * i + 'vh' }"
+            :style="{ bottom: 10 + 5 * i + 'vh' }"
             @mouseenter="showInnerComponents(true)"
             @mouseleave="showInnerComponents(false)"
           >
@@ -76,7 +73,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
 
       <table v-if="game">
         <tr>
-          <td v-for="(entry,i) in delayedEffects" :key="i">
+          <td v-for="(entry, i) in delayedEffects" :key="i">
             <div
               class="delayEffect"
               :style="{ left: 1.5 + i * 4 + 'vh' }"
@@ -89,7 +86,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
         </tr>
       </table>
       <transition name="fade-in">
-        <div class="description" v-if="showDescription" @mouseover="showDescription=true">
+        <div class="description" v-if="showDescription" @mouseover="getDescription">
           <p v-html="logTextWithLineBreaks"></p>
         </div>
       </transition>
@@ -98,7 +95,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
       v-show="usable === true || currentPlayer || picked"
       class="lightCard"
       :class="{
-        lightCard3:picked,
+        lightCard3: picked,
         lightCard2: currentPlayer,
         lightCard: usable,
       }"
@@ -177,22 +174,14 @@ export default {
         if (i === 0) {
           this.description += "ActiveSkills:" + "\n";
         }
-        this.description +=
-          this.activeSkills[i].name +
-          " : " +
-          this.activeSkills[i].description +
-          "\n";
+        this.description += this.activeSkills[i].name + " : " + this.activeSkills[i].description + "\n";
       }
 
       for (let i = 0; i < this.passiveSkills.length; i++) {
         if (i === 0) {
           this.description += "PassiveSkills:" + "\n";
         }
-        this.description +=
-          this.passiveSkills[i].name +
-          " : " +
-          this.passiveSkills[i].description +
-          "\n";
+        this.description += this.passiveSkills[i].name + " : " + this.passiveSkills[i].description + "\n";
       }
       return this.description;
     },
@@ -206,8 +195,7 @@ export default {
 
       if (this.hoverComponents === false && !this.showDescription) {
         this.hoverTimer = setTimeout(() => {
-          if (this.hoverComponents === false && !this.showDescription)
-            this.showDescription = true;
+          if (this.hoverComponents === false && !this.showDescription) this.showDescription = true;
         }, this.timerDelay);
       }
     },
@@ -252,7 +240,6 @@ export default {
   filter: blur(20px);
   opacity: 0.8;
 }
-
 
 .lightCard2 {
   background: #191c29;
@@ -309,7 +296,7 @@ export default {
   border-radius: 8px;
   background-size: 400%;
   position: absolute;
-  z-index: -1;;
+  z-index: -1;
   background-image: linear-gradient(45deg, #5ddcff, #3c67e3, #4e00c2);
   transition: 1s opacity linear;
   animation: spin 3s linear infinite;

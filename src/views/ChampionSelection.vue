@@ -11,12 +11,7 @@
                 class="championButton"
                 @click="changeChampion(champion)"
                 v-bind:style="{
-                  backgroundImage:
-                    'url(' +
-                    '/cards/' +
-                    champion.name.toLowerCase() +
-                    '.png' +
-                    ')',
+                  backgroundImage: 'url(' + '/cards/' + champion.name.toLowerCase() + '.png' + ')',
                   backgroundSize: '100% 100%',
                   backgroundRepeat: 'no-repeat',
                 }"
@@ -32,12 +27,7 @@
           @click="printPassiveSkill"
           class="championDisplay"
           v-bind:style="{
-            backgroundImage:
-              'url(' +
-              '/cards/' +
-              this.currentChampion.name.toLowerCase() +
-              '.png' +
-              ')',
+            backgroundImage: 'url(' + '/cards/' + this.currentChampion.name.toLowerCase() + '.png' + ')',
             backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat',
           }"
@@ -47,16 +37,9 @@
       <div class="championDescription">
         <h1 :style="{ color: this.color }">{{ this.currentChampion.name }}</h1>
         <div class="text-center">
-          <span v-for="n in this.currentChampion.maxHp"><img
-            src="/card/small-parts/health_light.png"
-            alt=""
-          /></span>
+          <span v-for="n in this.currentChampion.maxHp"><img src="/card/small-parts/health_light.png" alt="" /></span>
         </div>
-        <div
-          v-for="pSkill in this.currentChampion.passiveSkills"
-          :key="pSkill.name"
-          class="justify-center pa-2"
-        >
+        <div v-for="pSkill in this.currentChampion.passiveSkills" :key="pSkill.name" class="justify-center pa-2">
           <div class="skill">
             {{ pSkill.name }}
           </div>
@@ -64,11 +47,7 @@
             {{ pSkill.description }}
           </div>
         </div>
-        <div
-          v-for="aSkill in this.currentChampion.activeSkills"
-          :key="aSkill.name"
-          class="justify-center pa-2"
-        >
+        <div v-for="aSkill in this.currentChampion.activeSkills" :key="aSkill.name" class="justify-center pa-2">
           <div class="skill">
             {{ aSkill.name }}
           </div>
@@ -78,12 +57,8 @@
         </div>
       </div>
 
-      <button class="confirmButton button" @click="confirmChampion">
-        Confirm
-      </button>
-      <button class="randomButton button" @click="randomChampion">
-        Random
-      </button>
+      <button class="confirmButton button" @click="confirmChampion">Confirm</button>
+      <button class="randomButton button" @click="randomChampion">Random</button>
     </div>
   </div>
 </template>
@@ -111,8 +86,7 @@ export default {
       this.label = this.currentChampion.name;
     },
     randomChampion() {
-      this.currentChampion =
-        this.champions[Math.floor(Math.random() * this.champions.length)];
+      this.currentChampion = this.champions[Math.floor(Math.random() * this.champions.length)];
       this.label = this.currentChampion.name;
     },
     async confirmChampion() {
@@ -124,7 +98,7 @@ export default {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
     initData() {
@@ -174,8 +148,7 @@ export default {
 }
 
 .button:hover {
-  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-  0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
   font-size: 1.1vw;
   font-weight: bold;
 }

@@ -2,13 +2,7 @@
   <v-app>
     <v-main>
       <router-view />
-      <audio
-        src="/musics/night vigil.mp3"
-        loop="true"
-        autoplay="autoplay"
-        id="MusicPlay"
-        hidden
-      ></audio>
+      <audio src="/musics/night vigil.mp3" loop="true" autoplay="autoplay" id="MusicPlay" hidden></audio>
     </v-main>
   </v-app>
 </template>
@@ -47,6 +41,5 @@ export default {
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;
-
 }
 </style>

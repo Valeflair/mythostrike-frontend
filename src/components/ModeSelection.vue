@@ -11,13 +11,7 @@
       </div>
       <button class="imageRight" @click="updatePointer(1)"></button>
       <button class="imageLeft" @click="updatePointer(-1)"></button>
-      <button
-        class="confirmButton"
-        :disabled="!isLobbyOwner"
-        @click="confirm()"
-      >
-        CONFIRM
-      </button>
+      <button class="confirmButton" :disabled="!isLobbyOwner" @click="confirm()">CONFIRM</button>
       <label class="minPlayerLabel">Minimum: {{ getMode().minPlayer }} </label>
 
       <label class="maxPlayerLabel">Maximum: {{ getMode().maxPlayer }} </label>

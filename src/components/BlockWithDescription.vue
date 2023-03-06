@@ -17,8 +17,8 @@
     <div
       class="equipment-description ma-1"
       :style="{
-      width: widthProp + 'vw',
-    }"
+        width: widthProp + 'vw',
+      }"
       v-if="showDescription"
     >
       {{ description }}

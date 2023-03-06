@@ -111,11 +111,11 @@ export default {
         }
       );
     },
-    async changeSeat(newSeatId) {
+    async changeSeat(seatId) {
+      let newSeatId = Math.round(seatId);
       await lobbyService.changeSeat(this.lobbyId, newSeatId).then(
         (response) => {
           console.log(response);
-          console.log("change to " + newSeatId);
         },
         (error) => {
           console.log(error);
@@ -152,20 +152,19 @@ export default {
           this.lobbyStore.setLobby(lobbyData);
           this.lobbySetup();
         });
-        this.stompClient.subscribe(
-          "/lobbies/" + +this.lobbyId + "/" + this.userStore.getUser.username,
-          (response) => {
-            let readyPhaseData = JSON.parse(response.body);
-            console.log(readyPhaseData);
-            this.lobbyStore.setChampions(readyPhaseData.champions);
-            this.lobbyStore.setIdentity(readyPhaseData.identity);
-            this.$router.push({ path: "./championselection" });
-          }
-        );
+        this.stompClient.subscribe("/lobbies/" + +this.lobbyId + "/" + this.userStore.getUser.username, (response) => {
+          let readyPhaseData = JSON.parse(response.body);
+          console.log(readyPhaseData);
+          this.lobbyStore.setChampions(readyPhaseData.champions);
+          this.lobbyStore.setIdentity(readyPhaseData.identity);
+          this.$router.push({ path: "./championselection" });
+        });
       });
     },
     disconnect() {
+      this.stompClient.unsubscribe("/lobbies/" + this.lobbyId + "/" + this.userStore.getUser.username);
       this.stompClient.disconnect();
+      window.removeEventListener("beforeunload", this.disconnect);
     },
     initStompClient() {
       let socket = new SockJS(service.WS_URL);
@@ -183,6 +182,9 @@ export default {
   },
   unmounted() {
     this.disconnect();
+  },
+  beforeMount() {
+    window.addEventListener("beforeunload", this.disconnect);
   },
 };
 </script>

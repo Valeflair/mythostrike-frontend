@@ -27,9 +27,8 @@ const USE_CARD_URL = PLAY_URL + "/cards";
 const USE_SKILL_URL = PLAY_URL + "/skills";
 const SELECT_TARGETS_URL = PLAY_URL + "/targets";
 const END_TURN_URL = PLAY_URL + "/end";
-const CANCEL_URL = PLAY_URL +"/cancel";
+const CANCEL_URL = PLAY_URL + "/cancel";
 const SELECT_CHAMPION_URL = PLAY_URL + "/champion";
-
 
 const WS_URL = BASE_URL + "/updates";
 
@@ -54,5 +53,5 @@ export default {
   CANCEL_URL,
   CARDS_URL,
   CHAMPIONS_URL,
-  CHANGE_AVATAR_URL
+  CHANGE_AVATAR_URL,
 };

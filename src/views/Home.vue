@@ -6,21 +6,11 @@
       @update:Avatar="updateAvatar"
     />
     <div style="margin-top:1000px margin-bottom:1000px">
-      <v-chip
-        class="cardColor ma-10"
-        size="x-large"
-        color="white"
-        prepend-icon="mdi-circle-multiple"
-      >
+      <v-chip class="cardColor ma-10" size="x-large" color="white" prepend-icon="mdi-circle-multiple">
         Drachma: {{ userStore.getUser.drachma }}
       </v-chip>
 
-      <v-chip
-        class="cardColor ma-10"
-        size="x-large"
-        color="white"
-        prepend-icon="mdi-creation"
-      >
+      <v-chip class="cardColor ma-10" size="x-large" color="white" prepend-icon="mdi-creation">
         Rank Points: {{ userStore.getUser.rankPoints }}
       </v-chip>
     </div>
@@ -32,20 +22,12 @@
             <v-card-title class="text-h4">Welcome</v-card-title>
             <v-card-title>{{ this.userStore.getUser.username }}</v-card-title>
             <img
-              :src="
-                '/avatars/avatar' +
-                this.userStore.getUser.avatarNumber +
-                '.png'
-              "
+              :src="'/avatars/avatar' + this.userStore.getUser.avatarNumber + '.png'"
               class="image avatarImg"
               @click="openAvatarSelection"
             />
           </v-card>
-          <img
-            src="/elements/lobby.png"
-            class="image lobbyImg mr-10"
-            @click="toLobbyOverview"
-          />
+          <img src="/elements/lobby.png" class="image lobbyImg mr-10" @click="toLobbyOverview" />
         </v-row>
       </v-container>
     </div>
@@ -54,27 +36,15 @@
       <v-container>
         <v-row>
           <div style="margin-right: 2.4vw">
-            <img
-              src="/elements/button_library.png"
-              class="image libraryImg"
-              @click="toLibrary"
-            />
+            <img src="/elements/button_library.png" class="image libraryImg" @click="toLibrary" />
           </div>
 
           <div style="margin-right: 2vw">
-            <img
-              src="/elements/button_setting.png"
-              class="image settingImg"
-              @click="music()"
-            />
+            <img src="/elements/button_setting.png" class="image settingImg" @click="music()" />
           </div>
 
           <div>
-            <img
-              src="/elements/return.png"
-              class="image logoutImg"
-              @click="logout"
-            />
+            <img src="/elements/return.png" class="image logoutImg" @click="logout" />
           </div>
         </v-row>
       </v-container>

@@ -5,24 +5,12 @@
     <v-col cols="2" class="buttonMove">
       <button class="commandButton" @click="selectMode">Select Mode</button>
       <button class="commandButton">Invite</button>
-      <button
-        class="commandButton"
-        @click="start"
-        :disabled="!isLobbyOwner"
-      >
-        Start Game
-      </button>
+      <button class="commandButton" @click="start" :disabled="!isLobbyOwner">Start Game</button>
     </v-col>
     <v-col cols="2" class="buttonMove">
       <button class="commandButton">Options</button>
       <div class="dropdown">
-        <button
-          class="commandButton"
-          @click="addBot"
-          :disabled="!isLobbyOwner"
-        >
-          Add Bot
-        </button>
+        <button class="commandButton" @click="addBot" :disabled="!isLobbyOwner">Add Bot</button>
       </div>
       <button class="commandButton" @click="leave">Leave</button>
     </v-col>
@@ -86,8 +74,7 @@ export default {
 
 .commandButton:hover {
   color: white;
-  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-  0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
   font-weight: bold;
   font-size: 20px;
 }

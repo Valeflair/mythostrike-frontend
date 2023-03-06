@@ -2,13 +2,7 @@
   <div class="bg-image">
     <div class="d-flex justify-center">
       <v-col cols="2">
-        <img
-          alt="Vue logo"
-          class="logo"
-          src="/logo.png"
-          width="300"
-          height="300"
-        />
+        <img alt="Vue logo" class="logo" src="/logo.png" width="300" height="300" />
       </v-col>
       <v-col cols="4" class="text-center">
         <div class="text-h2 pt-10">
@@ -23,13 +17,7 @@
       </v-col>
     </div>
     <v-responsive class="mx-auto pt-5 inputBox" max-width="450">
-      <v-text-field
-        class="text-field"
-        label="username"
-        variant="outlined"
-        v-model="username"
-        clearable
-      ></v-text-field>
+      <v-text-field class="text-field" label="username" variant="outlined" v-model="username" clearable></v-text-field>
       <v-text-field
         class="text-field"
         label="password"
@@ -135,7 +123,7 @@ export default {
             (error) => {
               console.log(error);
               this.showAlert(error.response.data.message);
-            },
+            }
           );
       }
     },
@@ -156,7 +144,7 @@ export default {
             (error) => {
               console.log(error);
               this.showAlert(error.response.data.message);
-            },
+            }
           );
       }
     },
