@@ -86,7 +86,7 @@ import delayComponent from "../components/DelayedeffectComponent.vue";
         </tr>
       </table>
       <transition name="fade-in">
-        <div class="description" v-if="showDescription" @mouseover="showDescription">
+        <div class="description" v-if="showDescription" @mouseover="getDescription">
           <p v-html="logTextWithLineBreaks"></p>
         </div>
       </transition>

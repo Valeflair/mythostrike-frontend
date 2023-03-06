@@ -19,7 +19,7 @@
             <td>{{ user.identity }}</td>
             <td>{{ user.drachma }}</td>
             <td>{{ user.rankPoints }}</td>
-            <td>Win</td>
+            <td>Won</td>
           </tr>
         </tbody>
       </v-table>
