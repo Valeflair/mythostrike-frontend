@@ -1011,6 +1011,7 @@ export default {
           copyDataMovingCards.push({ xPoint: 0, yPoint: 0.7 * viewportHeight, cardId: element });
         }
       } else {
+        let p = 0;
         for (const element of this.playerDaten) {
           if (element.username === this.cardMoveMessage.source) {
             element.cardCount -= this.cardMoveMessage.count;
@@ -1024,14 +1025,26 @@ export default {
                 if (this.playerCards[j] === cardId)
                   num = j;
               }
-              const cardElement = document.getElementById(`#cardWrapper-${num}`);
-              const cardRect = cardElement.getBoundingClientRect();
-              const cardX = cardRect.left * window.devicePixelRatio;
-              const cardY = cardRect.top * window.devicePixelRatio;
-              copyDataMovingCards.push({ xPoint: cardX, yPoint: cardY, cardId: cardId });
+              if (this.playerCards.length === 0) {
+                if (element.username !== this.username) {
+                  const championElement = document.getElementById(`#championCard-${p}`);
+                  const championRect = championElement.getBoundingClientRect();
+                  const championX = championRect.left * window.devicePixelRatio;
+                  const championY = championRect.top * window.devicePixelRatio;
+                  copyDataMovingCards.push({ xPoint: championX, yPoint: championY, cardId: cardId });
 
+                }
+
+              } else {
+                const cardElement = document.getElementById(`#cardWrapper-${num}`);
+                const cardRect = cardElement.getBoundingClientRect();
+                const cardX = cardRect.left * window.devicePixelRatio;
+                const cardY = cardRect.top * window.devicePixelRatio;
+                copyDataMovingCards.push({ xPoint: cardX, yPoint: cardY, cardId: cardId });
+              }
 
             }
+            p++;
             for (const element of this.cardMoveMessage.cardIds)
               this.playerCards = this.playerCards.filter((card) => card !== element);
 
