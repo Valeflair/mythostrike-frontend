@@ -1,29 +1,31 @@
 <template>
   <div class="library">
-    <h1 class="pt-5">{{ this.currentCard.name }}</h1>
-    <button class="back" @click="back"></button>
-    <div class="cardContainer">
-      <v-row class="d-flex justify-left">
-        <div v-for="card in cards" :key="card.id">
-          <v-col :key="card.id">
-            <button
-              v-bind:style="{
-                backgroundImage: 'url(' + '/cards/' + getImagePath(card.name) + '.png' + ')',
-                backgroundSize: '100% 100%',
-                backgroundRepeat: 'no-repeat',
-              }"
-              class="cardButton"
-              @click="selectView(card)"
-            ></button>
-          </v-col>
-        </div>
-      </v-row>
-    </div>
-    <div class="big-picture">
-      <img :src="'/cards/' + this.currentCard.name.toLowerCase().replace(/\s/g, '') + '.png'" alt="" />
-    </div>
-    <div class="description">
-      {{ this.currentCard.description }}
+    <div v-if="currentCard">
+      <h1 class="pt-5">{{ this.currentCard.name }}</h1>
+      <button class="back" @click="back"></button>
+      <div class="cardContainer">
+        <v-row class="d-flex justify-left">
+          <div v-for="card in cards" :key="card.id">
+            <v-col :key="card.id">
+              <button
+                v-bind:style="{
+                  backgroundImage: 'url(' + '/cards/' + getImagePath(card.name) + '.png' + ')',
+                  backgroundSize: '100% 100%',
+                  backgroundRepeat: 'no-repeat',
+                }"
+                class="cardButton"
+                @click="selectView(card)"
+              ></button>
+            </v-col>
+          </div>
+        </v-row>
+      </div>
+      <div class="big-picture" v-if="currentCard">
+        <img :src="'/cards/' + this.currentCard.name.toLowerCase().replace(/\s/g, '') + '.png'" alt="" />
+      </div>
+      <div class="description" v-if="currentCard">
+        {{ this.currentCard.description }}
+      </div>
     </div>
   </div>
 </template>
