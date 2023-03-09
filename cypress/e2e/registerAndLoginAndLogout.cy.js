@@ -1,3 +1,15 @@
+function generateRandomString() {
+  const possibleCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
+  let randomString = '';
+  let length = Cypress._.random(1, 99);
+
+  while (length--) {
+    const randomIndex = Cypress._.random(0, possibleCharacters.length - 1);
+    randomString += possibleCharacters.charAt(randomIndex);
+  }
+
+  return randomString;
+}
 
 describe('Login click', () => {
   it('Login click', () => {
@@ -17,7 +29,7 @@ describe('Login successful', () => {
     cy.contains('Login').click()
     cy.url().should('include', '/home')
     cy.contains('wow')
-    cy.get('.logoutImg').click().then(() =>{
+    cy.get('.logoutImg').click().then(() => {
       cy.url().should('eq', 'http://localhost:5173/')
     })
   })
@@ -47,13 +59,26 @@ describe('Register click', () => {
 describe('Register successful', () => {
   it('Register successful', () => {
     cy.visit('http://localhost:5173/')
-    let str=Math.random().toString(36)
-    cy.get('[id=username]').type(str)
-    cy.get('[id=password]').type(str)
+    // const possibleCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
+    let randomName = generateRandomString();
+    let randomPass = generateRandomString();
+    // let length1 = Cypress._.random(1, 99); 
+    // let length2 = Cypress._.random(1, 99); 
+
+    // while (length1--) {
+    //   const randomIndex = Cypress._.random(0, possibleCharacters.length - 1);
+    //   randomName += possibleCharacters.charAt(randomIndex);
+    // }
+    // while (length2--) {
+    //   const randomIndex = Cypress._.random(0, possibleCharacters.length - 1);
+    //   randomPass += possibleCharacters.charAt(randomIndex);
+    // }
+    cy.get('[id=username]').type(randomName)
+    cy.get('[id=password]').type(randomPass)
     cy.contains('Register').should('be.visible')
     cy.contains('Register').click()
     cy.url().should('include', '/home')
-    cy.contains(str)
+    cy.contains(randomName)
   })
 })
 
@@ -71,24 +96,25 @@ describe('Register failed', () => {
 describe('Register and Login', () => {
   it('Register,logout and Login successful', () => {
     cy.visit('http://localhost:5173/')
-    let str=Math.random().toString(36)
-    cy.get('[id=username]').type(str)
-    cy.get('[id=password]').type(str)
+    let randomName = generateRandomString()
+    let randomPass = generateRandomString()
+    cy.get('[id=username]').type(randomName)
+    cy.get('[id=password]').type(randomPass)
     cy.contains('Register').should('be.visible')
     cy.contains('Register').click()
     cy.url().should('include', '/home')
-    cy.contains(str)
+    cy.contains(randomName)
     cy.get('.logoutImg').click()
-    cy.get('[id=username]').type(str)
-    cy.get('[id=password]').type(str)
+    cy.get('[id=username]').type(randomName)
+    cy.get('[id=password]').type(randomPass)
     cy.contains('Login').click()
   })
 
   it('Register and Login failed cause wrong username', () => {
     cy.visit('http://localhost:5173/')
-    let username=Math.random().toString(36)
-    let password=Math.random().toString(36)
-    let newUser=Math.random().toString(36)
+    let username = generateRandomString()
+    let password = generateRandomString()
+    let newUser = generateRandomString()
     cy.get('[id=username]').type(username)
     cy.get('[id=password]').type(password)
     cy.contains('Register').should('be.visible')
@@ -104,9 +130,9 @@ describe('Register and Login', () => {
 
   it('Register and Login failed cause wrong password', () => {
     cy.visit('http://localhost:5173/')
-    let username=Math.random().toString(36)
-    let password=Math.random().toString(36)
-    let newPassword=Math.random().toString(36)
+    let username = generateRandomString()
+    let password = generateRandomString()
+    let newPassword = generateRandomString()
     cy.get('[id=username]').type(username)
     cy.get('[id=password]').type(password)
     cy.contains('Register').should('be.visible')
@@ -120,3 +146,4 @@ describe('Register and Login', () => {
     cy.get('.v-alert')
   })
 })
+
