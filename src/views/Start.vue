@@ -17,9 +17,10 @@
       </v-col>
     </div>
     <v-responsive class="mx-auto pt-5 inputBox" max-width="450">
-      <v-text-field class="text-field" label="username" variant="outlined" v-model="username" clearable></v-text-field>
+      <v-text-field class="text-field" id="username" label="username" variant="outlined" v-model="username" clearable></v-text-field>
       <v-text-field
         class="text-field"
+        id="password"
         label="password"
         variant="outlined"
         type="password"

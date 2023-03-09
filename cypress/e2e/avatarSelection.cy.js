@@ -18,7 +18,7 @@ describe('avatar selection', () => {
             let randomElement = $elements.eq(randomIndex);
             randomElement.click()
         })
-        cy.wait(2000)
+        cy.wait(1000)
 
         cy.get('.v-card').get('.avatarImg').invoke('attr', 'src')
             .then((src) => {
@@ -27,9 +27,9 @@ describe('avatar selection', () => {
             .then(() => {
                 console.log(imgSrc)
             })
-            cy.wait(1000)
+        cy.wait(1000)
         cy.get('.logoutImg').click()
-        cy.wait(2000)
+        cy.wait(1000)
         cy.get('[id=username]').type('wow')
         cy.get('[id=password]').type('wow')
         cy.contains('Login').click()
@@ -41,7 +41,7 @@ describe('avatar selection', () => {
                 console.log(imgSrc2)
             }).then(() => {
                 expect(imgSrc2).to.equal(imgSrc)
-              })
+            })
     })
 })
 

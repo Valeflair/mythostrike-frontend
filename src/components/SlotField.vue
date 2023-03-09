@@ -4,7 +4,7 @@ import CommandField from "@/components/CommandField.vue";
 
 <template>
   <v-container class="SeatCommandContainer">
-    <v-row class="d-flex justify-center">
+    <v-row class="d-flex justify-center" id="seats">
       <div v-for="(slot, id) in slots.filter((slot, id) => id < slots.length / 2)" :key="id">
         <v-col col="3">
           <div v-if="slot.identity != 'None' && slot.username != null">
@@ -63,7 +63,7 @@ import CommandField from "@/components/CommandField.vue";
       </v-col>
     </v-row>
 
-    <v-row class="d-flex justify-center">
+    <v-row class="d-flex justify-center" id="seats">
       <div v-for="(slot, id) in slots.filter((slot, id) => id >= slots.length / 2)" :key="id">
         <v-col col="3">
           <div v-if="slot.identity != 'None' && slot.username != null">

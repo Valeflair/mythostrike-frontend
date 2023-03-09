@@ -1,5 +1,4 @@
-import { mount } from "@cypress/vue";
-import Library from "@/views/Library.vue";
+
 describe('Login click', () => {
   it('Login click', () => {
     cy.visit('http://localhost:5173/')
@@ -67,7 +66,7 @@ describe('Register failed', () => {
 })
 
 describe('Register and Login', () => {
-  it('Register and Login successful', () => {
+  it('Register,logout and Login successful', () => {
     cy.visit('http://localhost:5173/')
     let str=Math.random().toString(36).slice(-8)
     cy.get('[id=username]').type(str)
