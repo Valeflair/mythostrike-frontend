@@ -59,20 +59,8 @@ describe('Register click', () => {
 describe('Register successful', () => {
   it('Register successful', () => {
     cy.visit('http://localhost:5173/')
-    // const possibleCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
     let randomName = generateRandomString();
     let randomPass = generateRandomString();
-    // let length1 = Cypress._.random(1, 99); 
-    // let length2 = Cypress._.random(1, 99); 
-
-    // while (length1--) {
-    //   const randomIndex = Cypress._.random(0, possibleCharacters.length - 1);
-    //   randomName += possibleCharacters.charAt(randomIndex);
-    // }
-    // while (length2--) {
-    //   const randomIndex = Cypress._.random(0, possibleCharacters.length - 1);
-    //   randomPass += possibleCharacters.charAt(randomIndex);
-    // }
     cy.get('[id=username]').type(randomName)
     cy.get('[id=password]').type(randomPass)
     cy.contains('Register').should('be.visible')
