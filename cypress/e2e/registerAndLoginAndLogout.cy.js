@@ -8,7 +8,7 @@ describe('Login click', () => {
 })
 
 describe('Login successful', () => {
-  it('Login successful', () => {
+  it('Login successful and Logout', () => {
     cy.visit('http://localhost:5173/')
 
     cy.get('[id=username]').type('wow')
@@ -17,6 +17,9 @@ describe('Login successful', () => {
     cy.contains('Login').click()
     cy.url().should('include', '/home')
     cy.contains('wow')
+    cy.get('.logoutImg').click().then(() =>{
+      cy.url().should('eq', 'http://localhost:5173/')
+    })
   })
 })
 
@@ -44,7 +47,7 @@ describe('Register click', () => {
 describe('Register successful', () => {
   it('Register successful', () => {
     cy.visit('http://localhost:5173/')
-    let str=Math.random().toString(36).slice(-8)
+    let str=Math.random().toString(36)
     cy.get('[id=username]').type(str)
     cy.get('[id=password]').type(str)
     cy.contains('Register').should('be.visible')
@@ -68,7 +71,7 @@ describe('Register failed', () => {
 describe('Register and Login', () => {
   it('Register,logout and Login successful', () => {
     cy.visit('http://localhost:5173/')
-    let str=Math.random().toString(36).slice(-8)
+    let str=Math.random().toString(36)
     cy.get('[id=username]').type(str)
     cy.get('[id=password]').type(str)
     cy.contains('Register').should('be.visible')
@@ -83,9 +86,9 @@ describe('Register and Login', () => {
 
   it('Register and Login failed cause wrong username', () => {
     cy.visit('http://localhost:5173/')
-    let username=Math.random().toString(36).slice(-8)
-    let password=Math.random().toString(36).slice(-8)
-    let newUser=Math.random().toString(36).slice(-8)
+    let username=Math.random().toString(36)
+    let password=Math.random().toString(36)
+    let newUser=Math.random().toString(36)
     cy.get('[id=username]').type(username)
     cy.get('[id=password]').type(password)
     cy.contains('Register').should('be.visible')
@@ -101,9 +104,9 @@ describe('Register and Login', () => {
 
   it('Register and Login failed cause wrong password', () => {
     cy.visit('http://localhost:5173/')
-    let username=Math.random().toString(36).slice(-8)
-    let password=Math.random().toString(36).slice(-8)
-    let newPassword=Math.random().toString(36).slice(-8)
+    let username=Math.random().toString(36)
+    let password=Math.random().toString(36)
+    let newPassword=Math.random().toString(36)
     cy.get('[id=username]').type(username)
     cy.get('[id=password]').type(password)
     cy.contains('Register').should('be.visible')
