@@ -19,7 +19,7 @@
         <div class="pt-10">
           <v-btn class="button" @click="createLobby">Create Lobby</v-btn>
         </div>
-        <button class="back" @click="back"></button>
+        <button class="image back" @click="back"></button>
       </div>
     </v-col>
     <v-col cols="9" id="right-bar">
@@ -97,6 +97,11 @@ tr:hover {
   font-size: 20px;
   border-radius: 15px;
   background: url("/elements/button.png");
+}
+
+.image:active {
+  box-shadow: 0 3px rgba(0, 0, 0, 0.05);
+  transform: translateY(3px);
 }
 </style>
 

@@ -2,7 +2,7 @@
   <div class="library">
     <div v-if="currentCard">
       <h1 class="pt-5">{{ this.currentCard.name }}</h1>
-      <button class="back" @click="back"></button>
+      <button class="image back" @click="back"></button>
       <div class="cardContainer">
         <v-row class="d-flex justify-left">
           <div v-for="card in cards" :key="card.id">
@@ -106,6 +106,11 @@ h1 {
   word-break: normal;
   font-size: 1.5vw;
   color: white;
+}
+
+.image:active {
+  box-shadow: 0 3px rgba(0, 0, 0, 0.05);
+  transform: translateY(3px);
 }
 </style>
 
