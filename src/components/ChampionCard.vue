@@ -1,6 +1,6 @@
 <script setup>
-import equipmentComponent from "../components/BlockWithDescription.vue";
-import delayComponent from "../components/DelayedeffectComponent.vue";
+import equipmentComponent from "./BlockWithDescription.vue";
+import delayComponent from "./DelayedeffectComponent.vue";
 </script>
 <template>
   <div class="container" :class="{ usable: usable || picked }">

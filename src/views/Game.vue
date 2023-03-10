@@ -13,7 +13,6 @@
               :activeSkills="player.champion.activeSkills"
               :passiveSkills="player.champion.passiveSkills"
               :championName="player.champion.name"
-              :class="{ actualPlayer: player.username === currentPlayer }"
               :currentPlayer="player.isCurrentPlayer"
               :handcardNum="player.cardCount"
               :health="player.currentHp"
@@ -208,12 +207,12 @@
 </template>
 
 <script>
-import championCard from "./ChampionCard.vue";
+import championCard from "../components/ChampionCard.vue";
 import equipmentComponent from "../components/BlockWithDescription.vue";
 import DelayedeffectComponent from "../components/DelayedeffectComponent.vue";
-import playerCard from "./PlayerChampionCard.vue";
+import playerCard from "../components/PlayerChampionCard.vue";
 import resultPage from "../components/Statement.vue";
-import playCard from "./PlayCard.vue";
+import playCard from "../components/PlayCard.vue";
 import { useGameStore } from "@/stores/game";
 import gameService from "@/services/gameService";
 import SockJS from "sockjs-client";
@@ -312,7 +311,7 @@ export default {
       timerDelay: 1000, // der delay für karten hover
       currentPlayer: "", // bekommen wir von websocket
       cards: [],
-      gameDuration: 1000000,
+      gameDuration: 10000,
 
       /*---------- LOG ----------*/
       logText: "", // der text für den log
@@ -401,8 +400,6 @@ export default {
     this.lobbyId = this.lobbyStore.getLobby.id;
     this.username = this.userStore.getUser.username;
     this.initData();
-    console.log("ALL CARDS AVAILABLE");
-    console.log(this.cards);
     this.connect();
   },
   methods: {
@@ -414,18 +411,6 @@ export default {
         this.skillConditions.count = [];
         this.cardConditions.cardIds = [...this.messageActivitysUsable.cardIds];
         this.cardConditions.count = [...this.messageActivitysUsable.cardCount];
-        console.log("CHECK CARDSPICKED: ");
-        console.log(this.cardsPicked);
-        console.log("CHECK CARDCOUNT: ");
-        console.log(this.messageActivitysUsable.cardCount);
-        console.log("CHECK CARDPLAYERCONDITION:");
-        console.log(this.messageActivitysUsable.cardPlayerConditions);
-        console.log("CHECK CARDPLAYERCONDITIONS INDEX: ");
-        console.log(this.cardsPicked[0].index);
-        console.log("CHECK CARDPLAYERCONDITION EXACTLY");
-        console.log(this.messageActivitysUsable.cardPlayerConditions[this.cardsPicked[0].index]);
-        console.log("MATH MAX");
-        console.log(Math.max(this.messageActivitysUsable.cardCount));
         //wenn eine Karte ausgewählt ist und Gegner zur auswahl stehen, Gegner auswählbar machen
         if (
           this.cardsPicked.length === 1 &&
@@ -433,21 +418,9 @@ export default {
           this.messageActivitysUsable.cardPlayerConditions[this.cardsPicked[0].index] != null
         ) {
           //spieler die man auswählen kann und dessen Anzahl holen
-          console.log("----- AUSWÄHLBAR SPIELER ONE CARD -------");
           let id = this.cardsPicked[0].index;
           let players = this.messageActivitysUsable.cardPlayerConditions[id].players;
           this.playerConditions.count = this.messageActivitysUsable.cardPlayerConditions[id].count;
-          console.log("CARDSPICKED");
-          console.log(this.cardsPicked);
-          console.log("INDEX:" + id);
-          console.log("HIGHLIGHT");
-          console.log(this.messageActivitysUsable);
-          console.log("PLAYEDRCONDITION");
-          console.log(this.playerConditions);
-          console.log("PLAYERS:");
-          console.log(players);
-          console.log("COUNT:");
-          console.log(this.playerConditions.count);
 
           //check if not too many players are selected
           if (this.playersPicked.length >= this.getMax(this.playerConditions.count)) {
@@ -463,7 +436,6 @@ export default {
 
           //sonst nicht
         } else {
-          console.log("----- KEINE AUSWÄHLBAR SPIELER -------");
           this.playerConditions.players = [];
           this.playerConditions.count = [];
         }
@@ -478,10 +450,6 @@ export default {
         //keinen weiteren skill auswählbar
         this.skillConditions.skillIds = [];
         this.skillConditions.count = [...this.messageActivitysUsable.skillCount];
-        console.log(
-          "---------------------------------------------- SKILLPLAYERCONDITIONS------------------------------------",
-        );
-        console.log(this.messageActivitysUsable.skillPlayerConditions);
         //player abhängig von Skill auswählbar
         if (this.messageActivitysUsable.skillPlayerConditions.length !== 0) {
           let players = this.messageActivitysUsable.skillPlayerConditions[this.skillPicked.index].players;
@@ -497,7 +465,6 @@ export default {
         //wenn weder skill noch karte ausgwählt ist, mach nur skill oder karte auswählbar
       } else {
         //der CANCEL BUTTON PRAKTISCH
-        console.log(this.messageActivitysUsable);
         this.activateCancel = false;
         this.skillConditions.skillIds = [...this.messageActivitysUsable.skillIds];
         this.skillConditions.count = [...this.messageActivitysUsable.skillCount];
@@ -510,21 +477,6 @@ export default {
       let playerConfirm = false;
       let cardConfirm = false;
       let skillConfirm = false;
-      console.log(
-        "------------------------------------------ CHECK -------------------------------------------------------------------------------",
-      );
-      console.log("playcondition: ");
-      console.log(this.playerConditions);
-      console.log("cardcondition: ");
-      console.log(this.cardConditions);
-      console.log("skillConditions");
-      console.log(this.skillConditions);
-      console.log("playerspicked");
-      console.log(this.playersPicked);
-      console.log("cardsPicked");
-      console.log(this.cardsPicked);
-      console.log("skillPicked");
-      console.log(this.skillPicked);
 
       for (const length of this.playerConditions.count) {
         if (length === this.playersPicked.length) {
@@ -538,7 +490,6 @@ export default {
           cardConfirm = true;
           this.axiosUseCard = true;
           this.axiosSelectSkill = false;
-          console.log("CARDCONFIRM");
           break;
         }
       }
@@ -549,7 +500,6 @@ export default {
         skillConfirm = true;
         this.axiosUseCard = false;
         this.axiosSelectSkill = true;
-        console.log("SKILLCONFIRM");
       }
 
       this.activateConfirm = playerConfirm || cardConfirm || skillConfirm;
@@ -629,12 +579,10 @@ export default {
 
     //alle Karten holen initialisieren
     async initData() {
-      console.log("----------------------------------- INIT DATA --------------------------------");
       this.resetHighlightMessage();
       await resourceService.getCards().then(
         (response) => {
           this.cards = response.data;
-          console.log("ALLE KARTEN");
           console.log(this.cards);
         },
         (error) => {
@@ -645,17 +593,12 @@ export default {
 
     //wenn der Spieler auf eine Karte drückt
     useCard(index, id) {
-      console.log("---------------------------------- USE CARD -----------------------------------");
-      console.log("INDEX: " + index + "      id: " + id);
-      console.log("MESSAGE ACTIVITY USABLE: ");
-      console.log(this.messageActivitysUsable);
       if (this.containsId(id, this.messageActivitysUsable.cardIds)) {
         if (this.checkCardPicked(id)) {
           this.cardsPicked = this.cardsPicked.filter((card) => card.cardId !== id);
           //reset players Picked
           this.playersPicked.splice(0, this.playersPicked.length);
         } else if (this.containsId(id, this.cardConditions.cardIds)) {
-          console.log("karte kann genutzt werden");
           let playerIndexCount = 0;
           //get id of card and add it t
           for (let i = 0; i < this.playerCards.length; i++) {
@@ -674,7 +617,6 @@ export default {
     },
     //wenn der Spieler auf einen Spieler drückt
     pickPlayer(name) {
-      console.log("-----------------PICK PLAYER------------------");
       if (this.containsId(name, this.playersPicked)) {
         this.playersPicked = this.playersPicked.filter((player) => player !== name);
       } else {
@@ -687,10 +629,9 @@ export default {
 
     //wenn der Spieler seine Runde beenden will muss noch geprüft werden, ob er genug karten / leben hat
     async endTurn() {
-      console.log(
-        "------------------------------------------ END TURN --------------------------------------------------",
-      );
+
       this.resetHighlightMessage();
+      this.resetProgress();
       await gameService.end(this.lobbyId).then(
         (response) => {
           console.log(response);
@@ -703,59 +644,39 @@ export default {
 
     //wenn der Spieler einen Skill einsetzt
     useSkill(i, skillId) {
-      console.log(
-        "----------------------------------------------- USE SKILL --------------------------------------------",
-      );
+
       if (this.containsId(skillId, this.skillConditions.skillIds)) {
-        console.log("USESKILL : PLAYERCONDITION");
-        console.log(this.messageActivitysUsable);
+
 
         this.skillPicked = { skillId: skillId, index: i };
-        console.log("skillPicked.skillId");
-        console.log(this.skillPicked.skillId);
-        console.log("skillPicked.index");
-        console.log(this.skillPicked.index);
-        console.log("HIGHLIGHT");
-        console.log(this.messageActivitysUsable);
-        console.log("CARDCONDITIONS");
-        console.log(this.cardConditions);
+
         this.updateConditions();
-        console.log("CARDCONDITION AFTER");
-        console.log(this.cardConditions);
+
       }
     },
 
     //wenn der confirm button gedrückt wird
     async confirm() {
-      console.log(
-        "----------------------------------------------- CONFIRM --------------------------------------------",
-      );
 
       if (this.axiosUseCard) {
-        console.log("CONFIRM: CARD USED");
         //array mit Karten Index erstellen
         let cardIndexArray = [];
         this.showNotice = false;
         for (const element of this.cardsPicked) {
           cardIndexArray.push(element.cardId);
         }
-        console.log("lobbyiD: " + this.lobbyId);
-        console.log("cardIndexArray: ");
-        console.log(cardIndexArray);
+
         let nameCardArray = [];
         for (const element of cardIndexArray) {
           nameCardArray.push({ id: element, name: this.getCard(element).name });
         }
-        console.log(nameCardArray);
-        console.log("playersPicked: " + this.playersPicked);
 
-        console.log("RESET");
         //has to be resetted before call, because response takes to long and then new highlightMessage is resetted
         this.resetHighlightMessage();
 
+        this.resetProgress();
         gameService.useCard(this.lobbyId, cardIndexArray, this.playersPicked).then(
           (response) => {
-            console.log("confirmed");
             console.log(response);
           },
           (error) => {
@@ -763,16 +684,11 @@ export default {
           },
         );
       } else if (this.axiosSelectSkill) {
-        console.log("CONFIRM: SELECT SKILL");
         this.showNotice = false;
 
-        console.log("RESET");
-        console.log("SKILLPICKED BEFORE: " + this.skillPicked.skillId);
         //has to be resetted before call, because response takes to long and then new highlightMessage is resetted
         this.resetHighlightMessage();
-        console.log("SKILLPICKED: " + this.skillPicked.skillId);
-        console.log("PLAYERSPICKED");
-        console.log(this.playersPicked);
+        this.resetProgress();
         gameService.useSkill(this.lobbyId, this.skillPicked.index, this.playersPicked).then(
           (response) => {
             console.log(response);
@@ -792,8 +708,6 @@ export default {
 
     //wenn der cancel button gedrückt wird
     cancel() {
-      console.log("-------------------------------------------- CANCEL --------------------------------------------");
-      console.log("funktioniert");
       this.cardUsed = false;
       this.cardsPicked.splice(0, this.cardsPicked.length);
       this.playersPicked.splice(0, this.playersPicked.length);
@@ -803,11 +717,9 @@ export default {
 
     //-------------------------------- WEBSOCKET ---------------------------------------------------
     connect() {
-      console.log("versuche dich zu connecten");
       let socket = new SockJS(service.WS_URL);
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect({}, (frame) => {
-        console.log("Connected to Game " + frame);
 
         //der private connection
         this.stompClient.subscribe("/games/" + this.lobbyId + "/" + this.userStore.getUser.username, (response) => {
@@ -832,43 +744,32 @@ export default {
 
     //der setup für private Connection
     playerTurnSetup() {
-      console.log("PRIVATE MESSAGE");
+      //this.printSchnittstellen();
       if (this.gameStore.getGameData.messageType === "HIGHLIGHT") {
         this.messageActivitysUsable = this.gameStore.getGameData.payload;
         this.showNotice = true;
         this.notice = this.messageActivitysUsable.reason;
-        // this.startProgressbar();
         this.updateConditions();
+        this.startProgressbar();
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
-        console.log(" PRIVATE CARDMOVE aktiviert");
-        console.log(this.cardMoveMessage);
         this.updateCardMoveMessage();
       }
     },
 
     //der setup für public connection
     gameSetup() {
-      console.log("PUBLIC MESSAGE");
+      //this.printSchnittstellen();
       if (this.gameStore.getGameData.messageType === "UPDATE_GAME") {
         this.playerDaten = this.gameStore.getGameData.payload;
-        console.log(" PUBLIC UPDATE_GAME aktiviert");
-        console.log(this.playerDaten);
-        console.log("HIGHLIGHT");
-        console.log(this.messageActivitysUsable);
+
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
-        console.log(" PUBLIC CARD_MOVE aktiviert");
-        console.log(this.cardMoveMessage);
         this.updateCardMoveMessage();
       } else if (this.gameStore.getGameData.messageType === "LOG") {
-        console.log(" PUBLIC LOG aktiviert");
         this.logText += "\n" + this.gameStore.getGameData.payload.message;
-        console.log(this.gameStore.getGameData.payload);
       } else if (this.gameStore.getGameData.messageType === "GAME_END") {
         this.playerSummarize = this.gameStore.getGameData.payload;
-        console.log(" PUBLIC GAME_END aktiviert");
-        console.log(this.playerSummarize);
       }
     },
 
@@ -937,22 +838,62 @@ export default {
       return this.defaultPlayer;
     },
 
+    resetProgress() {
+      if (this.animation !== null) {
+        this.animation.pause();
+        this.$refs.progress.style.animation = "none";
+      }
+    },
+
     //startet den Timer
     startProgressbar() {
-      console.log("startProgress");
-      this.animation = this.$refs.progress.animate([{ width: "100%" }, { width: "0%" }], {
-        duration: this.gameDuration,
-        easing: "ease-in",
-        fill: "forwards",
-      });
-      this.animation.onfinish = () => {
-        if (this.activateConfirm)
-          this.connect();
-        else
-          this.endTurn();
-        this.animation.onfinish = null;
-      };
-      this.$refs.progress.style.animation = "progress-animation 20s ease-in forwards";
+      console.log("------------------------------------------------------------startProgress----------------------------------------------------");
+      console.log("-------------------------------------------------------------------------------------------------------------------------------");
+      console.log("-------------------------------------------------------------------------------------------------------------------------------");
+      console.log("-------------------------------------------------------------------------------------------------------------------------------");
+      console.log("-------------------------------------------------------------------------------------------------------------------------------");
+      console.log("-------------------------------------------------------------------------------------------------------------------------------");
+      console.log("Messageactivity");
+      console.log(this.messageActivitysUsable);
+      if (this.messageActivitysUsable.cardCount !== 0 || this.activateConfirm || this.messageActivitysUsable.activateEndTurn) {
+        console.log("can finish");
+        this.animation = this.$refs.progress.animate([{ width: "100%" }, { width: "0%" }], {
+          duration: this.gameDuration,
+          easing: "ease-in",
+          fill: "forwards",
+        });
+        this.animation.onfinish = () => {
+          if (this.messageActivitysUsable.activateEndTurn) {
+            this.resetProgress();
+            this.endTurn();
+          } else if (!this.activateConfirm) {
+            let min = 9999;
+            this.resetProgress();
+            for (let p = 0; p < this.messageActivitysUsable.cardCount; p++) {
+              if (this.messageActivitysUsable.cardCount[p] < min)
+                min = this.messageActivitysUsable.cardCount[p];
+            }
+
+            for (let i = 0; i < min; i++) {
+              for (let j = 0; j < this.playerCards.length; j++) {
+                if (!this.checkCardPicked(this.playerCards[j]) && this.containsId(this.playerCards[j], this.cardConditions.cardIds)) {
+                  this.useCard(i, this.playerCards[j]);
+                  break;
+                }
+              }
+            }
+            this.confirm();
+
+          } else if (this.activateConfirm) {
+            console.log("shit");
+            this.confirm();
+            this.resetProgress();
+          }
+          if (this.animation !== null)
+            this.animation.onfinish = null;
+        };
+        this.$refs.progress.style.animation = "progress-animation 20s ease-in forwards";
+      }
     },
 
 
@@ -962,7 +903,6 @@ export default {
       //1. wir entfernen die Karten.
       //erst prüfen ob es eines der Stapeln ist
       //Wenn es auch nicht da ist prüfe ob es der Spieler seine equipment / passive ist
-      console.log("CARDMOVE ACTIVATED");
       let copyDataMovingCards = [];
       const viewportWidth = document.documentElement.clientWidth;
       const viewportHeight = document.documentElement.clientHeight;
@@ -1084,7 +1024,6 @@ export default {
           }
         }
       }
-      console.log("CHECK ANIMATION");
       this.$nextTick(() => {
         if (copyDataMovingCards.length === 0) return;
 
@@ -1156,25 +1095,20 @@ export default {
 
 
         } else if (destination === "tablePile") {
-          console.log("DESITINATION IST TABLE");
           for (let i = 0; i < this.tablePile.length; i++) {
             if (this.containsId(this.tablePile[i].cardId, this.cardMoveMessage.cardIds)) {
               for (let j = 0; j < copyDataMovingCards.length; j++) {
                 if (copyDataMovingCards[j].cardId === this.tablePile[i].cardId) {
-                  console.log("KARTE WIRD ANIMIERT");
                   let element = document.getElementById(`#tableCard-${i}`);
                   let elementPos = element.getBoundingClientRect();
                   let newX = elementPos.left * window.devicePixelRatio;
                   let newY = elementPos.top * window.devicePixelRatio;
                   element.style.transition = "transform 1s ease-in-out";
-                  console.log("toTablePile:equipment");
                   if (source === this.username) {
-                    console.log("DU BIST SOURCE");
                     element.style.left = `${oldX[j] - newX}px`;
                     element.style.top = `${oldY[j] - newY - 0.04 * viewportHeight}px`;
                     element.style.transform = `translate(${newX - oldX[j]}px, ${newY - oldY[j] + 0.04 * viewportHeight}px)`;
                   } else {
-                    console.log("ANDERER SPIELER IST SOURCE");
                     element.style.left = `${oldX[j] - newX}px`;
                     element.style.top = `${oldY[j] - newY}px`;
                     element.style.transform = `translate(${newX - oldX[j]}px, ${newY - oldY[j]}px)`;
@@ -1215,17 +1149,9 @@ export default {
                   let newY = (i * 20 + elementPos.top) * window.devicePixelRatio;
 
 
-                  console.log("index: " + i);
-                  console.log("old X:" + oldX[j] + "   old Y:" + oldY[j]);
-                  console.log("new X:" + newX + "   new Y:" + newY);
-                  console.log("----------------------- NEW Y ------------------------------------------- : ");
                   element.style.transition = "transform 1s ease-in-out";
                   element.style.left = `${oldX[j] - newX}px`;
                   element.style.top = `${oldY[j] - newY}px`;
-                  console.log("transformedY: ");
-                  console.log(newY - oldY[j]);
-                  console.log("max height: ");
-                  console.log(viewportHeight * window.devicePixelRatio);
                   if (i === 0)
                     element.style.transform = `translate(${newX - oldX[j]}px, ${0.8 * viewportHeight - oldY[j]}px)`;
                   else
@@ -1238,11 +1164,9 @@ export default {
 
           for (let i = 0; i < this.playerDelayedEffect.length; i++) {
             if (this.containsId(this.playerDelayedEffect[i], this.cardMoveMessage.cardIds)) {
-              console.log("auszuspielnd");
               for (let j = 0; j < copyDataMovingCards.length; j++) {
                 if (copyDataMovingCards[j].cardId === this.playerDelayedEffect[i]) {
                   let element = document.getElementById(`#passiveCard-${i}`);
-                  console.log("animation delay effect");
                   let elementPos = element.getBoundingClientRect();
                   let newX = elementPos.left * window.devicePixelRatio;
                   let newY = 0.8 * viewportHeight;
@@ -1258,15 +1182,11 @@ export default {
             }
           }
         } else {
-          console.log("playercards");
-          console.log(this.playerCards);
 
           for (let i = 0; i < this.playerCards.length; i++) {
             if (this.containsId(this.playerCards[i], this.cardMoveMessage.cardIds)) {
               for (let j = 0; j < this.cardMoveMessage.cardIds.length; j++) {
                 if (this.cardMoveMessage.cardIds[j] === this.playerCards[i]) {
-                  console.log("VOM STAPEL");
-                  console.log("KARTE WIRD ANIMIERT");
                   let element = document.getElementById(`#cardWrapper-${i}`);
                   let elementPos = element.getBoundingClientRect();
                   let newX = elementPos.left * window.devicePixelRatio;
@@ -1275,8 +1195,6 @@ export default {
 
                   element.style.left = `${oldX[j] - newX}px`;
                   element.style.top = `${oldY[j] - newY}px`;
-                  console.log("move old: " + oldX[j] + "  " + oldY[j]);
-                  console.log("move new: " + newX + "   " + newY);
                   element.style.transform = `translate(${newX - oldX[j]}px, ${newY - oldY[j]}px)`;
 
                 }
