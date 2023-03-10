@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-center">
     <v-col cols="3" id="left-bar" class="text-center">
-      <img :src="'/avatars/avatar' + userStore.getUser.avatarNumber + '.png'" />
+      <img :src="'/avatars/avatar' + userStore.getUser.avatarNumber + '.png'" class="avatar"/>
       <v-divider inset></v-divider>
       <div class="text-h4 pa-4">
         <div class="pa-5">
@@ -21,6 +21,10 @@
         </div>
         <button class="image back" @click="back"></button>
       </div>
+      
+      <v-alert v-show="alertStatus" type="error">
+          <h3 class="text-center">{{ this.alertMessage }}</h3>
+        </v-alert>
     </v-col>
     <v-col cols="9" id="right-bar">
       <div class="table">
@@ -70,9 +74,14 @@ tr:hover {
 
 #text {
   color: white;
+  font-size: 2vw;
   text-decoration-line: underline;
   text-decoration-color: white;
   text-decoration-thickness: 2px;
+}
+
+.avatar{
+  width:15vw;
 }
 
 .text-field {
@@ -91,10 +100,10 @@ tr:hover {
 }
 
 .button {
-  width: 197px;
-  min-height: 61px;
+  width: 10.25vw;
+  min-height: 6vh;
   color: white;
-  font-size: 20px;
+  font-size: 1vw;
   border-radius: 15px;
   background: url("/elements/button.png");
 }
@@ -114,6 +123,8 @@ export default {
   data: () => ({
     lobbies: [],
     lobbyId: "",
+    alertMessage:"",
+    alertStatus: false
   }),
   setup() {
     const userStore = useUserStore();
@@ -143,6 +154,7 @@ export default {
         },
         (error) => {
           console.log(error);
+          this.showAlert(error.response.data.message);
         }
       );
     },
@@ -156,6 +168,7 @@ export default {
         },
         (error) => {
           console.log(error);
+          this.showAlert(error.response.data.message);
         }
       );
     },
@@ -167,11 +180,19 @@ export default {
         },
         (error) => {
           console.log(error);
+          this.showAlert(error.response.data.message);
         }
       );
     },
     back() {
       this.$router.push({ path: "./home" });
+    },
+    showAlert(message) {
+      this.alertMessage = message;
+      this.alertStatus = true;
+      setTimeout(() => {
+        this.alertStatus = false;
+      }, 7000);
     },
   },
   created() {

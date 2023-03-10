@@ -43,7 +43,7 @@
         <span>Log</span>
       </button>
       <div v-if="logOpen" class="logTextArea">
-        <p v-html="logTextWithLineBreaks" class="ma-3"></p>
+        <div class="pa-5" v-html="logTextWithLineBreaks"></div>
       </div>
     </div>
 
