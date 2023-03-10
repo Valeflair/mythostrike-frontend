@@ -23,8 +23,18 @@
       <div class="big-picture" v-if="currentCard">
         <img :src="'/cards/' + this.currentCard.name.toLowerCase().replace(/\s/g, '') + '.png'" alt="" />
       </div>
-      <div class="description" v-if="currentCard">
+      <div class="description pa-3" v-if="this.currentCard.description">
         {{ this.currentCard.description }}
+      </div>
+      <div class="description pa-5" v-if="!this.currentCard.description">
+        <P v-for="championSkills in this.currentCard.passiveSkills">
+          <h3 class="text-decoration-underline">{{ championSkills.name }}</h3>
+          <p class="pb-4">{{ championSkills.description }}</p>
+        </P>
+        <P v-for="championSkills in this.currentCard.activeSkills">
+          <h3 class="text-decoration-underline">{{ championSkills.name }}</h3>
+          <p class="pb-4">{{ championSkills.description }}</p>
+        </P>
       </div>
     </div>
   </div>
@@ -138,6 +148,7 @@ export default {
         (response) => {
           let champions = response.data;
           this.cards = this.cards.concat(champions);
+          console.log(this.cards);
         },
         (error) => {
           console.log(error);
