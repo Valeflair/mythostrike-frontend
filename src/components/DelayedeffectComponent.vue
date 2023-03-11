@@ -37,7 +37,12 @@ export default {
 .debuff-description {
   display: none;
   width: 10vw;
-  background-color: green;
+  background: url("/elements/banner.png");
+  background-size: cover;
+  font-weight: bold;
+  color: white;
+  text-shadow: #000000 2px 2px 4px;
+  border-radius: 15px;
   position: absolute;
   bottom: 0;
   z-index: 9;
