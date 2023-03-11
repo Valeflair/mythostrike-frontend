@@ -68,6 +68,7 @@ export default {
   margin: 15px;
   border-radius: 15px;
   font-size: 1vw;
+  font-size: 2vh;
   transition-duration: 0.4s;
   background-image: url("/elements/button.png");
 }
