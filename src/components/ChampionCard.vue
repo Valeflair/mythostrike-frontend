@@ -86,8 +86,10 @@ import delayComponent from "./DelayedeffectComponent.vue";
         </tr>
       </table>
       <transition name="fade-in">
-        <div class="description" v-if="showDescription" @mouseover="getDescription">
-          <p v-html="logTextWithLineBreaks"></p>
+        <div class="description" v-if="showDescription" >
+          <p>
+            {{ text }}
+          </p>
         </div>
       </transition>
     </div>
@@ -113,16 +115,15 @@ export default {
       hoverComponents: false,
       description: "",
       basePathSymbol: "/cards/",
+      text:'',
     };
   },
   components: {
     equipmentComponent,
     delayComponent,
   },
-  computed: {
-    logTextWithLineBreaks() {
-      return this.getDescription().replace(/\n/g, "<br>");
-    },
+  mounted(){
+    this.logTextWithLineBreaks();
   },
   props: {
     isGame: Boolean,
@@ -155,6 +156,9 @@ export default {
     picked: Boolean,
   },
   methods: {
+    logTextWithLineBreaks() {
+      this.text =this.getDescription();
+    },
     getIdentityImagePath() {
       let path = "/card/small-parts/" + this.identity.replace(/\s/g, "").toLowerCase() + ".png";
       return path;
