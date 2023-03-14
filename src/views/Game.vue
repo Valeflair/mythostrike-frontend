@@ -663,7 +663,7 @@ export default {
         //has to be resetted before call, because response takes to long and then new highlightMessage is resetted
         this.resetHighlightMessage();
         this.resetProgress();
-        gameService.useSkill(this.lobbyId, this.skillPicked.index, this.playersPicked).then(
+        gameService.useSkill(this.lobbyId, this.skillPicked.skillId, this.playersPicked).then(
           (response) => {
             console.log(response);
           },
