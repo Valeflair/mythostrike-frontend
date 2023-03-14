@@ -155,15 +155,15 @@ export default {
 
 .identity {
   position: absolute;
-  width: 2.5vw;
-  height: 3vh;
-  background-color: red;
+  width: 2.8vw;
+  height: 3.5vh;
+  background-color: rgb(189, 94, 94);
   z-index: 8;
   font: 2vh;
   color: black;
-
   right: 0.7vw;
   top: 3vh;
+  word-break:break-all
 }
 
 .lightCard {

@@ -42,7 +42,7 @@ import delayComponent from "./DelayedeffectComponent.vue";
       <div v-if="game" class="handcard-num">{{ handcardNum }}</div>
 
       <div
-        v-if="(game && identity === 'Team Blue') || 'Team Red'"
+        v-if="(game && identity !=null)"
         class="identity"
         :style="{
           background: 'url(' + getIdentityImagePath() + ')',
@@ -86,7 +86,7 @@ import delayComponent from "./DelayedeffectComponent.vue";
         </tr>
       </table>
       <transition name="fade-in">
-        <div class="description" v-if="showDescription" >
+        <div class="description" v-if="showDescription">
           <p>
             {{ text }}
           </p>
@@ -115,14 +115,14 @@ export default {
       hoverComponents: false,
       description: "",
       basePathSymbol: "/cards/",
-      text:'',
+      text: "",
     };
   },
   components: {
     equipmentComponent,
     delayComponent,
   },
-  mounted(){
+  mounted() {
     this.logTextWithLineBreaks();
   },
   props: {
@@ -157,10 +157,10 @@ export default {
   },
   methods: {
     logTextWithLineBreaks() {
-      this.text =this.getDescription();
+      this.text = this.getDescription();
     },
     getIdentityImagePath() {
-      let path = "/card/small-parts/" + this.identity.replace(/\s/g, "").toLowerCase() + ".png";
+      let path = "/card/small-parts/" + this.identity + ".png";
       return path;
     },
     getImagePath() {

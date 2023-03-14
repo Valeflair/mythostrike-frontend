@@ -27,11 +27,11 @@
         {{ this.currentCard.description }}
       </div>
       <div class="description pa-5" v-if="!this.currentCard.description">
-        <P v-for="championSkills in this.currentCard.passiveSkills">
+        <P v-for="championSkills in this.currentCard.passiveSkills" :key="championSkills">
           <h3 class="text-decoration-underline">{{ championSkills.name }}</h3>
           <p class="pb-4">{{ championSkills.description }}</p>
         </P>
-        <P v-for="championSkills in this.currentCard.activeSkills">
+        <P v-for="championSkills in this.currentCard.activeSkills" :key="championSkills">
           <h3 class="text-decoration-underline">{{ championSkills.name }}</h3>
           <p class="pb-4">{{ championSkills.description }}</p>
         </P>

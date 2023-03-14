@@ -1386,6 +1386,7 @@ export default {
   right: 0;
   top: 0;
   overflow: auto;
+  z-index:10
 }
 
 .table-wrapper {
