@@ -311,7 +311,7 @@ export default {
       timerDelay: 1000, // der delay für karten hover
       currentPlayer: "", // bekommen wir von websocket
       cards: [],
-      gameDuration: 9999999,
+      gameDuration: 30000,
       viewportWidth: document.documentElement.clientWidth,
       viewportHeight: document.documentElement.clientHeight,
 
@@ -1386,7 +1386,7 @@ export default {
   right: 0;
   top: 0;
   overflow: auto;
-  z-index:10
+  z-index: 10
 }
 
 .table-wrapper {
