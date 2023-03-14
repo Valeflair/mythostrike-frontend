@@ -36,7 +36,7 @@ import equipmentComponent from "./BlockWithDescription.vue";
       </table>
 
       <div
-        v-if="(game && identity === 'Team Blue') || 'Team Red'"
+        v-if="(game && identity !='None')"
         class="identity"
         :style="{
           background: 'url(' + getIdentityImagePath() + ')',
@@ -265,6 +265,7 @@ export default {
   position: absolute;
   bottom: 8vh;
   left: 0.6vw;
+  font-size:x-large;
 }
 
 .description {

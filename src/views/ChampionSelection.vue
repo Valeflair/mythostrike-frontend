@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="area-3-4 pa-5">
-      <h1>Select your champion</h1>
-      <h1>Your identity: {{ this.identity }}</h1>
+      <h1 class="text">Select your champion</h1>
+      <h1 class="text">Your identity: {{ this.identity }}</h1>
       <div class="championContainer">
         <v-row class="d-flex justify-center">
           <div v-for="champion in champions" :key="champion.id">
@@ -34,10 +34,10 @@
           disabled
         ></button>
       </div>
-      <div class="championDescription">
+      <div class="text championDescription">
         <h1 :style="{ color: this.color }">{{ this.currentChampion.name }}</h1>
         <div class="text-center">
-          <span v-for="n in this.currentChampion.maxHp"><img src="/card/small-parts/health_light.png" alt="" /></span>
+          <span v-for="n in this.currentChampion.maxHp" :key="n"><img src="/card/small-parts/health_light.png" alt="" /></span>
         </div>
         <div v-for="pSkill in this.currentChampion.passiveSkills" :key="pSkill.name" class="justify-center pa-2">
           <div class="skill">
@@ -115,6 +115,10 @@ export default {
 </script>
 
 <style scoped>
+
+.text {
+  color:aliceblue;
+}
 .randomButton {
   position: relative;
   width: 10vw;
@@ -246,7 +250,7 @@ h1 {
 
 .container {
   display: flex;
-  background: url("/backgrounds/home_background.png");
+  background: url("/backgrounds/selection_background.png");
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;

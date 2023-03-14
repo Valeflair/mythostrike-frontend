@@ -42,7 +42,7 @@ import delayComponent from "./DelayedeffectComponent.vue";
       <div v-if="game" class="handcard-num">{{ handcardNum }}</div>
 
       <div
-        v-if="(game && identity !=null)"
+        v-if="(game && identity !='None')"
         class="identity"
         :style="{
           background: 'url(' + getIdentityImagePath() + ')',
@@ -160,7 +160,7 @@ export default {
       this.text = this.getDescription();
     },
     getIdentityImagePath() {
-      let path = "/card/small-parts/" + this.identity + ".png";
+      let path = "/card/small-parts/" + this.identity + ".png"
       return path;
     },
     getImagePath() {
@@ -455,18 +455,20 @@ export default {
 }
 
 .handcard-num {
-  width: 2.5vh;
-  height: 2.5vh;
+  width: 4.8vh;
+  height: 5.3vh;
   position: absolute;
   z-index: 5;
-  background-color: red;
+  background-color: rgb(201, 129, 21) transparent;
+  background-image: url(/card/small-parts/cardcount.png);
+  background-position: center;
   border-radius: 100%;
   background-repeat: no-repeat;
-  font-size: 2vh;
+  font-size: 3vh;
   color: aliceblue;
-  text-align: center;
-  top: 0.2vw;
-  left: 8vw;
+  text-align:center;
+  top: -0.01vw;
+  left: 8.8vw;
 }
 
 .identity {

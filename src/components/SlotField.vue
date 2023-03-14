@@ -41,7 +41,7 @@ import CommandField from "@/components/CommandField.vue";
       </div>
     </v-row>
 
-    <v-row class="ma-8">
+    <v-row>
       <v-col cols="3"></v-col>
       <v-col cols="3">
         <div class="label">
@@ -181,8 +181,8 @@ export default {
   margin-left: 1vh;
   margin-right: 1vh;
   transition-duration: 0.4s;
-  width: 11vw;
-  height: 11vw;
+  width: 10vw;
+  height: 10vw;
   background-size: cover;
 }
 
@@ -197,8 +197,8 @@ export default {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  width: 11vw;
-  height: 11vw;
+  width: 10vw;
+  height: 10vw;
   border-radius: 12px;
   margin-left: 1vh;
   margin-right: 1vh;

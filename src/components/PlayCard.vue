@@ -155,8 +155,8 @@ export default {
 
 .identity {
   position: absolute;
-  width: 2.8vw;
-  height: 3.5vh;
+  width: 3vw;
+  height: 2.8vh;
   background-color: rgb(189, 94, 94);
   z-index: 8;
   font: 2vh;

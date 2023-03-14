@@ -59,6 +59,10 @@
 
 <style scoped>
 #left-bar {
+  background-image: url("/backgrounds/lobbyview.png");
+  background-repeat: round;
+  background-position: center;
+  background-size: cover;
   background-color: #9c3b33;
   height: 100vh;
 }
