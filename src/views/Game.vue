@@ -1563,6 +1563,7 @@ export default {
   bottom: 0;
   width: 18vw;
   height: 15vh;
+  z-index: 10;
 }
 
 .equipment {
