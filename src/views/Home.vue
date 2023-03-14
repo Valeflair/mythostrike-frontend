@@ -1,5 +1,6 @@
 <template>
   <div class="bg-image">
+
     <AvatarSelection
       v-if="isSelectAvatarShown"
       @close:AvatarSelection="closeAvatarSelection"
@@ -15,7 +16,7 @@
       </v-chip>
     </div>
 
-    <div style="margin-top: 100px">
+    <div style="margin-top: 100px" >
       <v-container>
         <v-row justify="space-between">
           <v-card class="profil text-center">
@@ -27,7 +28,8 @@
               @click="openAvatarSelection"
             />
           </v-card>
-          <img src="/elements/lobby.png" class="image lobbyImg mr-10" @click="toLobbyOverview" />
+          <img src="/elements/lobby.png" class="image lobbyImg" @click="toLobbyOverview" />
+          
         </v-row>
       </v-container>
     </div>
@@ -141,6 +143,13 @@ export default {
 </script>
 
 <style scoped>
+.middle {
+  background: url("/backgrounds/goldenframe.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 10;
+}
+
 .profil {
   background-color: #2e2824 !important;
   color: white;
@@ -162,8 +171,10 @@ export default {
 }
 
 .lobbyImg {
-  width: 18vw;
+  width: 13vw;
   height: 20vw;
+  right: 20vw;
+  
 }
 
 .libraryImg {
@@ -186,11 +197,12 @@ export default {
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;
+  z-index: 0;
 }
 
 #footer {
   position: fixed;
-  bottom: 0;
-  right: 0;
+  bottom: 0.5vh;
+  right: 4vw;
 }
 </style>

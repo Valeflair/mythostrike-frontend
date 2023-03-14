@@ -1501,6 +1501,7 @@ export default {
 }
 
 .confirmButton {
+  background: url("/elements/confirmbutton.png");
   position: absolute;
   left: 47vw;
   border-radius: 10px;
@@ -1544,6 +1545,7 @@ export default {
   position: absolute;
   display: flex;
   bottom: 16vh;
+  z-index:10
 }
 
 .passiveCircle {
@@ -1555,12 +1557,13 @@ export default {
 
 
 .equipmentSlot {
-  position: absolute;
+  position: relative;
   display: flex;
   left: 0;
   bottom: 0;
   width: 18vw;
   height: 15vh;
+  z-index: 10;
 }
 
 .equipment {
