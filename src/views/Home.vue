@@ -42,22 +42,25 @@
     <div id="footer">
       <v-container>
         <v-row>
-          <div style="margin-right: 2.8vw" class="buttonFather2">
-            <p class="buttonText2">Library</p>
+          <div style="margin-right: 2.8vw" class="libraryFather">
+            <p class="librarySpace">&emsp;</p>
+            <p class="libraryText">Library</p>
             <img src="/elements/button_library.png" class="image libraryImg" title="Library" @click="toLibrary" />
-            
+
           </div>
 
-          <div style="margin-right: 2.8vw" class="buttonFather2">
-            <p class="buttonText2">Music</p>
+          <div style="margin-right: 2.8vw" class="musicFather">
+            <p class="musicSpace">&emsp;</p>
+            <p class="musicText">Music</p>
             <img src="/elements/button_setting.png" class="image settingImg" title="Music" @click="music()" />
-            
+
           </div>
 
-          <div style="margin-right: 2.8vw" class="buttonFather2">
-            <p class="buttonText2">Logout</p>
+          <div style="margin-right: 2.8vw" class="logoutFather">
+            <p class="logoutSpace">&emsp;</p>
+            <p class="logoutText">Logout</p>
             <img src="/elements/return.png" class="image logoutImg" title="Logout" @click="logout" />
-            
+
           </div>
         </v-row>
       </v-container>
@@ -162,20 +165,7 @@ export default {
   font-family: "Blackadder";
   src: url("/fontStyle/blackadder.ttf");
 }
-@keyframes anchor-underline {
-  0%, 10% {
-    left: 0;
-    right: 100%;
-  }
-  40%, 60% {
-    left: 0;
-    right: 0;
-  }
-  90%, 100% {
-    left: 100%;
-    right: 0;
-  }
-}
+
 .buttonText {
   font-size: 2.3vh;
   font-family: Rhianne;
@@ -185,7 +175,8 @@ export default {
 .buttonFather:hover .buttonText {
 display: block;
 }
-.buttonText2 {
+/* ------------------------------------------------ */
+.libraryText, .musicText, .logoutText {
   width: 7vw;
   font-size: 1.5vh;
   text-align: center;
@@ -194,15 +185,44 @@ display: block;
   color: aliceblue;
   display: none;
 }
-.buttonFather2:hover .buttonText2 {
+/* ------------------------------------------- */
+.librarySpace, .musicSpace, .logoutSpace{
+  width: 7vw;
+  font-size: 1.5vh;
+  text-align: center;
+  font-size: 3vh;
+  font-family: Blackadder;
+  color: aliceblue;
+  display: block;
+}
+
+/* ------------------------------------- */
+.libraryFather:hover .libraryText {
 display: block;
 }
-.middle {
-  background: url("/backgrounds/goldenframe.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 10;
+
+.libraryFather:hover .librarySpace {
+display: none;
 }
+
+/* ---------------------------------------------- */
+.musicFather:hover .musicText {
+display: block;
+}
+
+.musicFather:hover .musicSpace {
+display: none;
+}
+
+/* ------------------------------------------ */
+.logoutFather:hover .logoutText {
+display: block;
+}
+
+.logoutFather:hover .logoutSpace {
+display: none;
+}
+
 
 .profil {
   background-color: #2e2824 !important;

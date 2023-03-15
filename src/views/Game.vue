@@ -1585,7 +1585,7 @@ export default {
   position: relative;
   display: flex;
   left: 0;
-  bottom: 0;
+  bottom: -2vh;
   width: 18vw;
   height: 15vh;
   z-index: 10;
