@@ -142,7 +142,7 @@ export default {
       type: Array,
       default: [],
     },
-    delayedEffects: [],
+    delayedEffects: Array,
     activeSkills: {
       type: Array,
       default: [],

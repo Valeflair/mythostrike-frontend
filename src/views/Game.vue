@@ -89,12 +89,12 @@
         <div class="equipment"
              :id="`#equipmentCard-${i}`">
 
-          <equipment-component
+          <Equipment
             :description="getCard(equip).description"
             :name="getCard(equip).name"
-            fontProp="2"
-            heightProp="6.5"
-            widthProp="18"
+            :fontProp="2"
+            :heightProp="6.5"
+            :widthProp="18"
           />
 
         </div>
@@ -208,7 +208,7 @@
 
 <script>
 import championCard from "../components/ChampionCard.vue";
-import equipmentComponent from "../components/BlockWithDescription.vue";
+import Equipment from "../components/BlockWithDescription.vue";
 import DelayedeffectComponent from "../components/DelayedeffectComponent.vue";
 import playerCard from "../components/PlayerChampionCard.vue";
 import resultPage from "../components/Statement.vue";
@@ -393,7 +393,7 @@ export default {
   },
   components: {
     championCard,
-    equipmentComponent,
+    Equipment,
     DelayedeffectComponent,
     playerCard,
     resultPage,
@@ -609,6 +609,8 @@ export default {
       await gameService.end(this.lobbyId).then(
         (response) => {
           console.log(response);
+          this.cardsPicked.splice(0, this.cardsPicked.length);
+          this.activateCancel = false;
         },
         (error) => {
           console.log(error);
@@ -1487,7 +1489,6 @@ export default {
   position: absolute;
   left: 13vw;
   bottom: 32vh;
-  border-radius: 1rem;
   width: 10vw;
   height: 29vh;
   background-color: pink;
@@ -1497,7 +1498,6 @@ export default {
   position: absolute;
   left: 13vw;
   bottom: 32vh;
-  border-radius: 1rem;
   width: 10vw;
   height: 29vh;
   background-color: rgba(0, 0, 0, 0.5);

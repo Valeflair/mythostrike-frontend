@@ -34,10 +34,11 @@ export default {
       timerDelay: 500,
     };
   },
+  inheritAttrs: false,
   props: {
-    widthProp: Number,
-    heightProp: Number,
-    fontProp: Number,
+    widthProp: String,
+    heightProp: String,
+    fontProp: String,
     usableProp: false,
     used: false,
     name: "",
