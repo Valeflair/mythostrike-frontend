@@ -311,7 +311,7 @@ export default {
       timerDelay: 1000, // der delay für karten hover
       currentPlayer: "", // bekommen wir von websocket
       cards: [],
-      gameDuration: 30000,
+      gameDuration: 99999,
       viewportWidth: document.documentElement.clientWidth,
       viewportHeight: document.documentElement.clientHeight,
 
@@ -695,6 +695,13 @@ export default {
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect({}, () => {
 
+        //der public connection
+        this.stompClient.subscribe("/games/" + this.lobbyId, (response) => {
+          console.log(JSON.parse(response.body));
+          this.gameStore.setGameData(JSON.parse(response.body));
+          this.gameSetup();
+        });
+
         //der private connection
         this.stompClient.subscribe("/games/" + this.lobbyId + "/" + this.userStore.getUser.username, (response) => {
           console.log(JSON.parse(response.body));
@@ -702,12 +709,7 @@ export default {
           this.playerTurnSetup();
         });
 
-        //der public connection
-        this.stompClient.subscribe("/games/" + this.lobbyId, (response) => {
-          console.log(JSON.parse(response.body));
-          this.gameStore.setGameData(JSON.parse(response.body));
-          this.gameSetup();
-        });
+
       });
     },
     disconnect() {
@@ -727,7 +729,11 @@ export default {
         this.startProgressbar();
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
+        console.log(this.cardMoveMessage);
+        console.log("----------------------------------------------------------- CARDMOVEMESSAGE -----------------------------------------------------------");
         this.updateCardMoveMessage();
+        console.log(this.cardMoveMessage);
+
       }
     },
 
@@ -736,10 +742,16 @@ export default {
       //this.printSchnittstellen();
       if (this.gameStore.getGameData.messageType === "UPDATE_GAME") {
         this.playerDaten = this.gameStore.getGameData.payload;
+        console.log("----------------------------------------------------------- UPDATEGAMEMESSAGE -----------------------------------------------------------");
+
 
       } else if (this.gameStore.getGameData.messageType === "CARD_MOVE") {
         this.cardMoveMessage = this.gameStore.getGameData.payload;
+        console.log(this.cardMoveMessage);
+        console.log("----------------------------------------------------------- CARDMOVEMESSAGE -----------------------------------------------------------");
         this.updateCardMoveMessage();
+        console.log(this.cardMoveMessage);
+
       } else if (this.gameStore.getGameData.messageType === "LOG") {
         this.logText += "\n" + this.gameStore.getGameData.payload.message;
       } else if (this.gameStore.getGameData.messageType === "GAME_END") {
@@ -978,12 +990,19 @@ export default {
           this.playerDelayedEffect.push(element);
         }
       } else {
+        console.log("this.cardMoveMessage.destination ");
+        console.log(this.cardMoveMessage.destination);
+        console.log("playerdaten");
+        console.log(this.playerDaten);
         for (const element of this.playerDaten) {
           if (this.cardMoveMessage.destination === element.username) {
+            console.log("username found: " + this.username);
             element.cardCount += this.cardMoveMessage.count;
             if (this.cardMoveMessage.destination === this.username) {
               for (const element of this.cardMoveMessage.cardIds) {
                 this.playerCards.push(element);
+                console.log("----------------------------------------------------------------------------this.playerCards");
+                console.log(element);
               }
             }
           }
@@ -1174,9 +1193,14 @@ export default {
       let copyDataMovingCards = [];
 
       this.removeCardsFromSource(copyDataMovingCards);
+      console.log("--------------------------------------- copyDataMovingCards : removeCardsFromSource ------------------------------------------");
+      console.log(copyDataMovingCards);
       this.addCardsToDestination();
+      console.log("--------------------------------------- copyDataMovingCards : addCardsToDestination ------------------------------------------");
+      console.log(copyDataMovingCards);
       //2. wir fügen die Karte nun dahin wohin sie hingehört ein
-
+      console.log("playerCards---------------------------------------------------------------------------------");
+      console.log(this.playerCards);
       this.$nextTick(() => {
 
         const oldX = [];
@@ -1545,7 +1569,7 @@ export default {
   position: absolute;
   display: flex;
   bottom: 16vh;
-  z-index:10
+  z-index: 10
 }
 
 .passiveCircle {
