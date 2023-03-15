@@ -609,6 +609,8 @@ export default {
       await gameService.end(this.lobbyId).then(
         (response) => {
           console.log(response);
+          this.cardsPicked.splice(0, this.cardsPicked.length);
+          this.activateCancel = false;
         },
         (error) => {
           console.log(error);
