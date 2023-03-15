@@ -55,7 +55,7 @@
         :championName="findPlayer(username).champion.name"
         :currentPlayer="findPlayer(username).isCurrentPlayer"
         :health="findPlayer(username).currentHp"
-        :identity="this.lobbyStore.getIdentity()"
+        :identity="lobbyStore.getIdentity()"
         :messageActivitysUsable="messageActivitysUsable"
         :name="username"
         :passiveSkills="findPlayer(username).champion.passiveSkills"
@@ -1413,7 +1413,7 @@ export default {
   top: 0;
   overflow: auto;
   z-index: 10;
-  
+
 }
 
 .table-wrapper {
