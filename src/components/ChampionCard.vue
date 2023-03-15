@@ -49,7 +49,7 @@ import delayComponent from "./DelayedeffectComponent.vue";
           background: 'url(' + getIdentityImagePath() + ')',
           backgroundSize: 'cover',
         }"
-        :title=this.identity
+        :title=identity
       ></div>
 
       <table>

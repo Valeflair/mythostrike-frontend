@@ -42,7 +42,7 @@ import equipmentComponent from "./BlockWithDescription.vue";
           background: 'url(' + getIdentityImagePath() + ')',
           backgroundSize: 'cover',
         }"
-        :title=this.identity
+        :title=identity
       ></div>
 
       <table class="skillList">
