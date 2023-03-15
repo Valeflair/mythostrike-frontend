@@ -186,14 +186,13 @@ export default {
   display: block;
   align-self: center;
   color: white;
-  font-size: 3vh;
-  font-size: 1.8vw;
+  font-size: 1.6vw;
   background: url("/elements/skill-background.png");
   background-size: 100%;
 }
 
 .skillDescription {
-  background-color: #ccaeb4;
+  background: url("/elements/banner.png");
   opacity: 0;
   visibility: hidden;
   position: absolute;
