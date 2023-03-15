@@ -35,7 +35,7 @@
         ></button>
       </div>
       <div class="text championDescription">
-        <h1 :style="{ color: this.color }">{{ this.currentChampion.name }}</h1>
+        <h1>{{ this.currentChampion.name }}</h1>
         <div class="text-center">
           <span v-for="n in this.currentChampion.maxHp" :key="n"><img src="/card/small-parts/health_light.png" alt="" /></span>
         </div>
