@@ -1518,6 +1518,7 @@ export default {
 
 
 .cancelButton {
+  background: url("/elements/confirmbutton.png");
   position: absolute;
   left: 47vw;
   border-radius: 10px;
