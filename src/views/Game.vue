@@ -43,7 +43,7 @@
         <span>Log</span>
       </button>
       <div v-if="logOpen" class="logTextArea">
-        <div class="pa-5" v-html="logTextWithLineBreaks"></div>
+        <div class="pa-3" v-html="logTextWithLineBreaks"></div>
       </div>
     </div>
 
@@ -1391,7 +1391,7 @@ export default {
 
 .logTextArea {
   position: relative;
-  width: 20vw;
+  width: 14vw;
   right: 0;
   top: 5vh;
   height: 37vh;
@@ -1406,13 +1406,14 @@ export default {
 }
 
 .logClass {
-  width: 20vw;
+  width: 14vw;
   height: 45vh;
   position: absolute;
   right: 0;
   top: 0;
   overflow: auto;
-  z-index: 10
+  z-index: 10;
+  
 }
 
 .table-wrapper {
@@ -1421,6 +1422,8 @@ export default {
   width: 90vw;
   top: 10px;
   position: relative;
+  z-index: 11
+
 }
 
 .tablePile {
