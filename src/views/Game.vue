@@ -55,7 +55,7 @@
         :championName="findPlayer(username).champion.name"
         :currentPlayer="findPlayer(username).isCurrentPlayer"
         :health="findPlayer(username).currentHp"
-        :identity="findPlayer(username).identity"
+        :identity="this.lobbyStore.getIdentity()"
         :messageActivitysUsable="messageActivitysUsable"
         :name="username"
         :passiveSkills="findPlayer(username).champion.passiveSkills"
