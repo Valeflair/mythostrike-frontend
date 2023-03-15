@@ -19,17 +19,22 @@
     <div style="margin-top: 100px" >
       <v-container>
         <v-row justify="space-between">
+          <div>
           <v-card class="profil text-center">
             <v-card-title class="text-h4">Welcome</v-card-title>
             <v-card-title>{{ this.userStore.getUser.username }}</v-card-title>
             <img
               :src="'/avatars/avatar' + this.userStore.getUser.avatarNumber + '.png'"
               class="image avatarImg"
+              title="Avatar"
               @click="openAvatarSelection"
             />
           </v-card>
-          <img src="/elements/lobby.png" class="image lobbyImg" @click="toLobbyOverview" />
-          
+          </div>
+          <div class="buttonFather">
+          <img src="/elements/lobby.png" class="image lobbyImg" title="Lobby Overview" @click="toLobbyOverview" />
+          <p class="buttonText">Lobby Overview</p>
+        </div>
         </v-row>
       </v-container>
     </div>
@@ -37,16 +42,22 @@
     <div id="footer">
       <v-container>
         <v-row>
-          <div style="margin-right: 2.4vw">
-            <img src="/elements/button_library.png" class="image libraryImg" @click="toLibrary" />
+          <div style="margin-right: 2.8vw" class="buttonFather2">
+            <p class="buttonText2">Library</p>
+            <img src="/elements/button_library.png" class="image libraryImg" title="Library" @click="toLibrary" />
+            
           </div>
 
-          <div style="margin-right: 2vw">
-            <img src="/elements/button_setting.png" class="image settingImg" @click="music()" />
+          <div style="margin-right: 2.8vw" class="buttonFather2">
+            <p class="buttonText2">Music</p>
+            <img src="/elements/button_setting.png" class="image settingImg" title="Music" @click="music()" />
+            
           </div>
 
-          <div>
-            <img src="/elements/return.png" class="image logoutImg" @click="logout" />
+          <div style="margin-right: 2.8vw" class="buttonFather2">
+            <p class="buttonText2">Logout</p>
+            <img src="/elements/return.png" class="image logoutImg" title="Logout" @click="logout" />
+            
           </div>
         </v-row>
       </v-container>
@@ -143,6 +154,49 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+  font-family: "Rhianne";
+  src: url("/fontStyle/rhianne.ttf");
+}
+@font-face {
+  font-family: "Blackadder";
+  src: url("/fontStyle/blackadder.ttf");
+}
+@keyframes anchor-underline {
+  0%, 10% {
+    left: 0;
+    right: 100%;
+  }
+  40%, 60% {
+    left: 0;
+    right: 0;
+  }
+  90%, 100% {
+    left: 100%;
+    right: 0;
+  }
+}
+.buttonText {
+  font-size: 2.3vh;
+  font-family: Rhianne;
+  color: aliceblue;
+  display: none;
+}
+.buttonFather:hover .buttonText {
+display: block;
+}
+.buttonText2 {
+  width: 7vw;
+  font-size: 1.5vh;
+  text-align: center;
+  font-size: 3vh;
+  font-family: Blackadder;
+  color: aliceblue;
+  display: none;
+}
+.buttonFather2:hover .buttonText2 {
+display: block;
+}
 .middle {
   background: url("/backgrounds/goldenframe.png");
   background-position: center;

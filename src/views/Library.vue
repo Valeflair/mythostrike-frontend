@@ -1,7 +1,7 @@
 <template>
   <div class="library">
     <div v-if="currentCard">
-      <h1 class="pt-5">{{ this.currentCard.name }}</h1>
+      <h1 class="pt-5 Name" >{{ this.currentCard.name }}</h1>
       <button class="image back" @click="back"></button>
       <div class="cardContainer">
         <v-row class="d-flex justify-left">
@@ -43,8 +43,12 @@
 <style scoped>
 h1 {
   text-align: center;
+  width: 87vw;
 }
-
+.Name{
+  font-size: 5.5vh;
+  font-style: italic;
+}
 .back {
   position: absolute;
   background-image: url("/elements/return.png");
