@@ -187,6 +187,7 @@ export default {
   align-self: center;
   color: white;
   font-size: 3vh;
+  font-size: 1.8vw;
   background: url("/elements/skill-background.png");
   background-size: 100%;
 }
