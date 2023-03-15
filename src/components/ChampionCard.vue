@@ -13,6 +13,7 @@ import delayComponent from "./DelayedeffectComponent.vue";
           background: 'url(' + getImagePath() + ')',
           backgroundSize: 'cover',
         }"
+        
       ></div>
 
       <div class="name">
@@ -48,6 +49,7 @@ import delayComponent from "./DelayedeffectComponent.vue";
           background: 'url(' + getIdentityImagePath() + ')',
           backgroundSize: 'cover',
         }"
+        :title=this.identity
       ></div>
 
       <table>
