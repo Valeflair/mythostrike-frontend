@@ -378,8 +378,8 @@ export default {
 }
 
 .identity {
-  width: 4vh;
-  height: 4vh;
+  width: 5vh;
+  height: 5vh;
   border-radius: 100%;
   position: absolute;
   z-index: 4;
