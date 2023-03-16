@@ -64,8 +64,8 @@ h1 {
 .library {
   position: relative;
   background-image: url("/backgrounds/lobby_background.png");
-  width: 100%;
   height: 100%;
+  width: 100%;
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
@@ -73,7 +73,7 @@ h1 {
 }
 
 .cardContainer {
-  height: 87vh;
+  height: 80vh;
   width: 20vw;
   overflow: auto;
   overflow-x: hidden;
