@@ -127,6 +127,7 @@ export default {
   text-shadow: #000000 2px 2px 4px;
   background: url("/elements/banner.png");
   background-size: cover;
+  border-radius: 15px;
 }
 
 .equipment:hover + .equipment-description {
