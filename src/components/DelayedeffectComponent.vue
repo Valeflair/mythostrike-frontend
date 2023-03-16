@@ -9,7 +9,7 @@
     }"
   ></div>
 
-  <div class="debuff-description">{{ description }}</div>
+  <div class="debuff-description pa-2">{{ description }}</div>
 </template>
 
 <script>
