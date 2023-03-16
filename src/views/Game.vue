@@ -1521,7 +1521,7 @@ export default {
 
 
 .cancelButton {
-  background: url("/elements/confirmbutton.png");
+  background: url("/elements/confirmbutton.png") no-repeat center center;
   position: absolute;
   left: 47vw;
   border-radius: 10px;
@@ -1529,7 +1529,7 @@ export default {
 }
 
 .confirmButton {
-  background: url("/elements/confirmbutton.png");
+  background: url("/elements/confirmbutton.png") no-repeat center center;
   position: absolute;
   left: 47vw;
   border-radius: 10px;
