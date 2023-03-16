@@ -1334,7 +1334,7 @@ export default {
 
 .notice-message {
   width: 15vw;
-  height: 10vh;
+  height: 11vh;
   position: absolute;
   font-weight: bold;
   color: white;
