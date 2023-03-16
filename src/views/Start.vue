@@ -53,13 +53,14 @@
 }
 
 .startButton {
-  width: 10.25vw;
-  min-height: 6vh;
+  width: 9vw;
+  min-height: 5.70vh;
   margin: 15px;
   color: white;
   font-size: 1vw;
   border-radius: 15px;
-  background: url("/elements/button.png");
+  background: url("/elements/button.png") no-repeat center center;
+  background-size: contain;
 }
 
 .text {
