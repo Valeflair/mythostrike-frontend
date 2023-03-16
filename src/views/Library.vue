@@ -67,6 +67,8 @@ h1 {
   width: 100%;
   height: 100%;
   background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
   flex: 3;
 }
 
