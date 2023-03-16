@@ -1577,6 +1577,7 @@ export default {
   z-index: 10
 }
 
+
 .passiveCircle {
   position: absolute;
   background-color: purple;
@@ -1589,18 +1590,17 @@ export default {
   position: relative;
   display: flex;
   left: 0;
-  bottom: -7.3vw;
+  bottom: -7vw;
   width: 18vw;
   height: 15vh;
   z-index: 10;
 }
 
+
 .equipment {
   position: absolute;
   left: 0;
   z-index: 2;
-  width: 18vw;
-  height: 15vh;
   line-height: 350%;
 }
 
