@@ -1572,7 +1572,7 @@ export default {
   height: 30vh;
   position: absolute;
   display: flex;
-  bottom: 9vw;
+  bottom: 8.3vw;
   z-index: 10
 }
 
