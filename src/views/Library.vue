@@ -78,7 +78,7 @@ h1 {
   overflow: auto;
   overflow-x: hidden;
   position: relative;
-  top: 5vh;
+  top: 3vh;
   left: 3vw;
 }
 
