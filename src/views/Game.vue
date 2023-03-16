@@ -1572,7 +1572,7 @@ export default {
   height: 30vh;
   position: absolute;
   display: flex;
-  bottom: 16vh;
+  bottom: 9vw;
   z-index: 10
 }
 
@@ -1588,7 +1588,7 @@ export default {
   position: relative;
   display: flex;
   left: 0;
-  bottom: -2vh;
+  bottom: -7.3vw;
   width: 18vw;
   height: 15vh;
   z-index: 10;
@@ -1598,6 +1598,8 @@ export default {
   position: absolute;
   left: 0;
   z-index: 2;
+  width: 18vw;
+  height: 15vh;
   line-height: 350%;
 }
 
